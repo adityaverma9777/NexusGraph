@@ -1,12 +1,22 @@
 import ConfidenceBadge from '../ui/ConfidenceBadge'
-import { graphEdges, graphNodes } from '../../lib/mockData'
+import { useGraph } from '../../hooks/useGraph'
 import { useGraphStore } from '../../store/graphStore'
 
 export default function EdgePanel() {
   const selectedEdgeId = useGraphStore((state) => state.selectedEdgeId)
-  const edge = graphEdges.find((item) => item.id === selectedEdgeId)
-  const sourceNode = edge ? graphNodes.find((n) => n.id === edge.source) : undefined
-  const targetNode = edge ? graphNodes.find((n) => n.id === edge.target) : undefined
+  const { nodes, edges, isLoading } = useGraph()
+  const edge = edges.find((item) => item.id === selectedEdgeId)
+  const sourceNode = edge ? nodes.find((n) => n.id === edge.source) : undefined
+  const targetNode = edge ? nodes.find((n) => n.id === edge.target) : undefined
+
+  if (isLoading && !edge) {
+    return (
+      <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Relationship</p>
+        <p className="mt-4 text-sm text-[#6a6374]">Loading relationship details...</p>
+      </div>
+    )
+  }
 
   if (!edge || !sourceNode || !targetNode) {
     return (

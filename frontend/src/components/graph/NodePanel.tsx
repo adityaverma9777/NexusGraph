@@ -1,12 +1,22 @@
 import ConfidenceBadge from '../ui/ConfidenceBadge'
 import DomainBadge from '../ui/DomainBadge'
-import { graphEdges, graphNodes } from '../../lib/mockData'
+import { useGraph } from '../../hooks/useGraph'
 import { useGraphStore } from '../../store/graphStore'
 
 export default function NodePanel() {
   const selectedNodeId = useGraphStore((state) => state.selectedNodeId)
-  const node = graphNodes.find((item) => item.id === selectedNodeId)
-  const edge = graphEdges.find((item) => item.source === selectedNodeId)
+  const { nodes, edges, isLoading } = useGraph()
+  const node = nodes.find((item) => item.id === selectedNodeId)
+  const edge = edges.find((item) => item.source === selectedNodeId)
+
+  if (isLoading && !node) {
+    return (
+      <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Node Detail</p>
+        <p className="mt-4 text-sm text-[#6a6374]">Loading node details...</p>
+      </div>
+    )
+  }
 
   if (!node) {
     return (

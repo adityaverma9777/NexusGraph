@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
 import L from 'leaflet'
 import { TILE_PROVIDERS } from '../../lib/leafletConfig'
 import { mapMarkers } from '../../lib/mockData'
+import MapPopup from './MapPopup'
 
 type Marker = typeof mapMarkers[0]
 
@@ -33,7 +34,9 @@ export default function IntelligenceMap({ children }: IntelligenceMapProps) {
         <TileLayer url={TILE_PROVIDERS.dark} attribution="" />
         {mapMarkers.map((marker: Marker) => (
           <Marker key={marker.id} position={marker.position}>
-            <Popup>{marker.label}</Popup>
+            <Popup>
+              <MapPopup title={marker.label} />
+            </Popup>
           </Marker>
         ))}
         {children}
