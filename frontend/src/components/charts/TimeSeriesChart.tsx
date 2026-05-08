@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { apiClient } from '../../lib/api'
+import { useGraphStore } from '../../store/graphStore'
 import { timelineSeries } from '../../lib/mockData'
 
 type SeriesRow = {
@@ -67,11 +68,13 @@ function normalizeSeries(payload: unknown): SeriesRow[] | null {
 }
 
 export default function TimeSeriesChart() {
+  const currentDate = useGraphStore((s) => s.currentDate)
+
   const query = useQuery({
-    queryKey: ['metrics-timeseries-demo'],
+    queryKey: ['metrics-timeseries-demo', currentDate],
     queryFn: async () => {
       const payload = await apiClient(
-        '/api/metrics/timeseries?entity_type=RainfallAnomaly&country=IND&from=2024-01&to=2024-12',
+        `/api/metrics/timeseries?entity_type=RainfallAnomaly&country=IND&from=2024-01&to=2024-12&date=${encodeURIComponent(currentDate)}`,
       )
       return normalizeSeries(payload)
     },

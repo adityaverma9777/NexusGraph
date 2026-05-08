@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '../../lib/api'
+import { useGraphStore } from '../../store/graphStore'
 import { timelineEvents } from '../../lib/mockData'
 import AlertBanner from '../ui/AlertBanner'
 
@@ -71,10 +72,12 @@ function normalizeEvents(payload: unknown): TimelineEvent[] | null {
 }
 
 export default function EventStream() {
+  const currentDate = useGraphStore((s) => s.currentDate)
+
   const query = useQuery({
-    queryKey: ['alerts-active'],
+    queryKey: ['alerts-active', currentDate],
     queryFn: async () => {
-      const payload = await apiClient('/api/alerts/active')
+      const payload = await apiClient(`/api/alerts/active?date=${encodeURIComponent(currentDate)}`)
       return normalizeEvents(payload)
     },
     retry: 1,

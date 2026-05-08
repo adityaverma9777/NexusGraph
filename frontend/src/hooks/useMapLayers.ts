@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '../lib/api'
 import { MAP_LAYERS } from '../lib/leafletConfig'
 import { useMapStore } from '../store/mapStore'
+import { useGraphStore } from '../store/graphStore'
 
 type MapLayerDefinition = {
   id: string
@@ -73,11 +74,12 @@ function normalizeMapLayers(payload: unknown): MapLayerDefinition[] | null {
 export function useMapLayers() {
   const activeLayers = useMapStore((state) => state.activeLayers)
   const setActiveLayers = useMapStore((state) => state.setActiveLayers)
+  const currentDate = useGraphStore((state) => state.currentDate)
 
   const query = useQuery({
-    queryKey: ['map-layers'],
+    queryKey: ['map-layers', currentDate],
     queryFn: async () => {
-      const payload = await apiClient('/api/map/layers')
+      const payload = await apiClient(`/api/map/layers?date=${encodeURIComponent(currentDate)}`)
       return normalizeMapLayers(payload)
     },
     retry: 1,

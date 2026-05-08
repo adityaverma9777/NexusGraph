@@ -42,7 +42,8 @@ export default function ConceptSearch() {
 
   const searchMutation = useMutation({
     mutationFn: async (term: string) => {
-      const payload = await apiClient(`/api/search?q=${encodeURIComponent(term)}`)
+      const currentDate = useGraphStore((s) => s.currentDate)
+      const payload = await apiClient(`/api/search?q=${encodeURIComponent(term)}&date=${encodeURIComponent(currentDate)}`)
       return extractFirstNodeId(payload)
     },
     onSuccess: (nodeId) => {

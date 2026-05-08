@@ -1,16 +1,70 @@
 import { useTimeline } from '../../hooks/useTimeline'
+import { useState, useEffect, useRef } from 'react'
+
+function addMonths(ym: string, delta = 1) {
+  // ym format: YYYY-MM
+  const [y, m] = ym.split('-').map(Number)
+  const date = new Date(y, m - 1 + delta, 1)
+  const nextY = date.getFullYear()
+  const nextM = String(date.getMonth() + 1).padStart(2, '0')
+  return `${nextY}-${nextM}`
+}
 
 export default function TimelineSlider() {
   const { currentDate, setCurrentDate } = useTimeline()
+  const [isPlaying, setIsPlaying] = useState(false)
+  const intervalRef = useRef<number | null>(null)
+  const currentRef = useRef(currentDate)
+
+  useEffect(() => {
+    currentRef.current = currentDate
+  }, [currentDate])
+
+  useEffect(() => {
+    if (isPlaying) {
+      intervalRef.current = window.setInterval(() => {
+        setCurrentDate(addMonths(currentRef.current, 1))
+      }, 1500)
+    } else if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+      intervalRef.current = null
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [isPlaying, setCurrentDate])
 
   return (
     <div className="space-y-2">
-      <input
-        type="month"
-        value={currentDate}
-        onChange={(event) => setCurrentDate(event.target.value)}
-        className="w-full rounded-lg border border-[#d6d0c7] px-3 py-2 text-sm"
-      />
+      <div className="flex items-center gap-3">
+        <button
+          className="rounded border px-3 py-2 text-sm"
+          onClick={() => setCurrentDate(addMonths(currentDate, -1))}
+        >
+          Prev
+        </button>
+        <input
+          type="month"
+          value={currentDate}
+          onChange={(event) => setCurrentDate(event.target.value)}
+          className="flex-1 rounded-lg border border-[#d6d0c7] px-3 py-2 text-sm"
+        />
+        <button
+          className="rounded border px-3 py-2 text-sm"
+          onClick={() => setCurrentDate(addMonths(currentDate, 1))}
+        >
+          Next
+        </button>
+        <button
+          className="rounded bg-[#141218] px-3 py-2 text-sm text-white"
+          onClick={() => setIsPlaying((p) => !p)}
+        >
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+      </div>
       <p className="text-xs text-[#6a6374]">Snapshot: {currentDate}</p>
     </div>
   )
