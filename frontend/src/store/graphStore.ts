@@ -13,6 +13,8 @@ type GraphState = {
   setMinConfidence: (value: number) => void
   searchTerm: string
   setSearchTerm: (value: string) => void
+  cascadeType?: string
+  setCascadeType: (type?: string) => void
 }
 
 export const useGraphStore = create<GraphState>((set) => ({
@@ -28,4 +30,6 @@ export const useGraphStore = create<GraphState>((set) => ({
   setMinConfidence: (value) => set({ minConfidence: value }),
   searchTerm: '',
   setSearchTerm: (value) => set({ searchTerm: value }),
+  cascadeType: undefined,
+  setCascadeType: (type) => set({ cascadeType: type }),
 }))

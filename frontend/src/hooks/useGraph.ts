@@ -154,15 +154,21 @@ function normalizeGraphPayload(payload: unknown): GraphPayload | null {
 export function useGraph() {
   const currentDate = useGraphStore((state) => state.currentDate)
   const selectedNodeId = useGraphStore((state) => state.selectedNodeId)
+  const cascadeType = useGraphStore((state) => state.cascadeType)
   const minConfidence = useGraphStore((state) => state.minConfidence)
   const searchTerm = useGraphStore((state) => state.searchTerm.toLowerCase())
 
   const query = useQuery({
     queryKey: ['graph', selectedNodeId, currentDate],
     queryFn: async (): Promise<GraphPayload | null> => {
-      const endpoint = selectedNodeId
-        ? `/api/graph/expand/${encodeURIComponent(selectedNodeId)}?date=${encodeURIComponent(currentDate)}`
-        : `/api/graph/concepts?date=${encodeURIComponent(currentDate)}`
+      let endpoint: string
+      if (cascadeType) {
+        endpoint = `/api/graph/cascade/${encodeURIComponent(cascadeType)}?date=${encodeURIComponent(currentDate)}`
+      } else if (selectedNodeId) {
+        endpoint = `/api/graph/expand/${encodeURIComponent(selectedNodeId)}?date=${encodeURIComponent(currentDate)}`
+      } else {
+        endpoint = `/api/graph/concepts?date=${encodeURIComponent(currentDate)}`
+      }
 
       const payload = await apiClient(endpoint)
       return normalizeGraphPayload(payload)
