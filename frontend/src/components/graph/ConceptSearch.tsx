@@ -1,454 +1,153 @@
+import { useState, useRef, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useMemo, useState } from 'react'
 import { apiClient } from '../../lib/api'
-import type { GraphEdge, GraphNode } from '../../lib/mockData'
-import { graphEdges, graphNodes } from '../../lib/mockData'
 import { useGraphStore } from '../../store/graphStore'
+import type { GraphNode } from '../../lib/mockData'
 
-type SearchResultItem = {
-  id: string
-  label: string
-  domain: string
-  entityType: string
-  severity: number
-  source: string
-}
+const QUICK_CONCEPTS = [
+  { label: 'Dengue Outbreak', query: 'DengueOutbreak', domain: 'disease' },
+  { label: 'Rainfall Anomaly', query: 'RainfallAnomaly', domain: 'climate' },
+  { label: 'Deforestation', query: 'DeforestationEvent', domain: 'ecology' },
+  { label: 'Displacement', query: 'DisplacementEvent', domain: 'population' },
+  { label: 'Food Price Stress', query: 'FoodPriceEvent', domain: 'economy' },
+  { label: 'Conflict Events', query: 'ConflictEvent', domain: 'infrastructure' },
+  { label: 'Malaria', query: 'MalariaOutbreak', domain: 'disease' },
+  { label: 'Wildfire', query: 'WildfireEvent', domain: 'ecology' },
+]
 
-type SearchResultsPayload = {
-  items: SearchResultItem[]
-  page: number
-  totalPages: number
-  total: number
-}
-
-type RelationshipPreview = {
-  edgeId: string
-  relationship: string
-  peerLabel: string
-  direction: 'outbound' | 'inbound'
-  confidence: number
-  lagWeeks: number
-}
-
-const PAGE_SIZE = 6
-
-function asRecord(value: unknown): Record<string, unknown> | null {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return null
-  }
-
-  return value as Record<string, unknown>
-}
-
-function toNumber(value: unknown, fallback: number): number {
-  return typeof value === 'number' && Number.isFinite(value) ? value : fallback
-}
-
-function toSearchItem(input: unknown): SearchResultItem | null {
-  const record = asRecord(input)
-  if (!record) {
-    return null
-  }
-
-  const id = typeof record.id === 'string' ? record.id : undefined
-  const label = typeof record.label === 'string' ? record.label : undefined
-  if (!id || !label) {
-    return null
-  }
-
-  return {
-    id,
-    label,
-    domain: typeof record.domain === 'string' ? record.domain : 'unknown',
-    entityType: typeof record.entityType === 'string' ? record.entityType : 'UnknownEntity',
-    severity: toNumber(record.severity, 0),
-    source: typeof record.source === 'string' ? record.source : 'Unknown',
-  }
-}
-
-function normalizeSearchPayload(payload: unknown, page: number): SearchResultsPayload | null {
-  const top = asRecord(payload)
-  if (!top) {
-    return null
-  }
-
-  const nested = asRecord(top.data)
-  const source =
-    (Array.isArray(top.results) ? top.results : undefined) ??
-    (Array.isArray(top.items) ? top.items : undefined) ??
-    (Array.isArray(top.nodes) ? top.nodes : undefined) ??
-    (Array.isArray(nested?.results) ? nested.results : undefined) ??
-    (Array.isArray(nested?.items) ? nested.items : undefined) ??
-    (Array.isArray(nested?.nodes) ? nested.nodes : undefined)
-
-  if (!source) {
-    return null
-  }
-
-  const items = source.map((entry) => toSearchItem(entry)).filter((entry): entry is SearchResultItem => Boolean(entry))
-  const total =
-    toNumber(top.total, NaN) ||
-    toNumber(top.total_count, NaN) ||
-    toNumber(nested?.total, NaN) ||
-    toNumber(nested?.total_count, NaN) ||
-    items.length
-
-  const totalPages =
-    toNumber(top.total_pages, NaN) ||
-    toNumber(nested?.total_pages, NaN) ||
-    Math.max(1, Math.ceil(total / PAGE_SIZE))
-
-  const currentPage =
-    toNumber(top.page, NaN) ||
-    toNumber(nested?.page, NaN) ||
-    page
-
-  return {
-    items,
-    page: Math.max(1, currentPage),
-    totalPages: Math.max(1, totalPages),
-    total,
-  }
-}
-
-function fallbackResults(term: string, page: number): SearchResultsPayload {
-  const lowerTerm = term.toLowerCase()
-  const all = graphNodes
-    .filter((node) => node.label.toLowerCase().includes(lowerTerm))
-    .map((node) => ({
-      id: node.id,
-      label: node.label,
-      domain: node.domain,
-      entityType: node.entityType,
-      severity: node.severity,
-      source: node.source,
-    }))
-
-  const totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE))
-  const safePage = Math.min(Math.max(page, 1), totalPages)
-  const start = (safePage - 1) * PAGE_SIZE
-  const end = start + PAGE_SIZE
-
-  return {
-    items: all.slice(start, end),
-    page: safePage,
-    totalPages,
-    total: all.length,
-  }
-}
-
-function toGraphNode(input: unknown): GraphNode | null {
-  const record = asRecord(input)
-  if (!record) {
-    return null
-  }
-
-  const id = typeof record.id === 'string' ? record.id : undefined
-  const label = typeof record.label === 'string' ? record.label : undefined
-  if (!id || !label) {
-    return null
-  }
-
-  return {
-    id,
-    label,
-    domain: typeof record.domain === 'string' ? (record.domain as GraphNode['domain']) : 'climate',
-    entityType: typeof record.entityType === 'string' ? record.entityType : 'UnknownEntity',
-    severity: toNumber(record.severity, 0),
-    validFrom: typeof record.validFrom === 'string' ? record.validFrom : '1970-01-01',
-    validTo: typeof record.validTo === 'string' ? record.validTo : undefined,
-    source: typeof record.source === 'string' ? record.source : 'Unknown',
-  }
-}
-
-function toGraphEdge(input: unknown): GraphEdge | null {
-  const record = asRecord(input)
-  if (!record) {
-    return null
-  }
-
-  const source = typeof record.source === 'string' ? record.source : undefined
-  const target = typeof record.target === 'string' ? record.target : undefined
-  if (!source || !target) {
-    return null
-  }
-
-  return {
-    id: typeof record.id === 'string' ? record.id : `edge-${source}-${target}`,
-    source,
-    target,
-    relationship: typeof record.relationship === 'string' ? record.relationship : 'RELATES_TO',
-    confidence: toNumber(record.confidence, 0),
-    lagWeeks: toNumber(record.lagWeeks ?? record.lag_weeks, 0),
-    sourceDataset:
-      typeof record.sourceDataset === 'string'
-        ? record.sourceDataset
-        : typeof record.source_dataset === 'string'
-          ? record.source_dataset
-          : 'Unknown',
-    evidenceType:
-      typeof record.evidenceType === 'string'
-        ? record.evidenceType
-        : typeof record.evidence_type === 'string'
-          ? record.evidence_type
-          : 'unknown',
-  }
-}
-
-function normalizeExpandPayload(payload: unknown): { nodes: GraphNode[]; edges: GraphEdge[] } | null {
-  const top = asRecord(payload)
-  if (!top) {
-    return null
-  }
-
-  const nested = asRecord(top.data)
-  const nodeSource =
-    (Array.isArray(top.nodes) ? top.nodes : undefined) ??
-    (Array.isArray(nested?.nodes) ? nested.nodes : undefined)
-  const edgeSource =
-    (Array.isArray(top.edges) ? top.edges : undefined) ??
-    (Array.isArray(nested?.edges) ? nested.edges : undefined)
-
-  if (!nodeSource || !edgeSource) {
-    return null
-  }
-
-  const nodes = nodeSource.map((entry) => toGraphNode(entry)).filter((entry): entry is GraphNode => Boolean(entry))
-  const edges = edgeSource.map((entry) => toGraphEdge(entry)).filter((entry): entry is GraphEdge => Boolean(entry))
-
-  return { nodes, edges }
-}
-
-function buildRelationshipPreview(
-  nodeId: string,
-  nodes: GraphNode[],
-  edges: GraphEdge[],
-): RelationshipPreview[] {
-  const nodeMap = new Map(nodes.map((node) => [node.id, node]))
-
-  return edges
-    .filter((edge) => edge.source === nodeId || edge.target === nodeId)
-    .map((edge) => {
-      const outbound = edge.source === nodeId
-      const peerId = outbound ? edge.target : edge.source
-      const peerLabel = nodeMap.get(peerId)?.label ?? peerId
-
-      return {
-        edgeId: edge.id,
-        relationship: edge.relationship,
-        peerLabel,
-        direction: outbound ? ('outbound' as const) : ('inbound' as const),
-        confidence: edge.confidence,
-        lagWeeks: edge.lagWeeks,
-      }
-    })
-    .sort((left, right) => right.confidence - left.confidence)
-    .slice(0, 4)
+const DOMAIN_COLORS: Record<string, string> = {
+  climate: '#00b4d8',
+  disease: '#ef233c',
+  economy: '#f4a261',
+  ecology: '#52b788',
+  population: '#a8dadc',
+  infrastructure: '#c77dff',
 }
 
 export default function ConceptSearch() {
-  const searchTerm = useGraphStore((state) => state.searchTerm)
-  const setSearchTerm = useGraphStore((state) => state.setSearchTerm)
-  const currentDate = useGraphStore((state) => state.currentDate)
+  const [input, setInput] = useState('')
+  const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
   const setSelectedNodeId = useGraphStore((state) => state.setSelectedNodeId)
-  const setSelectedEdgeId = useGraphStore((state) => state.setSelectedEdgeId)
+  const setSearchQuery = useGraphStore((state) => state.setSearchQuery)
+  const setCascadeType = useGraphStore((state) => state.setCascadeType)
 
-  const [submittedTerm, setSubmittedTerm] = useState('')
-  const [page, setPage] = useState(1)
-  const [focusedResultId, setFocusedResultId] = useState<string | undefined>(undefined)
-
-  const searchQuery = useQuery({
-    queryKey: ['concept-search', submittedTerm, page, currentDate],
+  const { data: results = [] } = useQuery<GraphNode[]>({
+    queryKey: ['search', input],
+    enabled: input.length >= 2,
     queryFn: async () => {
-      const payload = await apiClient(
-        `/api/search?q=${encodeURIComponent(submittedTerm)}&page=${page}&limit=${PAGE_SIZE}&date=${encodeURIComponent(currentDate)}`,
-      )
-
-      return normalizeSearchPayload(payload, page)
+      const data = await apiClient(`/api/search?q=${encodeURIComponent(input)}&limit=12`)
+      return Array.isArray(data) ? data : []
     },
-    enabled: submittedTerm.length > 0,
-    retry: 1,
-    staleTime: 60_000,
+    staleTime: 30_000,
   })
-
-  const activeResults = useMemo(() => {
-    if (!submittedTerm) {
-      return null
-    }
-
-    if (searchQuery.data?.items?.length || searchQuery.data) {
-      return searchQuery.data
-    }
-
-    return fallbackResults(submittedTerm, page)
-  }, [submittedTerm, searchQuery.data, page])
 
   useEffect(() => {
-    const first = activeResults?.items?.[0]
-    if (!first) {
-      return
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
     }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
-    setSelectedNodeId(first.id)
-    setSelectedEdgeId(undefined)
-  }, [activeResults?.items, setSelectedNodeId, setSelectedEdgeId])
-
-  const selectResult = (id: string) => {
-    setSelectedNodeId(id)
-    setSelectedEdgeId(undefined)
-    setFocusedResultId(id)
+  function handleSelectNode(node: GraphNode) {
+    setSelectedNodeId(node.id)
+    setSearchQuery('')
+    setInput(node.label)
+    setOpen(false)
   }
 
-  const previewQuery = useQuery({
-    queryKey: ['search-relationship-preview', focusedResultId, currentDate],
-    queryFn: async () => {
-      const payload = await apiClient(
-        `/api/graph/expand/${encodeURIComponent(focusedResultId ?? '')}?date=${encodeURIComponent(currentDate)}`,
-      )
-      const normalized = normalizeExpandPayload(payload)
-      if (!normalized || !focusedResultId) {
-        return null
-      }
+  function handleQuickConcept(concept: { query: string; label: string }) {
+    setCascadeType(concept.query)
+    setSearchQuery(concept.query)
+    setInput(concept.label)
+    setOpen(false)
+  }
 
-      return buildRelationshipPreview(focusedResultId, normalized.nodes, normalized.edges)
-    },
-    enabled: Boolean(focusedResultId),
-    retry: 1,
-    staleTime: 60_000,
-  })
-
-  const fallbackPreview = useMemo(() => {
-    const activeResultId = focusedResultId ?? activeResults?.items?.[0]?.id
-    if (!activeResultId) {
-      return []
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (input.trim().length >= 2) {
+      setSearchQuery(input.trim())
+      setOpen(false)
     }
-
-    return buildRelationshipPreview(activeResultId, graphNodes, graphEdges)
-  }, [focusedResultId, activeResults?.items])
-
-  const activeResultId = focusedResultId ?? activeResults?.items?.[0]?.id
-
-  const relationshipPreview =
-    previewQuery.data && previewQuery.data.length > 0 ? previewQuery.data : fallbackPreview
-
-  const onExplore = () => {
-    const term = searchTerm.trim()
-    if (!term) {
-      return
-    }
-
-    setSubmittedTerm(term)
-    setPage(1)
   }
 
   return (
-    <div className="space-y-3 rounded-xl border border-[#24344a] bg-[#0d1828] px-4 py-3">
-      <div className="flex flex-wrap items-center gap-3">
+    <div ref={containerRef} className="relative w-full">
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-[#4db8ff]">
+            <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M10.5 10.5L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </div>
         <input
-          className="flex-1 bg-transparent text-sm text-[#dce8f9] placeholder:text-[#6f86a7] focus:outline-none"
-          placeholder="Search a concept: rainfall, dengue, food price..."
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault()
-              onExplore()
-            }
-          }}
+          id="concept-search-input"
+          type="text"
+          value={input}
+          onChange={(e) => { setInput(e.target.value); setOpen(true) }}
+          onFocus={() => setOpen(true)}
+          placeholder="Search any concept — dengue, rainfall, displacement, conflict..."
+          className="w-full rounded-xl border border-[#1f2a3b] bg-[#0f1b2d] py-3 pl-11 pr-24 text-sm text-[#e6edf7] placeholder:text-[#4a6a8a] focus:border-[#4db8ff] focus:outline-none focus:ring-1 focus:ring-[#4db8ff]/30"
         />
         <button
-          type="button"
-          onClick={onExplore}
-          disabled={searchQuery.isPending}
-          className="rounded-full border border-[#2f4564] bg-[#193254] px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#eaf2ff] hover:bg-[#23456f] disabled:opacity-70"
+          type="submit"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-[#193254] px-4 py-1.5 text-xs font-semibold text-[#eaf2ff] hover:bg-[#22426a] transition-colors"
         >
-          {searchQuery.isPending ? 'Exploring...' : 'Explore'}
+          Explore →
         </button>
-      </div>
-
-      {submittedTerm && activeResults && (
-        <div className="rounded-lg border border-[#2a3b53] bg-[#0f1b2d] p-3">
-          <div className="mb-3 flex items-center justify-between gap-2">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#93a8c5]">
-              Results · {activeResults.total} matches · "{submittedTerm}"
-            </p>
-            <p className="text-xs text-[#7990b0]">
-              Page {activeResults.page} of {activeResults.totalPages}
-            </p>
-          </div>
-
-          {activeResults.items.length > 0 ? (
-            <ul className="space-y-2">
-              {activeResults.items.map((result) => (
-                <li key={result.id}>
+      </form>
+      {open && (
+        <div className="absolute z-50 mt-1 w-full overflow-hidden rounded-xl border border-[#1f2a3b] bg-[#0d1828] shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+          {input.length < 2 ? (
+            <div className="p-3">
+              <p className="mb-2 px-1 text-[10px] uppercase tracking-[0.2em] text-[#5a7090]">Quick concepts</p>
+              <div className="flex flex-wrap gap-2">
+                {QUICK_CONCEPTS.map((concept) => (
+                  <button
+                    key={concept.query}
+                    type="button"
+                    onClick={() => handleQuickConcept(concept)}
+                    className="rounded-full border px-3 py-1 text-xs font-medium transition-colors hover:bg-[#142236]"
+                    style={{
+                      borderColor: DOMAIN_COLORS[concept.domain] + '55',
+                      color: DOMAIN_COLORS[concept.domain],
+                    }}
+                  >
+                    {concept.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : results.length > 0 ? (
+            <ul className="divide-y divide-[#1a2638] py-1">
+              {results.map((node) => (
+                <li key={node.id}>
                   <button
                     type="button"
-                    onClick={() => selectResult(result.id)}
-                    className={`w-full rounded-md border px-3 py-2 text-left ${
-                      activeResultId === result.id
-                        ? 'border-[#4e79ab] bg-[#17304d]'
-                        : 'border-[#2b3e58] bg-[#122136] hover:border-[#406188] hover:bg-[#162943]'
-                    }`}
+                    onClick={() => handleSelectNode(node)}
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-[#122136]"
                   >
-                    <p className="text-sm font-medium text-[#e9f2ff]">{result.label}</p>
-                    <p className="mt-1 text-xs text-[#9ab0cd]">
-                      {result.domain} · {result.entityType} · severity {result.severity.toFixed(1)} · {result.source}
-                    </p>
+                    <span
+                      className="h-2 w-2 flex-shrink-0 rounded-full"
+                      style={{ backgroundColor: DOMAIN_COLORS[node.domain] ?? '#4db8ff' }}
+                    />
+                    <div className="min-w-0">
+                      <p className="truncate text-sm text-[#dce8f9]">{node.label}</p>
+                      <p className="text-[10px] uppercase tracking-[0.1em] text-[#5a7090]">
+                        {node.entityType} · {node.domain}
+                      </p>
+                    </div>
                   </button>
                 </li>
               ))}
-
-              {activeResultId && (
-                <div className="mt-3 rounded-md border border-[#30445f] bg-[#101d30] p-3">
-                  <p className="text-xs uppercase tracking-[0.2em] text-[#8ca3c3]">Relationship Snapshot</p>
-                  {previewQuery.isFetching && <p className="mt-2 text-xs text-[#7f95b5]">Loading structural links...</p>}
-                  {relationshipPreview.length > 0 ? (
-                    <ul className="mt-2 space-y-2">
-                      {relationshipPreview.map((preview) => (
-                        <li key={preview.edgeId} className="rounded border border-[#2d3f59] bg-[#122238] px-3 py-2">
-                          <p className="text-xs font-semibold text-[#e6efff]">
-                            {preview.relationship} · {preview.peerLabel}
-                          </p>
-                          <p className="mt-1 text-[11px] text-[#93a9c8]">
-                            {preview.direction} · confidence {(preview.confidence * 100).toFixed(0)}% · lag {preview.lagWeeks}w
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-2 text-xs text-[#93a9c8]">No direct relationships found for this entity.</p>
-                  )}
-                  {previewQuery.isError && (
-                    <p className="mt-2 text-xs text-[#f0a6a6]">Using local relationship graph fallback.</p>
-                  )}
-                </div>
-              )}
             </ul>
           ) : (
-            <p className="text-sm text-[#9ab0cd]">No entities found for this query.</p>
-          )}
-
-          <div className="mt-3 flex items-center justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-              disabled={activeResults.page <= 1 || searchQuery.isFetching}
-              className="rounded border border-[#2f4564] bg-[#122136] px-3 py-1.5 text-xs text-[#dce8f9] hover:bg-[#1b3150] disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <button
-              type="button"
-              onClick={() => setPage((prev) => Math.min(activeResults.totalPages, prev + 1))}
-              disabled={activeResults.page >= activeResults.totalPages || searchQuery.isFetching}
-              className="rounded border border-[#2f4564] bg-[#122136] px-3 py-1.5 text-xs text-[#dce8f9] hover:bg-[#1b3150] disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-
-          {searchQuery.isError && (
-            <p className="mt-3 text-xs text-[#f0a6a6]">Search API unavailable. Displaying local fallback results.</p>
+            <div className="px-4 py-3 text-sm text-[#5a7090]">
+              No results for "{input}" — try a different concept
+            </div>
           )}
         </div>
       )}

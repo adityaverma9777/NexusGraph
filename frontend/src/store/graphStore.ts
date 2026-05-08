@@ -1,35 +1,33 @@
 import { create } from 'zustand'
 
-type GraphState = {
+type Layout = 'default' | 'hierarchical' | 'radial'
+
+type GraphStore = {
+  selectedNodeId: string | undefined
+  selectedEdgeId: string | undefined
+  layout: Layout
   currentDate: string
+  cascadeType: string
+  searchQuery: string
+  setSelectedNodeId: (id: string | undefined) => void
+  setSelectedEdgeId: (id: string | undefined) => void
+  setLayout: (layout: Layout) => void
   setCurrentDate: (date: string) => void
-  selectedNodeId?: string
-  selectedEdgeId?: string
-  setSelectedNodeId: (nodeId?: string) => void
-  setSelectedEdgeId: (edgeId?: string) => void
-  layout: 'default' | 'hierarchical' | 'radial'
-  setLayout: (layout: 'default' | 'hierarchical' | 'radial') => void
-  minConfidence: number
-  setMinConfidence: (value: number) => void
-  searchTerm: string
-  setSearchTerm: (value: string) => void
-  cascadeType?: string
-  setCascadeType: (type?: string) => void
+  setCascadeType: (type: string) => void
+  setSearchQuery: (q: string) => void
 }
 
-export const useGraphStore = create<GraphState>((set) => ({
-  currentDate: '2024-06',
-  setCurrentDate: (date) => set({ currentDate: date }),
-  selectedNodeId: 'climate_rainfall_kerala_2024_w24',
-  selectedEdgeId: 'edge_rainfall_mosquito',
-  setSelectedNodeId: (nodeId) => set({ selectedNodeId: nodeId }),
-  setSelectedEdgeId: (edgeId) => set({ selectedEdgeId: edgeId }),
+export const useGraphStore = create<GraphStore>((set) => ({
+  selectedNodeId: undefined,
+  selectedEdgeId: undefined,
   layout: 'default',
+  currentDate: new Date().toISOString().slice(0, 10),
+  cascadeType: '',
+  searchQuery: '',
+  setSelectedNodeId: (id) => set({ selectedNodeId: id }),
+  setSelectedEdgeId: (id) => set({ selectedEdgeId: id }),
   setLayout: (layout) => set({ layout }),
-  minConfidence: 0.5,
-  setMinConfidence: (value) => set({ minConfidence: value }),
-  searchTerm: '',
-  setSearchTerm: (value) => set({ searchTerm: value }),
-  cascadeType: undefined,
+  setCurrentDate: (date) => set({ currentDate: date }),
   setCascadeType: (type) => set({ cascadeType: type }),
+  setSearchQuery: (q) => set({ searchQuery: q }),
 }))

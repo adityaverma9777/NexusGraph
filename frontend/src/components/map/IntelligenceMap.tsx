@@ -1,10 +1,12 @@
 import type { ReactNode } from 'react'
 import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
 import L from 'leaflet'
+import { useNavigate } from 'react-router-dom'
 import { TILE_PROVIDERS } from '../../lib/leafletConfig'
 import { mapMarkers, graphNodes } from '../../lib/mockData'
 import { useMapOverlays } from '../../hooks/useMapOverlays'
 import { useMapStore } from '../../store/mapStore'
+import { useGraphStore } from '../../store/graphStore'
 import MapPopup from './MapPopup'
 
 type DisplayMarker = {
@@ -14,6 +16,7 @@ type DisplayMarker = {
   domain?: string
   entityType?: string
   severity?: number
+  isGraphNode?: boolean
 }
 
 const iconDefaultPrototype = L.Icon.Default.prototype as unknown as { _getIconUrl?: string }
@@ -32,6 +35,8 @@ export default function IntelligenceMap({ children }: IntelligenceMapProps) {
   const center: [number, number] = [20, 78]
   const { overlays } = useMapOverlays()
   const tileProvider = useMapStore((state) => state.tileProvider)
+  const setSelectedNodeId = useGraphStore((state) => state.setSelectedNodeId)
+  const navigate = useNavigate()
 
   const enrichedMarkers: DisplayMarker[] =
     overlays && overlays.length
@@ -46,11 +51,18 @@ export default function IntelligenceMap({ children }: IntelligenceMapProps) {
               domain: n.domain,
               entityType: n.entityType,
               severity: n.severity,
+              isGraphNode: true,
             })),
           ...mapMarkers
             .filter((m) => !graphNodes.find((n) => n.id === m.id))
             .map((m) => ({ id: m.id, position: m.position, label: m.label })),
         ]
+
+  function handleNodeSelect(marker: DisplayMarker) {
+    if (!marker.isGraphNode) return
+    setSelectedNodeId(marker.id)
+    navigate('/')
+  }
 
   return (
     <div className="relative h-[520px] overflow-hidden rounded-2xl border border-[#1f2a3b] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
@@ -70,6 +82,8 @@ export default function IntelligenceMap({ children }: IntelligenceMapProps) {
                 domain={marker.domain}
                 entityType={marker.entityType}
                 severity={marker.severity}
+                isGraphNode={marker.isGraphNode}
+                onOpenInGraph={() => handleNodeSelect(marker)}
               />
             </Popup>
           </Marker>

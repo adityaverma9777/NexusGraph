@@ -36,6 +36,10 @@ export const cytoscapeStyles = [
     style: { 'background-color': '#a8dadc', shape: 'ellipse' },
   },
   {
+    selector: 'node[domain="infrastructure"]',
+    style: { 'background-color': '#c77dff', shape: 'cut-rectangle' },
+  },
+  {
     selector: 'edge',
     style: {
       width: 'data(weight)',
@@ -45,9 +49,33 @@ export const cytoscapeStyles = [
       'curve-style': 'bezier',
       label: 'data(relationship)',
       'font-size': '9px',
-      color: '#888',
-      opacity: 0.8,
+      'font-family': 'IBM Plex Mono, monospace',
+      color: '#7a8fa8',
+      opacity: 0.85,
+      'text-background-color': '#0a1220',
+      'text-background-opacity': 0.7,
+      'text-background-padding': '2px',
     },
+  },
+  {
+    selector: 'edge[relationship="DRIVES"]',
+    style: { 'line-color': '#4db8ff', 'target-arrow-color': '#4db8ff' },
+  },
+  {
+    selector: 'edge[relationship="AMPLIFIES"]',
+    style: { 'line-color': '#f4a261', 'target-arrow-color': '#f4a261' },
+  },
+  {
+    selector: 'edge[relationship="TRIGGERS"]',
+    style: { 'line-color': '#ef233c', 'target-arrow-color': '#ef233c' },
+  },
+  {
+    selector: 'edge[relationship="STRESSES"]',
+    style: { 'line-color': '#c77dff', 'target-arrow-color': '#c77dff' },
+  },
+  {
+    selector: 'edge[relationship="REDUCES"]',
+    style: { 'line-color': '#52b788', 'target-arrow-color': '#52b788' },
   },
   {
     selector: 'edge[confidence < 0.5]',

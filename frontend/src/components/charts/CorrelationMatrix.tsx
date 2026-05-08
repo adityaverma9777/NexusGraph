@@ -1,22 +1,56 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+import { useGraph } from '../../hooks/useGraph'
+import { graphEdges } from '../../lib/mockData'
 
-const correlationData = [
-  { name: 'Rainfall→Disease', correlation: 0.75 },
-  { name: 'Disease→Healthcare', correlation: 0.62 },
-  { name: 'Price→Migration', correlation: 0.58 },
-  { name: 'Deforest→Zoonotic', correlation: 0.66 },
-]
+const RELATIONSHIP_COLORS: Record<string, string> = {
+  DRIVES: '#4db8ff',
+  AMPLIFIES: '#f4a261',
+  TRIGGERS: '#ef233c',
+  STRESSES: '#c77dff',
+  REDUCES: '#52b788',
+  CORRELATES_WITH: '#a8dadc',
+  PRECEDES: '#7fc8f8',
+}
 
 export default function CorrelationMatrix() {
+  const { edges } = useGraph()
+  const activeEdges = edges.length ? edges : graphEdges
+
+  const data = activeEdges
+    .map((edge) => ({
+      name: edge.relationship,
+      confidence: Number(edge.confidence.toFixed(2)),
+      label: `${edge.relationship}`,
+      lagWeeks: edge.lagWeeks,
+    }))
+    .sort((a, b) => b.confidence - a.confidence)
+    .slice(0, 8)
+
   return (
     <div className="rounded-xl border border-[#1f2a3b] bg-[#0d1828] p-4">
+      <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#7f93b1]">
+        Edge Confidence · {activeEdges.length} active relationships
+      </p>
       <ResponsiveContainer width="100%" height={160}>
-        <BarChart data={correlationData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#27364d" />
-          <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} stroke="#8ea3c1" />
-          <YAxis domain={[0, 1]} stroke="#8ea3c1" />
-          <Tooltip contentStyle={{ backgroundColor: '#122136', border: '1px solid #2d3d54', color: '#e6edf7' }} />
-          <Bar dataKey="correlation" fill="#6da4ff" />
+        <BarChart data={data} layout="vertical" margin={{ left: 0, right: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#1a2a3d" horizontal={false} />
+          <XAxis type="number" domain={[0, 1]} stroke="#8ea3c1" tick={{ fontSize: 10 }} />
+          <YAxis
+            type="category"
+            dataKey="name"
+            stroke="#8ea3c1"
+            tick={{ fontSize: 9, fontFamily: 'IBM Plex Mono' }}
+            width={80}
+          />
+          <Tooltip
+            contentStyle={{ backgroundColor: '#0d1828', border: '1px solid #2d3d54', color: '#e6edf7', fontSize: 12 }}
+            formatter={(val: number) => [`${(val * 100).toFixed(0)}%`, 'Confidence']}
+          />
+          <Bar dataKey="confidence" radius={[0, 3, 3, 0]}>
+            {data.map((entry) => (
+              <Cell key={entry.name} fill={RELATIONSHIP_COLORS[entry.name] ?? '#6da4ff'} />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>
