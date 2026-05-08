@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
 import L from 'leaflet'
 import { TILE_PROVIDERS } from '../../lib/leafletConfig'
 import { mapMarkers } from '../../lib/mockData'
+import { useMapOverlays } from '../../hooks/useMapOverlays'
 import MapPopup from './MapPopup'
 
 type Marker = typeof mapMarkers[0]
@@ -21,6 +22,7 @@ type IntelligenceMapProps = {
 
 export default function IntelligenceMap({ children }: IntelligenceMapProps) {
   const center: [number, number] = [20, 78]
+  const { overlays } = useMapOverlays()
 
   return (
     <div className="relative h-[520px] overflow-hidden rounded-2xl border border-[#e0dcd4] shadow-sm">
@@ -32,10 +34,10 @@ export default function IntelligenceMap({ children }: IntelligenceMapProps) {
         style={{ zIndex: 0 }}
       >
         <TileLayer url={TILE_PROVIDERS.dark} attribution="" />
-        {mapMarkers.map((marker: Marker) => (
-          <Marker key={marker.id} position={marker.position}>
+        {(overlays || mapMarkers).map((marker: any) => (
+          <Marker key={marker.id} position={marker.position ?? marker[0]}>
             <Popup>
-              <MapPopup title={marker.label} />
+              <MapPopup title={marker.label ?? marker.name ?? 'Location'} />
             </Popup>
           </Marker>
         ))}
