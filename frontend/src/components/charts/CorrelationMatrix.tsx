@@ -9,14 +9,14 @@ const correlationData = [
 
 export default function CorrelationMatrix() {
   return (
-    <div className="rounded-xl border border-[#e0dcd4] bg-white p-4">
+    <div className="rounded-xl border border-[#1f2a3b] bg-[#0d1828] p-4">
       <ResponsiveContainer width="100%" height={160}>
         <BarChart data={correlationData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0dcd4" />
-          <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} stroke="#6a6374" />
-          <YAxis domain={[0, 1]} stroke="#6a6374" />
-          <Tooltip contentStyle={{ backgroundColor: '#fbfaf8' }} />
-          <Bar dataKey="correlation" fill="#5b5561" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#27364d" />
+          <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} stroke="#8ea3c1" />
+          <YAxis domain={[0, 1]} stroke="#8ea3c1" />
+          <Tooltip contentStyle={{ backgroundColor: '#122136', border: '1px solid #2d3d54', color: '#e6edf7' }} />
+          <Bar dataKey="correlation" fill="#6da4ff" />
         </BarChart>
       </ResponsiveContainer>
     </div>

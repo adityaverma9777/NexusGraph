@@ -82,13 +82,13 @@ export default function DataRegistry() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Dataset Registry</p>
-        <h2 className="text-2xl font-semibold">All ingested sources ({datasets.length})</h2>
-        {query.isFetching && <p className="mt-1 text-xs text-[#6a6374]">Refreshing from backend...</p>}
+        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Dataset Registry</p>
+        <h2 className="text-2xl font-semibold text-[#f3f7ff]">All ingested sources ({datasets.length})</h2>
+        {query.isFetching && <p className="mt-1 text-xs text-[#91a5c2]">Refreshing from backend...</p>}
       </div>
-      <div className="overflow-hidden rounded-2xl border border-[#e0dcd4] bg-white">
+      <div className="overflow-hidden rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95">
         <table className="w-full text-left text-sm">
-          <thead className="bg-[#f3f0ea] text-xs uppercase tracking-[0.2em] text-[#6a6374]">
+          <thead className="bg-[#122136] text-xs uppercase tracking-[0.2em] text-[#8aa0bf]">
             <tr>
               <th className="px-5 py-3">Dataset</th>
               <th className="px-5 py-3">Domain</th>
@@ -96,13 +96,13 @@ export default function DataRegistry() {
               <th className="px-5 py-3">Update</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#e0dcd4]">
+          <tbody className="divide-y divide-[#1f2a3b]">
             {datasets.map((dataset) => (
-              <tr key={dataset.name} className="hover:bg-[#fbfaf8]">
-                <td className="px-5 py-4 font-medium text-[#3c3741]">{dataset.name}</td>
-                <td className="px-5 py-4 text-[#6a6374]">{dataset.domain}</td>
-                <td className="px-5 py-4 text-[#6a6374]">{dataset.source}</td>
-                <td className="px-5 py-4 text-[#6a6374]">{dataset.update}</td>
+              <tr key={dataset.name} className="hover:bg-[#122136]">
+                <td className="px-5 py-4 font-medium text-[#dce8f9]">{dataset.name}</td>
+                <td className="px-5 py-4 text-[#9ab0cd]">{dataset.domain}</td>
+                <td className="px-5 py-4 text-[#9ab0cd]">{dataset.source}</td>
+                <td className="px-5 py-4 text-[#9ab0cd]">{dataset.update}</td>
               </tr>
             ))}
           </tbody>

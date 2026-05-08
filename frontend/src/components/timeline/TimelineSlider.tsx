@@ -41,7 +41,7 @@ export default function TimelineSlider() {
     <div className="space-y-2">
       <div className="flex items-center gap-3">
         <button
-          className="rounded border px-3 py-2 text-sm"
+          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-3 py-2 text-sm text-[#dce8f9] hover:bg-[#16253a]"
           onClick={() => setCurrentDate(addMonths(currentDate, -1))}
         >
           Prev
@@ -50,22 +50,22 @@ export default function TimelineSlider() {
           type="month"
           value={currentDate}
           onChange={(event) => setCurrentDate(event.target.value)}
-          className="flex-1 rounded-lg border border-[#d6d0c7] px-3 py-2 text-sm"
+          className="flex-1 rounded-lg border border-[#2b3a52] bg-[#0f1b2d] px-3 py-2 text-sm text-[#e6edf7]"
         />
         <button
-          className="rounded border px-3 py-2 text-sm"
+          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-3 py-2 text-sm text-[#dce8f9] hover:bg-[#16253a]"
           onClick={() => setCurrentDate(addMonths(currentDate, 1))}
         >
           Next
         </button>
         <button
-          className="rounded bg-[#141218] px-3 py-2 text-sm text-white"
+          className="rounded bg-[#244a74] px-3 py-2 text-sm text-[#eaf3ff] hover:bg-[#2d5d92]"
           onClick={() => setIsPlaying((p) => !p)}
         >
           {isPlaying ? 'Pause' : 'Play'}
         </button>
       </div>
-      <p className="text-xs text-[#6a6374]">Snapshot: {currentDate}</p>
+      <p className="text-xs text-[#91a5c2]">Snapshot: {currentDate}</p>
     </div>
   )
 }

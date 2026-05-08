@@ -87,10 +87,10 @@ export default function EventStream() {
   const events = query.data?.length ? query.data : timelineEvents
 
   return (
-    <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
-      <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Event Stream</p>
-      <h3 className="mt-1 text-lg font-semibold">Latest signals</h3>
-      {query.isFetching && <p className="mt-2 text-xs text-[#6a6374]">Refreshing active alerts...</p>}
+    <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Event Stream</p>
+      <h3 className="mt-1 text-lg font-semibold text-[#f3f7ff]">Latest signals</h3>
+      {query.isFetching && <p className="mt-2 text-xs text-[#91a5c2]">Refreshing active alerts...</p>}
       <ul className="mt-4 space-y-3">
         {events.map((event) => (
           <li key={event.id}>

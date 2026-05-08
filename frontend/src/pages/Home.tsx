@@ -11,11 +11,11 @@ import NodePanel from '../components/graph/NodePanel'
 export default function Home() {
   return (
     <div className="space-y-6">
-      <section className="flex flex-col gap-4 rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
+      <section className="flex flex-col gap-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Graph Explorer</p>
-            <h2 className="text-2xl font-semibold">Multi-domain relationship canvas</h2>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Graph Explorer</p>
+            <h2 className="text-2xl font-semibold text-[#f3f7ff]">Multi-domain relationship canvas</h2>
           </div>
           <GraphControls />
         </div>
@@ -29,13 +29,13 @@ export default function Home() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-[1.25fr_1fr]">
-        <div className="space-y-4 rounded-2xl border border-[#e0dcd4] bg-white p-5 shadow-sm">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Temporal Analytics</p>
+        <div className="space-y-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Temporal Analytics</p>
           <TimeSeriesChart />
           <CorrelationMatrix />
         </div>
-        <div className="space-y-4 rounded-2xl border border-[#e0dcd4] bg-white p-5 shadow-sm">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Domain Risk Profile</p>
+        <div className="space-y-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Domain Risk Profile</p>
           <DomainRadar />
           <RiskGauge />
         </div>

@@ -11,13 +11,13 @@ const domainData = [
 
 export default function DomainRadar() {
   return (
-    <div className="rounded-xl border border-[#e0dcd4] bg-white p-4">
+    <div className="rounded-xl border border-[#1f2a3b] bg-[#0d1828] p-4">
       <ResponsiveContainer width="100%" height={200}>
         <RadarChart data={domainData}>
-          <PolarGrid stroke="#e0dcd4" />
-          <PolarAngleAxis dataKey="domain" stroke="#6a6374" />
-          <PolarRadiusAxis angle={90} domain={[0, 10]} stroke="#6a6374" />
-          <Radar name="Risk Level" dataKey="risk" stroke="#ef233c" fill="#ef233c" fillOpacity={0.3} />
+          <PolarGrid stroke="#27364d" />
+          <PolarAngleAxis dataKey="domain" stroke="#8ea3c1" />
+          <PolarRadiusAxis angle={90} domain={[0, 10]} stroke="#8ea3c1" />
+          <Radar name="Risk Level" dataKey="risk" stroke="#ff7272" fill="#ff7272" fillOpacity={0.3} />
         </RadarChart>
       </ResponsiveContainer>
     </div>

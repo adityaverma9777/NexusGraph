@@ -48,7 +48,7 @@ export default function GraphControls() {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 text-xs text-[#6a6374]">
+    <div className="flex flex-wrap items-center gap-3 text-xs text-[#91a5c2]">
       <label className="flex items-center gap-2">
         Layout
         <select
@@ -56,7 +56,7 @@ export default function GraphControls() {
           onChange={(event) =>
             setLayout(event.target.value as 'default' | 'hierarchical' | 'radial')
           }
-          className="rounded-full border border-[#d6d0c7] bg-white px-3 py-1 text-xs"
+          className="rounded-full border border-[#2b3a52] bg-[#0f1b2d] px-3 py-1 text-xs text-[#e6edf7]"
         >
           <option value="default">Force</option>
           <option value="hierarchical">Hierarchy</option>
@@ -73,32 +73,32 @@ export default function GraphControls() {
           value={minConfidence}
           onChange={(event) => setMinConfidence(Number(event.target.value))}
         />
-        <span className="min-w-[32px] text-right">{minConfidence.toFixed(2)}</span>
+        <span className="min-w-[32px] text-right text-[#d9e5f8]">{minConfidence.toFixed(2)}</span>
       </label>
       <div className="flex items-center gap-2">
         <input
-          className="rounded border px-2 py-1 text-xs"
+          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-2 py-1 text-xs text-[#e6edf7] placeholder:text-[#6f86a7]"
           placeholder="Cascade type (e.g. RainfallAnomaly)"
           value={cascadeInput}
           onChange={(e) => setCascadeInput(e.target.value)}
         />
-        <button onClick={runCascade} className="rounded bg-[#141218] px-3 py-1 text-white text-xs">Run cascade</button>
-        <button onClick={clearCascade} className="rounded border px-3 py-1 text-xs">Clear</button>
+        <button onClick={runCascade} className="rounded bg-[#244a74] px-3 py-1 text-xs font-medium text-[#ebf5ff] hover:bg-[#2d5d92]">Run cascade</button>
+        <button onClick={clearCascade} className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-3 py-1 text-xs text-[#c5d4ea] hover:bg-[#16253a]">Clear</button>
       </div>
       <div className="flex items-center gap-2">
         <input
-          className="rounded border px-2 py-1 text-xs"
+          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-2 py-1 text-xs text-[#e6edf7] placeholder:text-[#6f86a7]"
           placeholder="Path from id"
           value={pathFrom}
           onChange={(e) => setPathFrom(e.target.value)}
         />
         <input
-          className="rounded border px-2 py-1 text-xs"
+          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-2 py-1 text-xs text-[#e6edf7] placeholder:text-[#6f86a7]"
           placeholder="Path to id"
           value={pathTo}
           onChange={(e) => setPathTo(e.target.value)}
         />
-        <button onClick={findPath} className="rounded bg-[#141218] px-3 py-1 text-white text-xs">Find path</button>
+        <button onClick={findPath} className="rounded bg-[#244a74] px-3 py-1 text-xs font-medium text-[#ebf5ff] hover:bg-[#2d5d92]">Find path</button>
       </div>
     </div>
   )

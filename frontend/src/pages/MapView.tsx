@@ -8,8 +8,8 @@ export default function MapView() {
     <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
       <div className="space-y-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Geospatial</p>
-          <h2 className="text-2xl font-semibold">Multi-layer intelligence map</h2>
+          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Geospatial</p>
+          <h2 className="text-2xl font-semibold text-[#f3f7ff]">Multi-layer intelligence map</h2>
         </div>
         <IntelligenceMap>
           <HeatmapLayer />

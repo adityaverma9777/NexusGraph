@@ -73,9 +73,9 @@ export default function ConceptSearch() {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#e0dcd4] bg-[#fbfaf8] px-4 py-3">
+    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[#24344a] bg-[#0d1828] px-4 py-3">
       <input
-        className="flex-1 bg-transparent text-sm text-[#3c3741] placeholder:text-[#8a8392] focus:outline-none"
+        className="flex-1 bg-transparent text-sm text-[#dce8f9] placeholder:text-[#6f86a7] focus:outline-none"
         placeholder="Search a concept: rainfall, dengue, food price..."
         value={searchTerm}
         onChange={(event) => setSearchTerm(event.target.value)}
@@ -90,12 +90,12 @@ export default function ConceptSearch() {
         type="button"
         onClick={onExplore}
         disabled={searchMutation.isPending}
-        className="rounded-full bg-[#141218] px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white"
+        className="rounded-full border border-[#2f4564] bg-[#193254] px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#eaf2ff] hover:bg-[#23456f]"
       >
         {searchMutation.isPending ? 'Exploring...' : 'Explore'}
       </button>
       {searchMutation.isError && (
-        <p className="w-full text-xs text-[#8d3c3c]">Search API unavailable. Using local fallback where possible.</p>
+        <p className="w-full text-xs text-[#f0a6a6]">Search API unavailable. Using local fallback where possible.</p>
       )}
     </div>
   )

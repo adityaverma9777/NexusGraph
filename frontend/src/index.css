@@ -5,14 +5,14 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
-  font-family: "Space Grotesk", "Segoe UI", sans-serif;
-  background: #f6f4ef;
-  color: #141218;
+  font-family: "Inter", "Space Grotesk", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top left, #111a2b 0%, #0b1220 28%, #070b12 60%);
+  color: #e6edf7;
 }
 
 #root {

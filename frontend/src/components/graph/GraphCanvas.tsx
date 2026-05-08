@@ -39,7 +39,7 @@ export default function GraphCanvas() {
   )
 
   return (
-    <div className="h-[420px] overflow-hidden rounded-2xl border border-[#e0dcd4] bg-[#fdfbf7]">
+    <div className="h-[420px] overflow-hidden rounded-2xl border border-[#1f2a3b] bg-[#0a1220]">
       <CytoscapeComponent
         elements={elements}
         style={{ width: '100%', height: '100%' }}

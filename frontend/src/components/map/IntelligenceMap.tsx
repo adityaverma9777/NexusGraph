@@ -25,7 +25,7 @@ export default function IntelligenceMap({ children }: IntelligenceMapProps) {
   const { overlays } = useMapOverlays()
 
   return (
-    <div className="relative h-[520px] overflow-hidden rounded-2xl border border-[#e0dcd4] shadow-sm">
+    <div className="relative h-[520px] overflow-hidden rounded-2xl border border-[#1f2a3b] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <MapContainer
         center={center}
         zoom={4}

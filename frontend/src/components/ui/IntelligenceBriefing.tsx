@@ -121,29 +121,29 @@ export default function IntelligenceBriefing() {
         detail={briefing.classification}
       />
       {query.isFetching && (
-        <p className="text-xs uppercase tracking-[0.2em] text-[#6a6374]">Refreshing intelligence...</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-[#91a5c2]">Refreshing intelligence...</p>
       )}
-      <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Situation Summary</p>
-        <p className="mt-3 text-sm text-[#4d4852]">{briefing.situationSummary}</p>
+      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Situation Summary</p>
+        <p className="mt-3 text-sm text-[#c6d7ec]">{briefing.situationSummary}</p>
       </div>
 
-      <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Contributing Factors</p>
-        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-[#4d4852]">
+      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Contributing Factors</p>
+        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-[#c6d7ec]">
           {briefing.contributingFactors.map((factor, idx) => (
             <li key={idx}>{factor}</li>
           ))}
         </ul>
       </div>
 
-      <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Downstream Risks</p>
+      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Downstream Risks</p>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           {briefing.downstreamRisks.map((risk, idx) => (
-            <div key={idx} className="rounded-lg border border-[#e0dcd4] p-3">
-              <p className="font-semibold text-[#3c3741]">{risk.risk}</p>
-              <p className="mt-1 text-xs text-[#6a6374]">
+            <div key={idx} className="rounded-lg border border-[#2b3a52] bg-[#101b2c] p-3">
+              <p className="font-semibold text-[#e6edf7]">{risk.risk}</p>
+              <p className="mt-1 text-xs text-[#9ab0cd]">
                 {risk.probability} · {risk.timeframe}
               </p>
             </div>
@@ -152,13 +152,13 @@ export default function IntelligenceBriefing() {
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">
-        <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Confidence</p>
-          <p className="mt-2 text-sm text-[#4d4852]">{briefing.confidenceAssessment}</p>
+        <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Confidence</p>
+          <p className="mt-2 text-sm text-[#c6d7ec]">{briefing.confidenceAssessment}</p>
         </div>
-        <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Data Gaps</p>
-          <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-[#4d4852]">
+        <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Data Gaps</p>
+          <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-[#c6d7ec]">
             {briefing.dataGaps.map((gap, idx) => (
               <li key={idx}>{gap}</li>
             ))}
@@ -166,9 +166,9 @@ export default function IntelligenceBriefing() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-[#e0dcd4] bg-white p-6 shadow-sm">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#6a6374]">Recommended Monitoring</p>
-        <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-[#4d4852]">
+      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Recommended Monitoring</p>
+        <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-[#c6d7ec]">
           {briefing.recommendedMonitoring.map((item, idx) => (
             <li key={idx}>{item}</li>
           ))}

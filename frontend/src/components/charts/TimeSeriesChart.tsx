@@ -85,17 +85,17 @@ export default function TimeSeriesChart() {
   const series = query.data?.length ? query.data : timelineSeries
 
   return (
-    <div className="rounded-xl border border-[#e0dcd4] bg-white p-4">
-      {query.isFetching && <p className="mb-2 text-xs text-[#6a6374]">Refreshing time series...</p>}
+    <div className="rounded-xl border border-[#1f2a3b] bg-[#0d1828] p-4">
+      {query.isFetching && <p className="mb-2 text-xs text-[#91a5c2]">Refreshing time series...</p>}
       <ResponsiveContainer width="100%" height={200}>
         <LineChart data={series}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0dcd4" />
-          <XAxis dataKey="month" stroke="#6a6374" />
-          <YAxis stroke="#6a6374" />
-          <Tooltip contentStyle={{ backgroundColor: '#fbfaf8' }} />
-          <Line type="monotone" dataKey="rainfall" stroke="#00b4d8" dot={false} />
-          <Line type="monotone" dataKey="dengue" stroke="#ef233c" dot={false} />
-          <Line type="monotone" dataKey="foodPrice" stroke="#f4a261" dot={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#27364d" />
+          <XAxis dataKey="month" stroke="#8ea3c1" />
+          <YAxis stroke="#8ea3c1" />
+          <Tooltip contentStyle={{ backgroundColor: '#122136', border: '1px solid #2d3d54', color: '#e6edf7' }} />
+          <Line type="monotone" dataKey="rainfall" stroke="#4db8ff" dot={false} />
+          <Line type="monotone" dataKey="dengue" stroke="#ff6b6b" dot={false} />
+          <Line type="monotone" dataKey="foodPrice" stroke="#f5b562" dot={false} />
         </LineChart>
       </ResponsiveContainer>
     </div>
