@@ -11,6 +11,16 @@ type Overlay = {
   properties?: Record<string, unknown>
 }
 
+type GeoJsonPointFeature = {
+  id?: string | number
+  type: 'Feature'
+  geometry: {
+    type: 'Point'
+    coordinates: [number, number]
+  }
+  properties?: Record<string, unknown>
+}
+
 function asRecord(value: unknown): Record<string, unknown> | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
   return value as Record<string, unknown>
@@ -20,12 +30,44 @@ function normalizeOverlayItem(item: unknown): Overlay | null {
   const rec = asRecord(item)
   if (!rec) return null
 
-  const anyRec = rec as any
+  // GeoJSON point feature
+  if (rec.type === 'Feature') {
+    const geometry = asRecord(rec.geometry)
+    const properties = asRecord(rec.properties) ?? undefined
+    const coordinates = geometry && Array.isArray(geometry.coordinates) ? geometry.coordinates : undefined
 
-  // GeoJSON feature
-  if (anyRec.type === 'Feature' && anyRec.geometry && anyRec.geometry.type === 'Point' && Array.isArray(anyRec.geometry.coordinates)) {
-    const [lon, lat] = anyRec.geometry.coordinates as number[]
-    return { id: String(anyRec.id ?? anyRec.properties?.id ?? `${lat},${lon}`), position: [lat, lon], label: String(anyRec.properties?.label ?? anyRec.properties?.name ?? '') , properties: anyRec.properties as Record<string, unknown> }
+    if (
+      geometry?.type === 'Point' &&
+      coordinates?.length >= 2 &&
+      typeof coordinates[0] === 'number' &&
+      typeof coordinates[1] === 'number'
+    ) {
+      const feature: GeoJsonPointFeature = {
+        id: typeof rec.id === 'string' || typeof rec.id === 'number' ? rec.id : undefined,
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [coordinates[0], coordinates[1]],
+        },
+        properties,
+      }
+
+      const [lon, lat] = feature.geometry.coordinates
+      const propertyId = properties && (typeof properties.id === 'string' || typeof properties.id === 'number') ? properties.id : undefined
+      const label =
+        properties && typeof properties.label === 'string'
+          ? properties.label
+          : properties && typeof properties.name === 'string'
+            ? properties.name
+            : undefined
+
+      return {
+        id: String(feature.id ?? propertyId ?? `${lat},${lon}`),
+        position: [lat, lon],
+        label,
+        properties,
+      }
+    }
   }
 
   // simple object with lat / lon or latitude / longitude
@@ -76,7 +118,9 @@ export function useMapOverlays() {
     staleTime: 5 * 60_000,
   })
 
-  const overlays = query.data && query.data.length ? query.data : mapMarkers.map((m) => ({ id: m.id, position: m.position, label: m.label }))
+  const overlays = query.data && query.data.length
+    ? query.data
+    : mapMarkers.map((marker) => ({ id: marker.id, position: marker.position, label: marker.label }))
 
   return { overlays, isFetching: query.isFetching }
 }

@@ -11,6 +11,13 @@ import { useGraphStore } from '../../store/graphStore'
 
 type HeatPoint = [number, number, number]
 
+type LeafletHeatExtension = typeof L & {
+  HeatLayer: new (...args: unknown[]) => L.Layer
+  heatLayer: (latlngs: HeatPoint[], options: Record<string, unknown>) => L.Layer
+}
+
+const leafletHeat = L as LeafletHeatExtension
+
 function asRecord(value: unknown): Record<string, unknown> | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     return null
@@ -103,7 +110,7 @@ export default function HeatmapLayer() {
     // Clear existing heatmap layers
     const existingLayers: L.Layer[] = []
     map.eachLayer((layer) => {
-      if (layer instanceof (L as any).HeatLayer) {
+      if (layer instanceof leafletHeat.HeatLayer) {
         existingLayers.push(layer)
       }
     })
@@ -115,7 +122,7 @@ export default function HeatmapLayer() {
       const layerConfig = MAP_LAYERS[layerId as keyof typeof MAP_LAYERS]
 
       if (data && layerConfig) {
-        ;(L as any)
+        leafletHeat
           .heatLayer(data, {
             radius: 25,
             blur: 15,

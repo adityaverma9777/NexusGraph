@@ -2,21 +2,69 @@ import ClusterLayer from '../components/map/ClusterLayer'
 import HeatmapLayer from '../components/map/HeatmapLayer'
 import IntelligenceMap from '../components/map/IntelligenceMap'
 import LayerSelector from '../components/map/LayerSelector'
+import { useMapStore } from '../store/mapStore'
+import { MAP_LAYERS } from '../lib/leafletConfig'
 
 export default function MapView() {
+  const activeLayers = useMapStore((state) => state.activeLayers)
+
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-      <div className="space-y-4">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Geospatial</p>
-          <h2 className="text-2xl font-semibold text-[#f3f7ff]">Multi-layer intelligence map</h2>
-        </div>
-        <IntelligenceMap>
-          <HeatmapLayer />
-          <ClusterLayer />
-        </IntelligenceMap>
+    <div className="space-y-6">
+      <div>
+        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Geospatial Intelligence</p>
+        <h2 className="text-2xl font-semibold text-[#f3f7ff]">Multi-layer intelligence map</h2>
+        <p className="mt-1 text-sm text-[#91a5c2]">
+          Enable overlays on the right to see where climate, disease, conflict and ecological signals converge.
+        </p>
       </div>
-      <LayerSelector />
+      <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+        <div className="space-y-3">
+          <IntelligenceMap>
+            <HeatmapLayer />
+            <ClusterLayer />
+          </IntelligenceMap>
+          {activeLayers.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {activeLayers.map((id) => {
+                const layer = MAP_LAYERS[id as keyof typeof MAP_LAYERS]
+                if (!layer) return null
+                return (
+                  <div
+                    key={id}
+                    className="flex items-center gap-2 rounded-full border border-[#1f2a3b] bg-[#0a1220] px-3 py-1.5 text-xs"
+                  >
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: layer.color }}
+                    />
+                    <span className="text-[#c6d7ec]">{layer.label}</span>
+                  </div>
+                )
+              })}
+              <span className="rounded-full border border-[#1f2a3b] bg-[#0a1220] px-3 py-1.5 text-xs text-[#7090b0]">
+                {activeLayers.length} active overlay{activeLayers.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+          )}
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { label: 'Total Nodes', value: '8', sub: 'across 6 domains' },
+              { label: 'Active Layers', value: String(activeLayers.length), sub: 'of 7 available' },
+              { label: 'Data Sources', value: '39', sub: 'public APIs' },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-xl border border-[#1f2a3b] bg-[#0f1724]/95 p-4 text-center"
+              >
+                <p className="text-2xl font-bold text-[#eaf2ff]">{stat.value}</p>
+                <p className="text-xs font-medium text-[#c6d7ec]">{stat.label}</p>
+                <p className="text-[10px] text-[#5a7090]">{stat.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <LayerSelector />
+      </div>
     </div>
   )
 }

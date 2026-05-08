@@ -2,14 +2,22 @@ import type { ReactNode } from 'react'
 import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet'
 import L from 'leaflet'
 import { TILE_PROVIDERS } from '../../lib/leafletConfig'
-import { mapMarkers } from '../../lib/mockData'
+import { mapMarkers, graphNodes } from '../../lib/mockData'
 import { useMapOverlays } from '../../hooks/useMapOverlays'
+import { useMapStore } from '../../store/mapStore'
 import MapPopup from './MapPopup'
 
-type Marker = typeof mapMarkers[0]
+type DisplayMarker = {
+  id: string
+  position: [number, number]
+  label?: string
+  domain?: string
+  entityType?: string
+  severity?: number
+}
 
-// Fix Leaflet default icon issue
-delete (L.Icon.Default.prototype as any)._getIconUrl
+const iconDefaultPrototype = L.Icon.Default.prototype as unknown as { _getIconUrl?: string }
+delete iconDefaultPrototype._getIconUrl
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -23,6 +31,26 @@ type IntelligenceMapProps = {
 export default function IntelligenceMap({ children }: IntelligenceMapProps) {
   const center: [number, number] = [20, 78]
   const { overlays } = useMapOverlays()
+  const tileProvider = useMapStore((state) => state.tileProvider)
+
+  const enrichedMarkers: DisplayMarker[] =
+    overlays && overlays.length
+      ? overlays
+      : [
+          ...graphNodes
+            .filter((n) => n.lat !== undefined && n.lon !== undefined)
+            .map((n) => ({
+              id: n.id,
+              position: [n.lat!, n.lon!] as [number, number],
+              label: n.label,
+              domain: n.domain,
+              entityType: n.entityType,
+              severity: n.severity,
+            })),
+          ...mapMarkers
+            .filter((m) => !graphNodes.find((n) => n.id === m.id))
+            .map((m) => ({ id: m.id, position: m.position, label: m.label })),
+        ]
 
   return (
     <div className="relative h-[520px] overflow-hidden rounded-2xl border border-[#1f2a3b] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
@@ -33,11 +61,16 @@ export default function IntelligenceMap({ children }: IntelligenceMapProps) {
         className="h-full w-full"
         style={{ zIndex: 0 }}
       >
-        <TileLayer url={TILE_PROVIDERS.dark} attribution="" />
-        {(overlays || mapMarkers).map((marker: any) => (
-          <Marker key={marker.id} position={marker.position ?? marker[0]}>
+        <TileLayer url={TILE_PROVIDERS[tileProvider]} attribution="" />
+        {enrichedMarkers.map((marker) => (
+          <Marker key={marker.id} position={marker.position}>
             <Popup>
-              <MapPopup title={marker.label ?? marker.name ?? 'Location'} />
+              <MapPopup
+                title={marker.label ?? 'Location'}
+                domain={marker.domain}
+                entityType={marker.entityType}
+                severity={marker.severity}
+              />
             </Popup>
           </Marker>
         ))}

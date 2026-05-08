@@ -97,6 +97,7 @@ export default function EventStream() {
             <AlertBanner
               title={event.title}
               detail={`Date: ${event.date} · Severity: ${event.severity}`}
+              severity={event.severity as 'low' | 'medium' | 'high' | 'critical'}
             />
           </li>
         ))}
