@@ -1,5 +1,5 @@
 import CytoscapeComponent from 'react-cytoscapejs'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { Core, EventObject } from 'cytoscape'
 import { cytoscapeLayouts, cytoscapeStyles } from '../../lib/cytoscapeConfig'
 import { domainColors } from '../../lib/mockData'
@@ -10,18 +10,25 @@ import { GraphSkeleton } from '../ui/Skeleton'
 export default function GraphCanvas() {
   const { nodes, edges, isLoading, hasQuery } = useGraph()
   const layoutKey = useGraphStore((state) => state.layout)
+  const selectedNodeId = useGraphStore((state) => state.selectedNodeId)
+  const selectedEdgeId = useGraphStore((state) => state.selectedEdgeId)
   const setSelectedNodeId = useGraphStore((state) => state.setSelectedNodeId)
   const setSelectedEdgeId = useGraphStore((state) => state.setSelectedEdgeId)
+
+  function getNodeLabel(label: string) {
+    return label.length > 28 ? `${label.slice(0, 25)}...` : label
+  }
 
   const elements = useMemo(
     () => [
       ...nodes.map((node) => ({
         data: {
           id: node.id,
-          label: node.label,
+          label: getNodeLabel(node.label),
           domain: node.domain,
+          entityType: node.entityType,
           color: domainColors[node.domain],
-          size: 42 + node.severity * 2,
+          size: node.domain === 'meta' ? 26 : 42 + node.severity * 2,
         },
       })),
       ...edges.map((edge) => ({
@@ -38,6 +45,36 @@ export default function GraphCanvas() {
     ],
     [nodes, edges],
   )
+
+  const graphSignature = useMemo(
+    () => `${layoutKey}:${nodes.map((node) => node.id).join('|')}::${edges.map((edge) => edge.id).join('|')}`,
+    [layoutKey, nodes, edges],
+  )
+  const layoutConfig = cytoscapeLayouts[layoutKey] ?? cytoscapeLayouts.default
+
+  useEffect(() => {
+    if (!nodes.length) {
+      return
+    }
+    const selectedNodeStillVisible = selectedNodeId ? nodes.some((node) => node.id === selectedNodeId) : false
+    if (!selectedNodeStillVisible) {
+      const nextNode =
+        nodes.find((node) => node.domain === 'meta' && ['Country', 'CountryProfile', 'AdminArea', 'AdminSubdivision'].includes(node.entityType)) ??
+        nodes.find((node) => node.domain !== 'meta') ??
+        nodes[0]
+      setSelectedNodeId(nextNode?.id)
+    }
+  }, [nodes, selectedNodeId, setSelectedNodeId])
+
+  useEffect(() => {
+    if (!selectedEdgeId) {
+      return
+    }
+    const selectedEdgeStillVisible = edges.some((edge) => edge.id === selectedEdgeId)
+    if (!selectedEdgeStillVisible) {
+      setSelectedEdgeId(undefined)
+    }
+  }, [edges, selectedEdgeId, setSelectedEdgeId])
 
   if (!hasQuery) {
     return (
@@ -81,15 +118,17 @@ export default function GraphCanvas() {
   return (
     <div className="h-[420px] overflow-hidden rounded-2xl border border-[#1f2a3b] bg-[#0a1220]">
       <CytoscapeComponent
+        key={graphSignature}
         elements={elements}
         style={{ width: '100%', height: '100%' }}
-        layout={cytoscapeLayouts[layoutKey]}
+        layout={layoutConfig}
         stylesheet={cytoscapeStyles}
         minZoom={0.2}
         maxZoom={2}
         cy={(cy: Core) => {
           cy.on('tap', 'node', (event: EventObject) => {
             setSelectedNodeId(event.target.data('id'))
+            setSelectedEdgeId(undefined)
           })
           cy.on('tap', 'edge', (event: EventObject) => {
             setSelectedEdgeId(event.target.data('id'))
@@ -98,6 +137,13 @@ export default function GraphCanvas() {
             if (event.target === cy) {
               setSelectedEdgeId(undefined)
             }
+          })
+          cy.ready(() => {
+            cy.fit(undefined, 48)
+            cy.center()
+          })
+          cy.on('layoutstop', () => {
+            cy.fit(undefined, 48)
           })
         }}
       />

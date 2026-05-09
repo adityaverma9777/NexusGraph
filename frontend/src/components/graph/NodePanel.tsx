@@ -19,14 +19,22 @@ const PROPERTY_LABELS: Record<string, string> = {
 
 export default function NodePanel() {
   const selectedNodeId = useGraphStore((state) => state.selectedNodeId)
+  const selectedEdgeId = useGraphStore((state) => state.selectedEdgeId)
   const setCascadeType = useGraphStore((state) => state.setCascadeType)
+  const setSearchQuery = useGraphStore((state) => state.setSearchQuery)
+  const clearPath = useGraphStore((state) => state.clearPath)
   const { nodes, edges, isLoading } = useGraph()
   const navigate = useNavigate()
   const [expanded, setExpanded] = useState(false)
 
-  const node = nodes.find((item) => item.id === selectedNodeId)
-  const outboundEdges = edges.filter((e) => e.source === selectedNodeId)
-  const inboundEdges = edges.filter((e) => e.target === selectedNodeId)
+  const node = nodes.find((item) => item.id === selectedNodeId) ?? nodes.find((item) => item.domain !== 'meta') ?? nodes[0]
+  const activeNodeId = node?.id
+  const selectedEdge = edges.find((item) => item.id === selectedEdgeId)
+  const cascadeNode = selectedEdge
+    ? nodes.find((item) => item.id === selectedEdge.source) ?? nodes.find((item) => item.id === selectedEdge.target)
+    : node
+  const outboundEdges = edges.filter((edge) => edge.source === activeNodeId)
+  const inboundEdges = edges.filter((edge) => edge.target === activeNodeId)
   const nodeColor = node ? domainColors[node.domain as Domain] : '#4db8ff'
 
   if (isLoading && !node) {
@@ -43,8 +51,10 @@ export default function NodePanel() {
   }
 
   return (
-    <div className="rounded-2xl border bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
-      style={{ borderColor: nodeColor + '44' }}>
+    <div
+      className="rounded-2xl border bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
+      style={{ borderColor: nodeColor + '44' }}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div
@@ -65,7 +75,10 @@ export default function NodePanel() {
         </div>
         <div>
           <span className="text-xs text-[#5a7090]">Severity</span>
-          <p className="mt-0.5 text-xs font-bold" style={{ color: node.severity > 7 ? '#ef233c' : node.severity > 5 ? '#f4a261' : '#52b788' }}>
+          <p
+            className="mt-0.5 text-xs font-bold"
+            style={{ color: node.severity > 7 ? '#ef233c' : node.severity > 5 ? '#f4a261' : '#52b788' }}
+          >
             {node.severity.toFixed(1)} / 10
           </p>
         </div>
@@ -81,10 +94,10 @@ export default function NodePanel() {
       {node.properties && Object.keys(node.properties).length > 0 && (
         <div className="mt-4 space-y-1.5 rounded-lg border border-[#1a2a3d] bg-[#0a1422] p-3">
           <p className="text-[10px] uppercase tracking-[0.2em] text-[#5a7090]">Properties</p>
-          {Object.entries(node.properties).map(([key, val]) => (
+          {Object.entries(node.properties).map(([key, value]) => (
             <div key={key} className="flex items-center justify-between text-xs">
               <span className="text-[#7090b0]">{PROPERTY_LABELS[key] ?? key}</span>
-              <span className="font-semibold text-[#eaf2ff]">{String(val)}</span>
+              <span className="font-semibold text-[#eaf2ff]">{String(value)}</span>
             </div>
           ))}
         </div>
@@ -93,32 +106,33 @@ export default function NodePanel() {
         <div className="mt-4">
           <button
             type="button"
-            onClick={() => setExpanded((p) => !p)}
+            onClick={() => setExpanded((previous) => !previous)}
             className="text-xs text-[#7f93b1] hover:text-[#c6d7ec]"
           >
-            {expanded ? '▾' : '▸'} {outboundEdges.length + inboundEdges.length} relationship{outboundEdges.length + inboundEdges.length !== 1 ? 's' : ''}
+            {expanded ? 'v' : '>'} {outboundEdges.length + inboundEdges.length} relationship
+            {outboundEdges.length + inboundEdges.length !== 1 ? 's' : ''}
           </button>
           {expanded && (
             <ul className="mt-2 space-y-1.5">
-              {outboundEdges.map((e) => {
-                const peer = nodes.find((n) => n.id === e.target)
+              {outboundEdges.map((edge) => {
+                const peer = nodes.find((item) => item.id === edge.target)
                 return (
-                  <li key={e.id} className="flex items-center gap-2 text-xs">
-                    <span className="text-[#4db8ff]">→</span>
-                    <span className="font-mono text-[#c77dff]">{e.relationship}</span>
-                    <span className="text-[#c6d7ec]">{peer?.label ?? e.target}</span>
-                    <span className="ml-auto text-[#5a7090]">{(e.confidence * 100).toFixed(0)}%</span>
+                  <li key={edge.id} className="flex items-center gap-2 text-xs">
+                    <span className="text-[#4db8ff]">-&gt;</span>
+                    <span className="font-mono text-[#c77dff]">{edge.relationship}</span>
+                    <span className="text-[#c6d7ec]">{peer?.label ?? edge.target}</span>
+                    <span className="ml-auto text-[#5a7090]">{(edge.confidence * 100).toFixed(0)}%</span>
                   </li>
                 )
               })}
-              {inboundEdges.map((e) => {
-                const peer = nodes.find((n) => n.id === e.source)
+              {inboundEdges.map((edge) => {
+                const peer = nodes.find((item) => item.id === edge.source)
                 return (
-                  <li key={e.id} className="flex items-center gap-2 text-xs">
-                    <span className="text-[#52b788]">←</span>
-                    <span className="font-mono text-[#f4a261]">{e.relationship}</span>
-                    <span className="text-[#c6d7ec]">{peer?.label ?? e.source}</span>
-                    <span className="ml-auto text-[#5a7090]">{(e.confidence * 100).toFixed(0)}%</span>
+                  <li key={edge.id} className="flex items-center gap-2 text-xs">
+                    <span className="text-[#52b788]">&lt;-</span>
+                    <span className="font-mono text-[#f4a261]">{edge.relationship}</span>
+                    <span className="text-[#c6d7ec]">{peer?.label ?? edge.source}</span>
+                    <span className="ml-auto text-[#5a7090]">{(edge.confidence * 100).toFixed(0)}%</span>
                   </li>
                 )
               })}
@@ -130,7 +144,11 @@ export default function NodePanel() {
         <ConfidenceBadge value={outboundEdges[0]?.confidence ?? 0.6} />
         <button
           type="button"
-          onClick={() => setCascadeType(node.entityType)}
+          onClick={() => {
+            clearPath()
+            setSearchQuery('')
+            setCascadeType(cascadeNode?.entityType ?? node.entityType)
+          }}
           className="rounded-full border border-[#2b3a52] bg-[#0f1b2d] px-3 py-1 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
         >
           Run cascade
@@ -140,7 +158,7 @@ export default function NodePanel() {
           onClick={() => navigate('/briefing')}
           className="rounded-full border border-[#2f4564] bg-[#193254] px-3 py-1 text-xs font-semibold text-[#eaf2ff] hover:bg-[#23456f]"
         >
-          Generate briefing →
+          {'Generate briefing ->'}
         </button>
       </div>
     </div>

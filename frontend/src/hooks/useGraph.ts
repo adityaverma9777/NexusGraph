@@ -15,10 +15,8 @@ function asRecord(value: unknown): Record<string, unknown> | null {
 
 function toDomain(value: unknown): Domain {
   const candidate = typeof value === 'string' ? value.toLowerCase() : ''
-  if (['climate', 'disease', 'economy', 'ecology', 'population', 'infrastructure'].includes(candidate)) {
-    return candidate as Domain
-  }
-  return 'climate'
+  const valid = ['climate', 'disease', 'economy', 'ecology', 'population', 'infrastructure', 'agriculture', 'social', 'water', 'energy', 'meta']
+  return valid.includes(candidate) ? candidate : 'unknown'
 }
 
 function toNumber(value: unknown, fallback: number): number {
@@ -69,7 +67,7 @@ function toGraphEdge(input: unknown, index: number): GraphEdge | null {
     target,
     relationship: typeof record.relationship === 'string' ? record.relationship : 'RELATES_TO',
     confidence: toNumber(record.confidence, 0.5),
-    lagWeeks: toNumber(record.lagWeeks ?? record.lag_weeks, 0),
+    lagWeeks: toNumber((record.lagWeeks ?? record.lag_weeks) as unknown, 0),
     sourceDataset: typeof record.sourceDataset === 'string' ? record.sourceDataset : typeof record.source_dataset === 'string' ? record.source_dataset : 'Unknown',
     evidenceType: typeof record.evidenceType === 'string' ? record.evidenceType : typeof record.evidence_type === 'string' ? record.evidence_type : 'unknown',
   }
@@ -91,33 +89,52 @@ export function useGraph() {
   const selectedNodeId = useGraphStore((state) => state.selectedNodeId)
   const cascadeType = useGraphStore((state) => state.cascadeType)
   const searchQuery = useGraphStore((state) => state.searchQuery)
+  const pathFromId = useGraphStore((state) => state.pathFromId)
+  const pathToId = useGraphStore((state) => state.pathToId)
+  const minConfidence = useGraphStore((state) => state.minConfidence)
+  const currentDate = useGraphStore((state) => state.currentDate)
 
-  const hasQuery = Boolean(selectedNodeId || cascadeType || searchQuery)
+  const hasPathQuery = Boolean(pathFromId && pathToId)
+  const hasQuery = Boolean(hasPathQuery || selectedNodeId || cascadeType || searchQuery)
 
   const query = useQuery({
-    queryKey: ['graph', selectedNodeId, cascadeType, searchQuery],
+    queryKey: ['graph', pathFromId, pathToId, selectedNodeId, cascadeType, searchQuery, minConfidence, currentDate],
     enabled: hasQuery,
     queryFn: async (): Promise<GraphPayload | null> => {
-      if (cascadeType) {
-        const payload = await apiClient(`/api/graph/cascade/${encodeURIComponent(cascadeType)}`)
+      const asOf = `&as_of=${encodeURIComponent(currentDate)}`
+      if (hasPathQuery) {
+        const payload = await apiClient(
+          `/api/graph/path?from_id=${encodeURIComponent(pathFromId)}&to_id=${encodeURIComponent(pathToId)}${asOf}`,
+          { cache: 'no-store' },
+        )
         return normalizeGraphPayload(payload)
       }
-      if (selectedNodeId) {
-        const payload = await apiClient(`/api/graph/expand/${encodeURIComponent(selectedNodeId)}?hops=1`)
+      if (cascadeType) {
+        const payload = await apiClient(`/api/graph/cascade/${encodeURIComponent(cascadeType)}?min_confidence=${minConfidence}${asOf}`, {
+          cache: 'no-store',
+        })
         return normalizeGraphPayload(payload)
       }
       if (searchQuery) {
-        const payload = await apiClient(`/api/search?q=${encodeURIComponent(searchQuery)}&limit=10`)
-        if (Array.isArray(payload)) {
-          const nodes = payload.map((item) => toGraphNode(item)).filter((item): item is GraphNode => Boolean(item))
-          return { nodes, edges: [] }
-        }
+        const payload = await apiClient(
+          `/api/search/graph?q=${encodeURIComponent(searchQuery)}&limit=10&min_confidence=${minConfidence}${asOf}`,
+          { cache: 'no-store' },
+        )
+        return normalizeGraphPayload(payload)
+      }
+      if (selectedNodeId) {
+        const payload = await apiClient(
+          `/api/graph/expand/${encodeURIComponent(selectedNodeId)}?hops=1&min_confidence=${minConfidence}${asOf}`,
+          { cache: 'no-store' },
+        )
         return normalizeGraphPayload(payload)
       }
       return null
     },
     retry: 1,
-    staleTime: 60_000,
+    staleTime: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
   })
 
   return {

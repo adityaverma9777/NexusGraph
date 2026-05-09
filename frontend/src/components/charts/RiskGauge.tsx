@@ -4,13 +4,14 @@ import { useGraphStore } from '../../store/graphStore'
 export default function RiskGauge() {
   const selectedNodeId = useGraphStore((state) => state.selectedNodeId)
   const { nodes } = useGraph()
+  const realNodes = nodes.filter((node) => node.domain !== 'meta' && node.domain !== 'unknown')
 
-  const selectedNode = nodes.find((n) => n.id === selectedNodeId)
+  const selectedNode = realNodes.find((n) => n.id === selectedNodeId)
   const riskLevel = selectedNode
     ? selectedNode.severity
-    : nodes.length
-      ? nodes.reduce((sum, n) => sum + n.severity, 0) / nodes.length
-      : 7.2
+    : realNodes.length
+      ? realNodes.reduce((sum, n) => sum + n.severity, 0) / realNodes.length
+      : 0
 
   const riskColor = riskLevel > 7 ? '#ef233c' : riskLevel > 5 ? '#f4a261' : '#52b788'
   const riskLabel = riskLevel > 7 ? 'High' : riskLevel > 5 ? 'Medium' : 'Low'
@@ -47,8 +48,8 @@ export default function RiskGauge() {
         </div>
       </div>
       <p className="mt-2 text-sm font-semibold" style={{ color: riskColor }}>{riskLabel} Risk</p>
-      {!selectedNode && nodes.length > 0 && (
-        <p className="mt-1 text-[10px] text-[#5a7090]">avg. across {nodes.length} nodes</p>
+      {!selectedNode && realNodes.length > 0 && (
+        <p className="mt-1 text-[10px] text-[#5a7090]">avg. across {realNodes.length} nodes</p>
       )}
     </div>
   )

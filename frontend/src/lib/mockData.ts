@@ -1,10 +1,4 @@
-export type Domain =
-  | 'climate'
-  | 'disease'
-  | 'economy'
-  | 'ecology'
-  | 'population'
-  | 'infrastructure'
+export type Domain = string
 
 export type GraphNode = {
   id: string
@@ -184,13 +178,19 @@ export const graphEdges: GraphEdge[] = [
   },
 ]
 
-export const domainColors: Record<Domain, string> = {
+export const domainColors: Record<string, string> = {
   climate: '#00b4d8',
   disease: '#ef233c',
   economy: '#f4a261',
   ecology: '#52b788',
   population: '#a8dadc',
   infrastructure: '#c77dff',
+  agriculture: '#d4a017',
+  social: '#74c0fc',
+  water: '#8ecae6',
+  energy: '#ffb703',
+  meta: '#6c7a92',
+  unknown: '#91a5c2',
 }
 
 export const timelineSeries = [
@@ -247,16 +247,22 @@ export const briefingData = {
       risk: 'Escalating dengue hospitalizations',
       domain: 'disease',
       probability: 'HIGH',
+      confidenceScore: 82,
+      impactScore: 74,
       timeframe: '2-4 weeks',
+      pathway: ['Rainfall anomaly expands breeding sites', 'Vector density rises in urban wards', 'Transmission accelerates', 'Admissions increase in district hospitals'],
     },
     {
       risk: 'Healthcare capacity strain in urban wards',
       domain: 'infrastructure',
       probability: 'MEDIUM',
+      confidenceScore: 68,
+      impactScore: 61,
       timeframe: '1-2 months',
+      pathway: ['Case load increases', 'Bed occupancy rises', 'Staffing pressure compounds', 'Non-emergency care slows'],
     },
   ],
-  confidenceAssessment: 'MEDIUM — driven by consistent rainfall anomaly metrics and IDSP trend lines.',
+  confidenceAssessment: 'MEDIUM - driven by consistent rainfall anomaly metrics and IDSP trend lines.',
   dataGaps: ['Local vector index surveys for inland districts', 'Hospital bed utilization by ward'],
   recommendedMonitoring: ['Weekly dengue case ratio', 'Larval index in coastal wards'],
 }

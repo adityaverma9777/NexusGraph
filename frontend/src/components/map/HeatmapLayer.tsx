@@ -5,7 +5,6 @@ import L from 'leaflet'
 import 'leaflet.heat'
 import { apiClient } from '../../lib/api'
 import { useMapStore } from '../../store/mapStore'
-import { heatmapData } from '../../lib/mockData'
 import { MAP_LAYERS } from '../../lib/leafletConfig'
 import { useGraphStore } from '../../store/graphStore'
 
@@ -118,7 +117,7 @@ export default function HeatmapLayer() {
 
     // Add active heatmap layers
     activeLayers.forEach((layerId) => {
-      const data = query.data?.[layerId] ?? heatmapData[layerId]
+      const data = query.data?.[layerId]
       const layerConfig = MAP_LAYERS[layerId as keyof typeof MAP_LAYERS]
 
       if (data && layerConfig) {

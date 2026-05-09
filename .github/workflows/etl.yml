@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       domain:
-        description: 'Domain to ingest (all, climate, disease, economy, ecology, population)'
+        description: 'Domain to ingest (all, climate, disease, economy, agriculture, ecology, infrastructure, population, social)'
         required: false
         default: 'all'
 
@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        domain: [climate, disease, economy, ecology, population]
+        domain: [climate, disease, economy, agriculture, ecology, infrastructure, population, social]
     steps:
       - uses: actions/checkout@v4
 
@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
 
-      - name: Run ingester
+      - name: Run ingester — ${{ matrix.domain }}
         working-directory: backend
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -40,20 +40,26 @@ jobs:
           DATA_GOV_IN_API_KEY: ${{ secrets.DATA_GOV_IN_API_KEY }}
           OPENAQ_API_KEY: ${{ secrets.OPENAQ_API_KEY }}
           NASA_EARTHDATA_TOKEN: ${{ secrets.NASA_EARTHDATA_TOKEN }}
-        run: python etl/runner.py ${{ matrix.domain }}
+          ACLED_API_KEY: ${{ secrets.ACLED_API_KEY }}
+          IUCN_API_TOKEN: ${{ secrets.IUCN_API_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python -m etl.runner ${{ matrix.domain }}
 
   alert-check:
     runs-on: ubuntu-latest
     needs: ingest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
+
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
+
       - name: Run alert rule engine
         working-directory: backend
         env:
@@ -62,4 +68,34 @@ jobs:
           NEO4J_URI: ${{ secrets.NEO4J_URI }}
           NEO4J_USERNAME: ${{ secrets.NEO4J_USERNAME }}
           NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
-        run: python alerts/alert_runner.py
+        run: python -m alerts.alert_runner
+
+  cache-invalidate:
+    runs-on: ubuntu-latest
+    needs: alert-check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Invalidate Redis cache
+        working-directory: backend
+        env:
+          UPSTASH_REDIS_URL: ${{ secrets.UPSTASH_REDIS_URL }}
+          UPSTASH_REDIS_TOKEN: ${{ secrets.UPSTASH_REDIS_TOKEN }}
+        run: |
+          python -c "
+          from db.cache import cache_delete
+          cache_delete('ng:*')
+          cache_delete('node:*')
+          cache_delete('expand:*')
+          cache_delete('cascade:*')
+          print('Cache cleared after ETL run')
+          "

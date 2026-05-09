@@ -1,15 +1,8 @@
 import httpx
 from etl.base import BaseIngester
+from etl.ingesters.common import COUNTRY_COORDS
 from models.graph import ETLNode, ETLEdge
 from graph.edge_rules import run_edge_rules
-
-ORIGIN_COUNTRY_COORDS: dict[str, tuple[float, float]] = {
-    "SYR": (34.802, 38.996), "AFG": (33.939, 67.710), "SOM": (5.152, 46.200),
-    "SSD": (6.877, 31.307), "COD": (-4.038, 21.758), "MMR": (17.163, 95.956),
-    "UKR": (48.379, 31.165), "ETH": (9.145, 40.489), "YEM": (15.552, 48.516),
-    "MOZ": (-18.665, 35.530), "HTI": (18.971, -72.285), "NGA": (9.082, 8.675),
-    "SDN": (12.862, 30.218), "CAF": (6.611, 20.939), "BDI": (-3.373, 29.918),
-}
 
 class UNHCRIngester(BaseIngester):
     domain = "population"
@@ -36,9 +29,9 @@ class UNHCRIngester(BaseIngester):
             refugees = row.get("refugees", 0) or 0
             idps = row.get("idps", 0) or 0
             total = (refugees or 0) + (idps or 0)
-            if total < 1000 or origin not in ORIGIN_COUNTRY_COORDS:
+            if total < 1000 or origin not in COUNTRY_COORDS:
                 continue
-            coords = ORIGIN_COUNTRY_COORDS[origin]
+            coords = COUNTRY_COORDS[origin]
             node_id = f"population_displacement_{origin}_{year}"
             if node_id in seen:
                 continue
@@ -51,6 +44,7 @@ class UNHCRIngester(BaseIngester):
                 label=f"Displacement — {origin} {year}",
                 lat=coords[0],
                 lon=coords[1],
+                country_code=origin,
                 valid_from=f"{year}-01-01",
                 valid_to=f"{year}-12-31",
                 source=self.source_name,

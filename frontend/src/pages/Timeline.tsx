@@ -8,7 +8,7 @@ const SCENARIOS = [
   {
     id: 'monsoon',
     title: 'Indian Monsoon Failure',
-    subtitle: 'Food Prices → Migration',
+    subtitle: 'Food Prices -> Migration',
     description:
       'Deficit monsoon rainfall drives crop yield collapse, triggering food price spikes in Punjab and Bihar, cascading into rural-to-urban migration waves.',
     startDate: '2023-06',
@@ -19,7 +19,7 @@ const SCENARIOS = [
   {
     id: 'amazon',
     title: 'Amazon Deforestation',
-    subtitle: 'Disease Risk → Healthcare Stress',
+    subtitle: 'Disease Risk -> Healthcare Stress',
     description:
       'Accelerating forest loss in the Amazon basin drives wildlife displacement, elevating zoonotic spillover risk and straining regional healthcare capacity.',
     startDate: '2023-01',
@@ -30,7 +30,7 @@ const SCENARIOS = [
   {
     id: 'ukraine',
     title: 'Ukraine Conflict',
-    subtitle: 'Global Food Price → Developing World Hunger',
+    subtitle: 'Global Food Price -> Developing World Hunger',
     description:
       'Conflict-driven disruption to wheat and sunflower exports drives global food price index surges, hitting low-HDI nations with compounding hunger risks.',
     startDate: '2022-02',
@@ -51,10 +51,10 @@ const SCENARIOS = [
   },
   {
     id: 'elnino',
-    title: 'El Niño Signal',
-    subtitle: 'Drought → Conflict → Displacement Chain',
+    title: 'El Nino Signal',
+    subtitle: 'Drought -> Conflict -> Displacement Chain',
     description:
-      'El Niño-driven drought weakens monsoons, collapses crop yields in the Horn of Africa and Southeast Asia, triggering conflict and mass displacement.',
+      'El Nino-driven drought weakens monsoons, collapses crop yields in the Horn of Africa and Southeast Asia, triggering conflict and mass displacement.',
     startDate: '2023-09',
     cascadeType: 'OceanTemperatureAnomaly',
     domain: 'climate',
@@ -66,16 +66,24 @@ export default function Timeline() {
   const [activeScenario, setActiveScenario] = useState<string | null>(null)
   const setCurrentDate = useGraphStore((state) => state.setCurrentDate)
   const setCascadeType = useGraphStore((state) => state.setCascadeType)
+  const setSearchQuery = useGraphStore((state) => state.setSearchQuery)
+  const setSelectedNodeId = useGraphStore((state) => state.setSelectedNodeId)
+  const clearPath = useGraphStore((state) => state.clearPath)
 
   function loadScenario(scenario: (typeof SCENARIOS)[0]) {
+    clearPath()
+    setSelectedNodeId(undefined)
     setActiveScenario(scenario.id)
     setCurrentDate(scenario.startDate)
     setCascadeType(scenario.cascadeType)
+    setSearchQuery('')
   }
 
   function clearScenario() {
+    clearPath()
     setActiveScenario(null)
-    setCascadeType(undefined)
+    setCascadeType('')
+    setSearchQuery('')
   }
 
   return (
@@ -116,15 +124,12 @@ export default function Timeline() {
               }`}
               style={activeScenario === scenario.id ? { borderColor: scenario.color } : undefined}
             >
-              <div
-                className="mb-3 h-1 w-10 rounded-full"
-                style={{ backgroundColor: scenario.color }}
-              />
+              <div className="mb-3 h-1 w-10 rounded-full" style={{ backgroundColor: scenario.color }} />
               <p className="text-xs font-semibold text-[#dce8f9]">{scenario.title}</p>
               <p className="mt-1 text-[10px] uppercase tracking-[0.12em]" style={{ color: scenario.color }}>
                 {scenario.subtitle}
               </p>
-              <p className="mt-2 text-[11px] text-[#7090b0] leading-relaxed">{scenario.description}</p>
+              <p className="mt-2 text-[11px] leading-relaxed text-[#7090b0]">{scenario.description}</p>
               <p className="mt-3 text-[10px] text-[#5a7090]">From {scenario.startDate}</p>
             </button>
           ))}

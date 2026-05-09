@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { apiClient } from '../lib/api'
-import { datasetRegistry } from '../lib/mockData'
 import { TableSkeleton } from '../components/ui/Skeleton'
 
 type DatasetRow = {
@@ -35,7 +34,12 @@ function toDatasetRow(input: unknown): DatasetRow | null {
   return {
     name,
     domain: typeof record.domain === 'string' ? record.domain : 'Unknown',
-    source: typeof record.source === 'string' ? record.source : 'Unknown',
+    source:
+      typeof record.source === 'string'
+        ? record.source
+        : typeof record.source_url === 'string'
+          ? record.source_url
+          : 'Unknown',
     update:
       typeof record.update === 'string'
         ? record.update
@@ -88,7 +92,7 @@ export default function DataRegistry() {
     staleTime: 5 * 60_000,
   })
 
-  const allDatasets = query.data?.length ? query.data : datasetRegistry
+  const allDatasets = query.data ?? []
   const domains = useMemo(
     () => ['All', ...Array.from(new Set(allDatasets.map((d) => d.domain))).sort()],
     [allDatasets],
@@ -188,4 +192,3 @@ export default function DataRegistry() {
     </div>
   )
 }
-

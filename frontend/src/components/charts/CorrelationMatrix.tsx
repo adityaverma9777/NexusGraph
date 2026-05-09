@@ -1,6 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { useGraph } from '../../hooks/useGraph'
-import { graphEdges } from '../../lib/mockData'
 
 const RELATIONSHIP_COLORS: Record<string, string> = {
   DRIVES: '#4db8ff',
@@ -14,22 +13,21 @@ const RELATIONSHIP_COLORS: Record<string, string> = {
 
 export default function CorrelationMatrix() {
   const { edges } = useGraph()
-  const activeEdges = edges.length ? edges : graphEdges
 
-  const data = activeEdges
+  const data = edges
     .map((edge) => ({
       name: edge.relationship,
       confidence: Number(edge.confidence.toFixed(2)),
       label: `${edge.relationship}`,
       lagWeeks: edge.lagWeeks,
     }))
-    .sort((a, b) => b.confidence - a.confidence)
+    .sort((left, right) => right.confidence - left.confidence)
     .slice(0, 8)
 
   return (
     <div className="rounded-xl border border-[#1f2a3b] bg-[#0d1828] p-4">
       <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#7f93b1]">
-        Edge Confidence · {activeEdges.length} active relationships
+        Edge Confidence | {edges.length} active relationships
       </p>
       <ResponsiveContainer width="100%" height={160}>
         <BarChart data={data} layout="vertical" margin={{ left: 0, right: 8 }}>
@@ -44,11 +42,14 @@ export default function CorrelationMatrix() {
           />
           <Tooltip
             contentStyle={{ backgroundColor: '#0d1828', border: '1px solid #2d3d54', color: '#e6edf7', fontSize: 12 }}
-            formatter={(val: number) => [`${(val * 100).toFixed(0)}%`, 'Confidence']}
+            formatter={(value) => {
+              const numeric = typeof value === 'number' ? value : Number(value ?? 0)
+              return [`${(numeric * 100).toFixed(0)}%`, 'Confidence']
+            }}
           />
           <Bar dataKey="confidence" radius={[0, 3, 3, 0]}>
-            {data.map((entry) => (
-              <Cell key={entry.name} fill={RELATIONSHIP_COLORS[entry.name] ?? '#6da4ff'} />
+            {data.map((entry, index) => (
+              <Cell key={`${entry.name}-${entry.lagWeeks}-${index}`} fill={RELATIONSHIP_COLORS[entry.name] ?? '#6da4ff'} />
             ))}
           </Bar>
         </BarChart>

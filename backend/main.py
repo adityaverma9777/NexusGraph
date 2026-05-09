@@ -9,6 +9,23 @@ from graph.neo4j_client import neo4j_client
 
 settings = get_settings()
 
+LOCAL_CORS_ORIGINS = {
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174",
+}
+
+if settings.sentry_dsn:
+    import sentry_sdk
+    sentry_sdk.init(
+        dsn=settings.sentry_dsn,
+        environment=settings.environment,
+        traces_sample_rate=0.1,
+    )
+    logger.info("Sentry error tracking enabled")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Starting NexusGraph API")
@@ -25,9 +42,11 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+allowed_origins = sorted({*(settings.cors_origins or []), *LOCAL_CORS_ORIGINS})
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

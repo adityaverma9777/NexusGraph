@@ -1,53 +1,51 @@
 import { useState } from 'react'
-import { apiClient } from '../../lib/api'
 import { useGraphStore } from '../../store/graphStore'
-
-function asRecord(value: unknown): Record<string, unknown> | null {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
-  return value as Record<string, unknown>
-}
 
 export default function GraphControls() {
   const layout = useGraphStore((state) => state.layout)
+  const minConfidence = useGraphStore((state) => state.minConfidence)
   const setLayout = useGraphStore((state) => state.setLayout)
+  const setMinConfidence = useGraphStore((state) => state.setMinConfidence)
   const setSelectedNodeId = useGraphStore((state) => state.setSelectedNodeId)
+  const setSelectedEdgeId = useGraphStore((state) => state.setSelectedEdgeId)
   const setCascadeType = useGraphStore((state) => state.setCascadeType)
   const setSearchQuery = useGraphStore((state) => state.setSearchQuery)
+  const setPathIds = useGraphStore((state) => state.setPathIds)
+  const clearPath = useGraphStore((state) => state.clearPath)
 
-  const [minConfidence, setMinConfidence] = useState(0.4)
   const [cascadeInput, setCascadeInput] = useState('')
   const [pathFrom, setPathFrom] = useState('')
   const [pathTo, setPathTo] = useState('')
 
   function runCascade() {
     if (!cascadeInput.trim()) return
+    clearPath()
+    setSelectedNodeId(undefined)
+    setSelectedEdgeId(undefined)
     setCascadeType(cascadeInput.trim())
-    setSearchQuery(cascadeInput.trim())
+    setSearchQuery('')
   }
 
   function clearAll() {
     setCascadeType('')
     setSearchQuery('')
     setSelectedNodeId(undefined)
+    setSelectedEdgeId(undefined)
+    clearPath()
     setCascadeInput('')
+    setPathFrom('')
+    setPathTo('')
   }
 
-  async function findPath() {
+  function findPath() {
     const from = pathFrom.trim()
     const to = pathTo.trim()
     if (!from || !to) return
-    try {
-      const payload = await apiClient(`/api/graph/path?from_id=${encodeURIComponent(from)}&to_id=${encodeURIComponent(to)}`)
-      const top = asRecord(payload)
-      if (!top) { setSelectedNodeId(from); return }
-      const nested = asRecord(top.data)
-      const source = (Array.isArray(top.nodes) ? top.nodes : undefined) ?? (nested && Array.isArray(nested.nodes) ? nested.nodes : undefined)
-      const firstNodeRecord = asRecord(source?.[0])
-      const firstId = firstNodeRecord && typeof firstNodeRecord.id === 'string' ? firstNodeRecord.id : from
-      setSelectedNodeId(firstId)
-    } catch {
-      setSelectedNodeId(from)
-    }
+    setCascadeType('')
+    setSearchQuery('')
+    setPathIds(from, to)
+    setSelectedEdgeId(undefined)
+    setSelectedNodeId(from)
   }
 
   return (
@@ -84,12 +82,14 @@ export default function GraphControls() {
           onChange={(e) => setCascadeInput(e.target.value)}
         />
         <button
+          type="button"
           onClick={runCascade}
           className="rounded bg-[#244a74] px-3 py-1 text-xs font-medium text-[#ebf5ff] hover:bg-[#2d5d92]"
         >
           Run cascade
         </button>
         <button
+          type="button"
           onClick={clearAll}
           className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-3 py-1 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
         >
@@ -110,6 +110,7 @@ export default function GraphControls() {
           onChange={(e) => setPathTo(e.target.value)}
         />
         <button
+          type="button"
           onClick={findPath}
           className="rounded bg-[#244a74] px-3 py-1 text-xs font-medium text-[#ebf5ff] hover:bg-[#2d5d92]"
         >

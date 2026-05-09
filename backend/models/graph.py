@@ -1,12 +1,12 @@
-from pydantic import BaseModel, Field
 from typing import Optional
+from pydantic import BaseModel, Field
 
 class GraphNode(BaseModel):
     id: str
     domain: str
     entity_type: str = Field(alias="entityType", default="")
     label: str
-    properties: dict = {}
+    properties: dict = Field(default_factory=dict)
     lat: Optional[float] = None
     lon: Optional[float] = None
     valid_from: Optional[str] = Field(alias="validFrom", default=None)
@@ -37,9 +37,11 @@ class ETLNode(BaseModel):
     domain: str
     entity_type: str
     label: str
-    properties: dict = {}
+    properties: dict = Field(default_factory=dict)
     lat: Optional[float] = None
     lon: Optional[float] = None
+    country_code: Optional[str] = None
+    admin1_code: Optional[str] = None
     valid_from: Optional[str] = None
     valid_to: Optional[str] = None
     source: str = ""

@@ -56,6 +56,20 @@ function normalizeMapLayers(payload: unknown): MapLayerDefinition[] | null {
     return null
   }
 
+  if (Array.isArray(top.layers)) {
+    const layers = top.layers
+      .map((item) => {
+        const record = asRecord(item)
+        const id = record && typeof record.id === 'string' ? record.id : undefined
+        if (!id) {
+          return null
+        }
+        return toLayerDefinition(id, item)
+      })
+      .filter((item): item is MapLayerDefinition => Boolean(item))
+    return layers.length ? layers : null
+  }
+
   const nested = asRecord(top.data)
   const objectSource =
     (asRecord(top.layers) ?? asRecord(top.items) ?? asRecord(nested?.layers) ?? asRecord(nested?.items))

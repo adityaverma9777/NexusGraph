@@ -29,8 +29,10 @@ export default function ConceptSearch() {
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const setSelectedNodeId = useGraphStore((state) => state.setSelectedNodeId)
+  const setSelectedEdgeId = useGraphStore((state) => state.setSelectedEdgeId)
   const setSearchQuery = useGraphStore((state) => state.setSearchQuery)
   const setCascadeType = useGraphStore((state) => state.setCascadeType)
+  const clearPath = useGraphStore((state) => state.clearPath)
 
   const { data: results = [] } = useQuery<GraphNode[]>({
     queryKey: ['search', input],
@@ -43,8 +45,8 @@ export default function ConceptSearch() {
   })
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setOpen(false)
       }
     }
@@ -53,6 +55,9 @@ export default function ConceptSearch() {
   }, [])
 
   function handleSelectNode(node: GraphNode) {
+    clearPath()
+    setCascadeType('')
+    setSelectedEdgeId(undefined)
     setSelectedNodeId(node.id)
     setSearchQuery('')
     setInput(node.label)
@@ -60,15 +65,22 @@ export default function ConceptSearch() {
   }
 
   function handleQuickConcept(concept: { query: string; label: string }) {
+    clearPath()
+    setSelectedEdgeId(undefined)
+    setSelectedNodeId(undefined)
     setCascadeType(concept.query)
-    setSearchQuery(concept.query)
+    setSearchQuery('')
     setInput(concept.label)
     setOpen(false)
   }
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
     if (input.trim().length >= 2) {
+      clearPath()
+      setCascadeType('')
+      setSelectedEdgeId(undefined)
+      setSelectedNodeId(undefined)
       setSearchQuery(input.trim())
       setOpen(false)
     }
@@ -87,16 +99,19 @@ export default function ConceptSearch() {
           id="concept-search-input"
           type="text"
           value={input}
-          onChange={(e) => { setInput(e.target.value); setOpen(true) }}
+          onChange={(event) => {
+            setInput(event.target.value)
+            setOpen(true)
+          }}
           onFocus={() => setOpen(true)}
-          placeholder="Search any concept — dengue, rainfall, displacement, conflict..."
+          placeholder="Search any concept - dengue, rainfall, displacement, conflict..."
           className="w-full rounded-xl border border-[#1f2a3b] bg-[#0f1b2d] py-3 pl-11 pr-24 text-sm text-[#e6edf7] placeholder:text-[#4a6a8a] focus:border-[#4db8ff] focus:outline-none focus:ring-1 focus:ring-[#4db8ff]/30"
         />
         <button
           type="submit"
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-[#193254] px-4 py-1.5 text-xs font-semibold text-[#eaf2ff] hover:bg-[#22426a] transition-colors"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-[#193254] px-4 py-1.5 text-xs font-semibold text-[#eaf2ff] transition-colors hover:bg-[#22426a]"
         >
-          Explore →
+          {'Explore ->'}
         </button>
       </form>
       {open && (
@@ -137,7 +152,7 @@ export default function ConceptSearch() {
                     <div className="min-w-0">
                       <p className="truncate text-sm text-[#dce8f9]">{node.label}</p>
                       <p className="text-[10px] uppercase tracking-[0.1em] text-[#5a7090]">
-                        {node.entityType} · {node.domain}
+                        {node.entityType} | {node.domain}
                       </p>
                     </div>
                   </button>
@@ -146,7 +161,7 @@ export default function ConceptSearch() {
             </ul>
           ) : (
             <div className="px-4 py-3 text-sm text-[#5a7090]">
-              No results for "{input}" — try a different concept
+              No results for "{input}" - try a different concept
             </div>
           )}
         </div>
