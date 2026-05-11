@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     groq_api_key: str = ""
     groq_model: str = "llama-3.1-8b-instant"
     hf_token: str = ""
-    hf_model: str = "mistralai/Mistral-7B-Instruct-v0.3"
+    hf_model: str = "Qwen/Qwen2.5-72B-Instruct"
     data_gov_in_api_key: str = ""
     openaq_api_key: str = ""
     nasa_earthdata_token: str = ""

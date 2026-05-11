@@ -108,29 +108,30 @@ def _build_metrics_context(node: dict) -> list[dict]:
 
 async def _call_hf(prompt: str, settings) -> str:
     import httpx
-    full_prompt = f"<s>[INST] {SYSTEM_PROMPT}\n\n{prompt} [/INST]"
-    url = f"https://api-inference.huggingface.co/models/{settings.hf_model}"
-    headers = {"Authorization": f"Bearer {settings.hf_token}"}
+    url = f"https://api-inference.huggingface.co/models/{settings.hf_model}/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {settings.hf_token}",
+        "Content-Type": "application/json"
+    }
     payload = {
-        "inputs": full_prompt,
-        "parameters": {
-            "max_new_tokens": 1024,
-            "temperature": 0.3,
-            "return_full_text": False,
-        },
+        "model": settings.hf_model,
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": prompt}
+        ],
+        "max_tokens": 1024,
+        "temperature": 0.3
     }
     async with httpx.AsyncClient(timeout=60) as client:
         resp = await client.post(url, headers=headers, json=payload)
         resp.raise_for_status()
         data = resp.json()
-    if isinstance(data, list):
-        text = data[0].get("generated_text", "")
-    else:
-        text = data.get("generated_text", "")
+    
+    text = data.get("choices", [{}])[0].get("message", {}).get("content", "")
     start = text.find("{")
     end = text.rfind("}") + 1
     if start == -1 or end == 0:
-        raise ValueError("No JSON object found in HF response")
+        raise ValueError(f"No JSON object found in HF response: {text[:100]}...")
     return text[start:end]
 
 async def _call_groq(prompt: str, settings) -> str:

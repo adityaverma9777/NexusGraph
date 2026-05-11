@@ -519,19 +519,26 @@ async def search_graph(q: str, domain: str | None = None, limit: int = 12, min_c
             if settings.hf_token:
                 try:
                     import httpx
-                    full_prompt = f"<s>[INST] You are a fallback search assistant. Output ONLY valid JSON.\n\n{prompt} [/INST]"
-                    url = f"https://api-inference.huggingface.co/models/{settings.hf_model}"
-                    headers = {"Authorization": f"Bearer {settings.hf_token}"}
+                    url = f"https://api-inference.huggingface.co/models/{settings.hf_model}/v1/chat/completions"
+                    headers = {
+                        "Authorization": f"Bearer {settings.hf_token}",
+                        "Content-Type": "application/json"
+                    }
                     payload = {
-                        "inputs": full_prompt,
-                        "parameters": {"max_new_tokens": 200, "temperature": 0.3, "return_full_text": False},
+                        "model": settings.hf_model,
+                        "messages": [
+                            {"role": "system", "content": "You are a fallback search assistant. Output ONLY valid JSON."},
+                            {"role": "user", "content": prompt}
+                        ],
+                        "max_tokens": 200,
+                        "temperature": 0.3
                     }
                     async with httpx.AsyncClient(timeout=30) as hf_client:
                         resp = await hf_client.post(url, headers=headers, json=payload)
                         resp.raise_for_status()
                         data = resp.json()
                     
-                    text = data[0].get("generated_text", "") if isinstance(data, list) else data.get("generated_text", "")
+                    text = data.get("choices", [{}])[0].get("message", {}).get("content", "")
                     start = text.find("{")
                     end = text.rfind("}") + 1
                     if start != -1 and end > 0:
