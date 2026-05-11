@@ -48,3 +48,10 @@ frontend/dist-ssr/
 !nexusgraph.md
 !nexusgraph_plan (1).md
 !nexusgraph_audit.md
+
+# Kaggle dataset documentation and raw downloads
+kaggle_datasets_strategy.md
+COMPLETE_KAGGLE_DATASETS_DOWNLOAD.md
+data/
+backend/etl/
+kaggle.json
