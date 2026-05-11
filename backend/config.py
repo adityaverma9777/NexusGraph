@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     full_ingest_mode: bool = True
     full_ingest_node_limit: int = 250000
     full_ingest_edge_limit: int = 10000000
-    cors_origins: list[str] = ["http://localhost:5173", "http://localhost:5174", "https://nexusgraph.vercel.app"]
+    cors_origins: list[str] = ["http://localhost:5173", "http://localhost:5174", "https://nexusgraph.vercel.app", "https://nexusgraph-adityaverma9777.vercel.app"]
 
     @property
     def get_cors_origins(self) -> list[str]:
