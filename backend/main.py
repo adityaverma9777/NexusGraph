@@ -90,6 +90,18 @@ app.include_router(alerts_router.router, prefix="/api/alerts", tags=["alerts"])
 async def health():
     return {"status": "ok", "version": "1.0.0"}
 
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    import traceback
+    error_trace = traceback.format_exc()
+    logger.error(f"GLOBAL ERROR: {exc}\n{error_trace}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal Server Error", "type": str(type(exc).__name__)},
+    )
+
+from fastapi.responses import JSONResponse
+
 @app.get("/api/datasets/registry")
 async def datasets_registry():
     from db.supabase_client import get_supabase
