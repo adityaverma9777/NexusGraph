@@ -97,7 +97,7 @@ export default function Home() {
       </section>
       {analysisEntityId && (
         <ErrorBoundary fallback="Intelligence briefing temporarily unavailable. Try selecting a different node.">
-          <section className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <section className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Graph Analysis</p>
@@ -116,12 +116,12 @@ export default function Home() {
         </ErrorBoundary>
       )}
       <section className="grid gap-6 lg:grid-cols-[1.25fr_1fr]">
-        <div className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <div className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
           <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Temporal Analytics</p>
           <TimeSeriesChart />
           <CorrelationMatrix />
         </div>
-        <div className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <div className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
           <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Domain Risk Profile</p>
           <DomainRadar />
         </div>
