@@ -514,7 +514,7 @@ async def search_graph(q: str, domain: str | None = None, limit: int = 12, min_c
             settings = get_settings()
             
             content = None
-            prompt = f"The user searched for '{q}' in our intelligence graph but found no results. Suggest up to 5 alternative related single-word search terms (e.g. broader concepts, synonyms, or related domains). Output ONLY a valid JSON object with a single key 'concepts' containing the array of strings."
+            prompt = f"The user searched for '{q}' but found no results. Your goal is to extract the absolute core, single-word subject of their search to retry the database. For example, if they search 'Dengue Outbreak', the core subject is 'Dengue'. If they search 'Severe Floods', it is 'Flood'. Suggest up to 5 exact, core single-word search terms ordered from the most obvious/closest exact match, down to related concepts. Output ONLY a valid JSON object with a single key 'concepts' containing the array of strings."
             
             if settings.hf_token:
                 try:
