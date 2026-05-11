@@ -1,0 +1,965 @@
+﻿{
+    "datasets":  [
+                     {
+                         "id":  18,
+                         "name":  "USDA NASS",
+                         "domain":  "agriculture",
+                         "source_url":  "https://quickstats.nass.usda.gov/api/",
+                         "update_frequency":  "Weekly",
+                         "last_ingested_at":  "2026-05-09T07:19:44.968355+00:00",
+                         "record_count":  3,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  16,
+                         "name":  "FAOSTAT Crops",
+                         "domain":  "agriculture",
+                         "source_url":  "http://fenixservices.fao.org/faostat/api/v1/en/data/QCL",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-09T07:19:29.370437+00:00",
+                         "record_count":  1080,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  19,
+                         "name":  "JRC MARS Agro",
+                         "domain":  "agriculture",
+                         "source_url":  "https://mars.jrc.ec.europa.eu/mars/About-us/AGRI4CAST/Data-portal",
+                         "update_frequency":  "Monthly",
+                         "last_ingested_at":  "2026-05-09T07:19:37.082393+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  17,
+                         "name":  "NASA MODIS NDVI",
+                         "domain":  "agriculture",
+                         "source_url":  "https://appeears.earthdatacloud.nasa.gov/api/",
+                         "update_frequency":  "16-day",
+                         "last_ingested_at":  "2026-05-09T07:19:43.536088+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  3,
+                         "name":  "IMD Gridded Rainfall",
+                         "domain":  "climate",
+                         "source_url":  "https://imdpune.gov.in/cmpg/Griddata/Rainfall_25_NetCDF.html",
+                         "update_frequency":  "Daily",
+                         "last_ingested_at":  "2026-05-09T07:20:09.170862+00:00",
+                         "record_count":  302,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  4,
+                         "name":  "ERA5 Reanalysis",
+                         "domain":  "climate",
+                         "source_url":  "https://cds.climate.copernicus.eu/",
+                         "update_frequency":  "Monthly",
+                         "last_ingested_at":  "2026-05-09T07:19:53.529761+00:00",
+                         "record_count":  295,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  5,
+                         "name":  "Global Flood Database",
+                         "domain":  "climate",
+                         "source_url":  "https://global-flood-database.cloudtostreet.ai/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-09T07:20:00.584094+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  1,
+                         "name":  "Open-Meteo Historical Weather",
+                         "domain":  "climate",
+                         "source_url":  "https://archive-api.open-meteo.com/v1/archive",
+                         "update_frequency":  "Daily",
+                         "last_ingested_at":  "2026-05-09T07:21:35.822878+00:00",
+                         "record_count":  142,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  2,
+                         "name":  "NOAA GSOD",
+                         "domain":  "climate",
+                         "source_url":  "https://www.ncei.noaa.gov/access/services/data/v1",
+                         "update_frequency":  "Daily",
+                         "last_ingested_at":  "2026-05-09T07:20:16.407696+00:00",
+                         "record_count":  217,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  9,
+                         "name":  "ProMED Alerts",
+                         "domain":  "disease",
+                         "source_url":  "https://promedmail.org/promed-rss/",
+                         "update_frequency":  "Realtime",
+                         "last_ingested_at":  "2026-05-09T07:22:37.12247+00:00",
+                         "record_count":  217,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  8,
+                         "name":  "OWID COVID-19",
+                         "domain":  "disease",
+                         "source_url":  "https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv",
+                         "update_frequency":  "Daily",
+                         "last_ingested_at":  "2026-05-09T07:22:19.804829+00:00",
+                         "record_count":  629,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  7,
+                         "name":  "IDSP India",
+                         "domain":  "disease",
+                         "source_url":  "https://api.data.gov.in/resource/",
+                         "update_frequency":  "Weekly",
+                         "last_ingested_at":  "2026-05-09T07:21:43.958601+00:00",
+                         "record_count":  217,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  10,
+                         "name":  "OpenAQ Air Quality",
+                         "domain":  "disease",
+                         "source_url":  "https://api.openaq.org/v3/",
+                         "update_frequency":  "Hourly",
+                         "last_ingested_at":  "2026-05-09T07:22:30.039761+00:00",
+                         "record_count":  10,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  6,
+                         "name":  "WHO Global Health Observatory",
+                         "domain":  "disease",
+                         "source_url":  "https://ghoapi.azureedge.net/api/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-09T07:24:06.923114+00:00",
+                         "record_count":  3057,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  23,
+                         "name":  "Copernicus Land Cover",
+                         "domain":  "ecology",
+                         "source_url":  "https://land.copernicus.eu/global/products/lc",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-09T07:24:16.031996+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  20,
+                         "name":  "GBIF Biodiversity",
+                         "domain":  "ecology",
+                         "source_url":  "https://api.gbif.org/v1/",
+                         "update_frequency":  "Realtime",
+                         "last_ingested_at":  "2026-05-09T07:24:24.589222+00:00",
+                         "record_count":  58,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  24,
+                         "name":  "NASA FIRMS Fires",
+                         "domain":  "ecology",
+                         "source_url":  "https://firms.modaps.eosdis.nasa.gov/api/",
+                         "update_frequency":  "Realtime",
+                         "last_ingested_at":  "2026-05-09T07:28:09.758303+00:00",
+                         "record_count":  10,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  21,
+                         "name":  "IUCN Red List",
+                         "domain":  "ecology",
+                         "source_url":  "https://apiv3.iucnredlist.org/api/v3/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-09T07:28:02.012563+00:00",
+                         "record_count":  217,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  22,
+                         "name":  "Global Forest Watch",
+                         "domain":  "ecology",
+                         "source_url":  "https://data-api.globalforestwatch.org/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-09T07:27:54.286144+00:00",
+                         "record_count":  217,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  11,
+                         "name":  "World Bank Open Data",
+                         "domain":  "economy",
+                         "source_url":  "https://api.worldbank.org/v2/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:05:57.820406+00:00",
+                         "record_count":  4672,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  12,
+                         "name":  "FAO Food Price Index",
+                         "domain":  "economy",
+                         "source_url":  "http://fenixservices.fao.org/faostat/api/v1/en/data/",
+                         "update_frequency":  "Monthly",
+                         "last_ingested_at":  "2026-05-09T07:28:55.616195+00:00",
+                         "record_count":  0,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  13,
+                         "name":  "IMF WEO",
+                         "domain":  "economy",
+                         "source_url":  "https://www.imf.org/en/Publications/WEO/weo-database/",
+                         "update_frequency":  "Biannual",
+                         "last_ingested_at":  "2026-05-09T07:29:08.764299+00:00",
+                         "record_count":  432,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  14,
+                         "name":  "MoSPI India",
+                         "domain":  "economy",
+                         "source_url":  "https://api.data.gov.in/resource/",
+                         "update_frequency":  "Monthly",
+                         "last_ingested_at":  "2026-05-09T07:29:21.218303+00:00",
+                         "record_count":  434,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  15,
+                         "name":  "UN COMTRADE",
+                         "domain":  "economy",
+                         "source_url":  "https://comtradeapi.un.org/data/v1/get/",
+                         "update_frequency":  "Monthly",
+                         "last_ingested_at":  "2026-05-09T07:29:29.624721+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  36,
+                         "name":  "Global Carbon Project CO2",
+                         "domain":  "energy",
+                         "source_url":  "https://globalcarbonproject.org/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:17:37.617325+00:00",
+                         "record_count":  218,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  28,
+                         "name":  "HDX Humanitarian",
+                         "domain":  "infrastructure",
+                         "source_url":  "https://data.humdata.org/",
+                         "update_frequency":  "Variable",
+                         "last_ingested_at":  "2026-05-08T16:17:08.025445+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  27,
+                         "name":  "ACLED Conflict",
+                         "domain":  "infrastructure",
+                         "source_url":  "https://developer.acleddata.com/",
+                         "update_frequency":  "Weekly",
+                         "last_ingested_at":  "2026-05-08T16:17:00.458503+00:00",
+                         "record_count":  217,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  26,
+                         "name":  "Global Power Plants",
+                         "domain":  "infrastructure",
+                         "source_url":  "https://datasets.wri.org/dataset/globalpowerplantdatabase",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:14:03.209384+00:00",
+                         "record_count":  5000,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  25,
+                         "name":  "OSM Overpass",
+                         "domain":  "infrastructure",
+                         "source_url":  "https://overpass-api.de/api/interpreter",
+                         "update_frequency":  "Realtime",
+                         "last_ingested_at":  "2026-05-08T16:12:10.558213+00:00",
+                         "record_count":  3,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  167,
+                         "name":  "Kaggle Raw Data",
+                         "domain":  "kaggle",
+                         "source_url":  null,
+                         "update_frequency":  "Daily",
+                         "last_ingested_at":  "2026-05-09T10:36:22.344837+00:00",
+                         "record_count":  32000,
+                         "is_active":  true,
+                         "created_at":  "2026-05-09T10:36:21.194045+00:00"
+                     },
+                     {
+                         "id":  79,
+                         "name":  "Global Geography Backbone",
+                         "domain":  "meta",
+                         "source_url":  null,
+                         "update_frequency":  "Daily",
+                         "last_ingested_at":  "2026-05-08T16:00:38.814929+00:00",
+                         "record_count":  217,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T15:31:02.959698+00:00"
+                     },
+                     {
+                         "id":  32,
+                         "name":  "WorldPop Gridded",
+                         "domain":  "population",
+                         "source_url":  "https://hub.worldpop.org/geodata/listing?id=29",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:08:14.383915+00:00",
+                         "record_count":  4,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  30,
+                         "name":  "UN World Population",
+                         "domain":  "population",
+                         "source_url":  "https://population.un.org/dataportal/api/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:08:11.012046+00:00",
+                         "record_count":  430,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  29,
+                         "name":  "UNHCR Displacement Data",
+                         "domain":  "population",
+                         "source_url":  "https://api.unhcr.org/population/v1/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:08:12.335967+00:00",
+                         "record_count":  0,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  31,
+                         "name":  "India Census",
+                         "domain":  "population",
+                         "source_url":  "https://api.data.gov.in/resource/",
+                         "update_frequency":  "Decadal",
+                         "last_ingested_at":  "2026-05-08T16:08:13.463443+00:00",
+                         "record_count":  10,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  39,
+                         "name":  "WHO/UNICEF WASH",
+                         "domain":  "social",
+                         "source_url":  "https://washdata.org/data",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:19:28.605105+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  38,
+                         "name":  "V-Dem Democracy",
+                         "domain":  "social",
+                         "source_url":  "https://www.v-dem.net/data/the-v-dem-dataset/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:19:21.27071+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  37,
+                         "name":  "UNDP HDI",
+                         "domain":  "social",
+                         "source_url":  "https://hdr.undp.org/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:19:12.255461+00:00",
+                         "record_count":  1659,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  34,
+                         "name":  "JRC Surface Water",
+                         "domain":  "water",
+                         "source_url":  "https://global-surface-water.appspot.com/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:17:23.092813+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  33,
+                         "name":  "IGRAC Groundwater",
+                         "domain":  "water",
+                         "source_url":  "https://www.un-igrac.org/",
+                         "update_frequency":  "Annual",
+                         "last_ingested_at":  "2026-05-08T16:17:15.664511+00:00",
+                         "record_count":  216,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "id":  35,
+                         "name":  "Copernicus Marine (CMEMS)",
+                         "domain":  "water",
+                         "source_url":  "https://marine.copernicus.eu/",
+                         "update_frequency":  "Daily",
+                         "last_ingested_at":  "2026-05-08T16:17:24.598812+00:00",
+                         "record_count":  3,
+                         "is_active":  true,
+                         "created_at":  "2026-05-08T10:58:57.528742+00:00"
+                     },
+                     {
+                         "dataset_name":  "GlobalLandTemperaturesByCity.csv",
+                         "domain":  "climate",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "GlobalLandTemperaturesByCountry.csv",
+                         "domain":  "climate",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "GlobalLandTemperaturesByMajorCity.csv",
+                         "domain":  "climate",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "GlobalLandTemperaturesByState.csv",
+                         "domain":  "climate",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "GlobalTemperatures.csv",
+                         "domain":  "climate",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "data.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "country_wise_latest.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "covid_19_clean_complete.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "day_wise.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "full_grouped.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "usa_county_wise.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "worldometer_data.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "covid_19_india.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "covid_vaccine_statewise.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "StatewiseTestingDetails.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "master.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "30-70cancerChdEtc.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "adolescentBirthRate.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "airPollutionDeathRate.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "alcoholSubstanceAbuse.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "atLeastBasicSanitizationServices.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "basicDrinkingWaterServices.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "basicHandWashing.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "birthAttendedBySkilledPersonal.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "cleanFuelAndTech.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "crudeSuicideRates.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "dataAvailibilityForUhc.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "dentists.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "eliminateViolenceAgainstWomen.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "HALElifeExpectancyAtBirth.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "HALeWHOregionLifeExpectancyAtBirth.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "hepatitusBsurfaceAntigen.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "incedenceOfMalaria.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "incedenceOfTuberculosis.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "infantMortalityRate.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "interventionAgianstNTDs.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "lifeExpectancyAtBirth.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "maternalMortalityRatio.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "medicalDoctors.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "mortalityRatePoisoning.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "mortalityRateUnsafeWash.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "neonatalMortalityRate.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "newHivInfections.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "nursingAndMidwife.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "ofHaleInLifeExpectancy.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "pharmacists.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "population10SDG3.8.2.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "population25SDG3.8.2.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "reproductiveAgeWomen.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "roadTrafficDeaths.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "safelySanitization.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "tobaccoAge15.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "uhcCoverage.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "under5MortalityRate.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "WHOregionLifeExpectancyAtBirth.csv",
+                         "domain":  "disease",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "AEP_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "COMED_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "DAYTON_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "DEOK_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "DOM_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "DUQ_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "EKPC_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "FE_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "NI_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "PJME_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "PJMW_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "pjm_hourly_est.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "PJM_Load_hourly.csv",
+                         "domain":  "energy",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "countries of the world.csv",
+                         "domain":  "geography",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "world-data-2023.csv",
+                         "domain":  "geography",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "airlines.csv",
+                         "domain":  "infrastructure",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "airports.csv",
+                         "domain":  "infrastructure",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "flights.csv",
+                         "domain":  "infrastructure",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "AB_NYC_2019.csv",
+                         "domain":  "infrastructure",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "Life Expectancy Data.csv",
+                         "domain":  "population",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "players_15.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "players_16.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "players_17.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "players_18.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "players_19.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "players_20.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "players_21.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "StudentsPerformance.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "Tweets.csv",
+                         "domain":  "social",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     },
+                     {
+                         "dataset_name":  "water_potability.csv",
+                         "domain":  "water",
+                         "source_url":  "Kaggle Raw",
+                         "update_frequency":  "Static"
+                     }
+                 ]
+}

@@ -89,6 +89,11 @@ class Neo4jClient:
         self._auth = (settings.neo4j_username, settings.neo4j_password)
         try:
             if await self._connect_bolt(settings.neo4j_uri, self._auth):
+                try:
+                    await self.run("CREATE CONSTRAINT IF NOT EXISTS FOR (n:Entity) REQUIRE n.id IS UNIQUE")
+                    logger.info("Neo4j constraint Entity(id) verified.")
+                except Exception as e:
+                    logger.warning(f"Failed to verify Neo4j constraint: {e}")
                 return
         except Exception as exc:
             logger.warning(f"Neo4j Bolt unavailable - trying Query API: {exc}")
@@ -98,6 +103,11 @@ class Neo4jClient:
         try:
             await self._run_http("RETURN 1 AS ok")
             logger.info(f"Neo4j connected via Query API to database '{self._database}'")
+            try:
+                await self.run("CREATE CONSTRAINT IF NOT EXISTS FOR (n:Entity) REQUIRE n.id IS UNIQUE")
+                logger.info("Neo4j constraint Entity(id) verified.")
+            except Exception as e:
+                logger.warning(f"Failed to verify Neo4j constraint via HTTP: {e}")
         except Exception as exc:
             logger.warning(f"Neo4j unavailable - continuing without graph connectivity: {exc}")
             if self._http_client:

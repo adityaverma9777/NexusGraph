@@ -92,6 +92,9 @@ EDGE_RULES: list[dict] = [
     {"name": "floods_drive_population_displacement", "source_type": "FloodEvent", "target_type": "DisplacementEvent", "relationship": "DRIVES", "max_distance_km": 1200, "source_condition": lambda n: n.properties.get("severity", 0) > 4, "confidence": 0.71, "lag_weeks": 2, "mechanism_known": True},
     {"name": "trade_flows_signal_food_price", "source_type": "TradeFlow", "target_type": "FoodPriceEvent", "relationship": "SIGNALS", "max_distance_km": 5000, "source_condition": lambda n: abs(n.properties.get("value", 0)) > 0, "confidence": 0.48, "lag_weeks": 4, "mechanism_known": False},
     {"name": "debt_stress_amplifies_governance_risk", "source_type": "DebtStressIndicator", "target_type": "GovernanceRisk", "relationship": "AMPLIFIES", "max_distance_km": 5000, "source_condition": lambda n: n.properties.get("value", 0) > 50, "confidence": 0.58, "lag_weeks": 8, "mechanism_known": False},
+    {"name": "gdp_reduces_suicide", "source_type": "EconomicIndicator", "target_type": "SocialCrisisRecord", "relationship": "REDUCES", "max_distance_km": 5000, "source_condition": lambda n: n.properties.get("type") == "GDP_Growth" and n.properties.get("value", 0) > 3.0, "confidence": 0.65, "lag_weeks": 52, "mechanism_known": False},
+    {"name": "education_drives_economy", "source_type": "EducationMetric", "target_type": "EconomicIndicator", "relationship": "DRIVES", "max_distance_km": 5000, "source_condition": lambda n: n.properties.get("average_score", 0) > 70, "confidence": 0.55, "lag_weeks": 500, "mechanism_known": False},
+    {"name": "accommodation_price_signals_economy", "source_type": "Accommodation", "target_type": "EconomicIndicator", "relationship": "SIGNALS", "max_distance_km": 100, "source_condition": lambda n: n.properties.get("price", 0) > 200, "confidence": 0.45, "lag_weeks": 4, "mechanism_known": False},
 ]
 
 def run_edge_rules(all_nodes: list[ETLNode]) -> list[ETLEdge]:

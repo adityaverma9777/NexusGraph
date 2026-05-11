@@ -35,7 +35,7 @@ def _row_to_node(row: dict) -> GraphNode:
         id=n.get("id", ""),
         domain=n.get("domain", ""),
         entity_type=n.get("entity_type", ""),
-        label=n.get("label", n.get("id", "")),
+        label=str(n.get("label") or n.get("id") or ""),
         properties=_decode_properties(n.get("properties_json") or n.get("properties")),
         lat=n.get("lat"),
         lon=n.get("lon"),
@@ -511,6 +511,48 @@ async def search_entities(q: str, domain: str | None = None, limit: int = 20) ->
 
 async def search_graph(q: str, domain: str | None = None, limit: int = 12, min_confidence: float = 0.4, as_of: str | None = None) -> GraphPayload:
     matches = await search_entities(q=q, domain=domain, limit=limit)
+    
+    if not matches:
+        try:
+            from config import get_settings
+            settings = get_settings()
+            if settings.groq_api_key:
+                from groq import AsyncGroq
+                from loguru import logger
+                import json
+                
+                logger.info(f"Triggering AI fallback search for '{q}'")
+                client = AsyncGroq(api_key=settings.groq_api_key)
+                prompt = f"The user searched for '{q}' in our intelligence graph but found no results. Suggest up to 5 alternative related single-word search terms (e.g. broader concepts, synonyms, or related domains). Output ONLY a valid JSON object with a single key 'concepts' containing the array of strings."
+                
+                completion = await client.chat.completions.create(
+                    model=settings.groq_model,
+                    messages=[
+                        {"role": "system", "content": "You are a fallback search assistant. Output ONLY valid JSON."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    temperature=0.3,
+                    max_tokens=200,
+                    response_format={"type": "json_object"}
+                )
+                
+                content = completion.choices[0].message.content
+                if content:
+                    data = json.loads(content)
+                    concepts = data.get("concepts", [])
+                    
+                    for concept in concepts:
+                        if not isinstance(concept, str) or not concept.strip():
+                            continue
+                        alt_matches = await search_entities(q=concept.strip(), domain=domain, limit=limit)
+                        if alt_matches:
+                            logger.info(f"AI fallback successful: '{q}' -> '{concept}'")
+                            matches = alt_matches
+                            break
+        except Exception as exc:
+            from loguru import logger
+            logger.warning(f"AI search fallback failed for '{q}': {exc}")
+
     if not matches:
         return GraphPayload(nodes=[], edges=[])
 

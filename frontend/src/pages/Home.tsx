@@ -1,13 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import CorrelationMatrix from '../components/charts/CorrelationMatrix'
 import DomainRadar from '../components/charts/DomainRadar'
-import RiskGauge from '../components/charts/RiskGauge'
 import TimeSeriesChart from '../components/charts/TimeSeriesChart'
-import ConceptSearch from '../components/graph/ConceptSearch'
 import EdgePanel from '../components/graph/EdgePanel'
 import ErrorBoundary from '../components/ui/ErrorBoundary'
 import GraphCanvas from '../components/graph/GraphCanvas'
-import GraphControls from '../components/graph/GraphControls'
 import ImpactChain from '../components/graph/ImpactChain'
 import NodePanel from '../components/graph/NodePanel'
 import IntelligenceBriefing from '../components/ui/IntelligenceBriefing'
@@ -68,8 +65,12 @@ export default function Home() {
   const analysisContextIds = selectedEdge ? [selectedEdge.source, selectedEdge.target] : selectedNodeId ? [selectedNodeId] : []
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
+    <div className="flex flex-col">
+      <section className="w-full">
+        <GraphCanvas />
+      </section>
+      <div className="mx-auto w-full max-w-[1440px] space-y-6 px-8 py-8">
+        <div className="flex flex-wrap gap-2">
         {topAlerts.length > 0 ? (
           topAlerts.map((alert) => (
             <div
@@ -90,17 +91,6 @@ export default function Home() {
           </div>
         )}
       </div>
-      <section className="flex flex-col gap-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Graph Explorer</p>
-            <h2 className="text-2xl font-semibold text-[#f3f7ff]">Multi-domain relationship canvas</h2>
-          </div>
-          <GraphControls />
-        </div>
-        <ConceptSearch />
-        <GraphCanvas />
-      </section>
       <section className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <NodePanel />
         <EdgePanel />
@@ -134,9 +124,9 @@ export default function Home() {
         <div className="space-y-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
           <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Domain Risk Profile</p>
           <DomainRadar />
-          <RiskGauge />
         </div>
       </section>
+      </div>
     </div>
   )
 }

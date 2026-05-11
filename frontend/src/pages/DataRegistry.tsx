@@ -1,7 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
-import { apiClient } from '../lib/api'
-import { TableSkeleton } from '../components/ui/Skeleton'
+import datasetData from './datasets.json'
 
 type DatasetRow = {
   name: string
@@ -82,17 +80,7 @@ export default function DataRegistry() {
   const [search, setSearch] = useState('')
   const [domainFilter, setDomainFilter] = useState('All')
 
-  const query = useQuery({
-    queryKey: ['datasets-registry'],
-    queryFn: async () => {
-      const payload = await apiClient('/api/datasets/registry')
-      return normalizeDatasets(payload)
-    },
-    retry: 1,
-    staleTime: 5 * 60_000,
-  })
-
-  const allDatasets = query.data ?? []
+  const allDatasets = useMemo(() => normalizeDatasets(datasetData) ?? [], [])
   const domains = useMemo(
     () => ['All', ...Array.from(new Set(allDatasets.map((d) => d.domain))).sort()],
     [allDatasets],
@@ -108,16 +96,11 @@ export default function DataRegistry() {
 
   return (
     <div className="space-y-6">
-      {query.isLoading ? (
-        <TableSkeleton rows={8} />
-      ) : (
-        <>
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Dataset Registry</p>
-            <h2 className="text-2xl font-semibold text-[#f3f7ff]">All ingested sources ({allDatasets.length})</h2>
-            {query.isFetching && <p className="mt-1 text-xs text-[#91a5c2]">Refreshing from backend...</p>}
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
+      <div>
+        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Dataset Registry</p>
+        <h2 className="text-2xl font-semibold text-[#f3f7ff]">All ingested sources ({allDatasets.length})</h2>
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
             <input
               type="text"
               value={search}
@@ -187,8 +170,6 @@ export default function DataRegistry() {
               </tbody>
             </table>
           </div>
-        </>
-      )}
     </div>
   )
 }

@@ -1,8 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { apiClient } from '../../lib/api'
 import { useGraphStore } from '../../store/graphStore'
-import type { GraphNode } from '../../lib/mockData'
 
 const QUICK_CONCEPTS = [
   { label: 'Dengue Outbreak', query: 'DengueOutbreak', domain: 'disease' },
@@ -34,16 +31,6 @@ export default function ConceptSearch() {
   const setCascadeType = useGraphStore((state) => state.setCascadeType)
   const clearPath = useGraphStore((state) => state.clearPath)
 
-  const { data: results = [] } = useQuery<GraphNode[]>({
-    queryKey: ['search', input],
-    enabled: input.length >= 2,
-    queryFn: async () => {
-      const data = await apiClient(`/api/search?q=${encodeURIComponent(input)}&limit=12`)
-      return Array.isArray(data) ? data : []
-    },
-    staleTime: 30_000,
-  })
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -54,22 +41,12 @@ export default function ConceptSearch() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  function handleSelectNode(node: GraphNode) {
-    clearPath()
-    setCascadeType('')
-    setSelectedEdgeId(undefined)
-    setSelectedNodeId(node.id)
-    setSearchQuery('')
-    setInput(node.label)
-    setOpen(false)
-  }
-
   function handleQuickConcept(concept: { query: string; label: string }) {
     clearPath()
     setSelectedEdgeId(undefined)
     setSelectedNodeId(undefined)
-    setCascadeType(concept.query)
-    setSearchQuery('')
+    setCascadeType('')
+    setSearchQuery(concept.label)
     setInput(concept.label)
     setOpen(false)
   }
@@ -136,32 +113,9 @@ export default function ConceptSearch() {
                 ))}
               </div>
             </div>
-          ) : results.length > 0 ? (
-            <ul className="divide-y divide-[#1a2638] py-1">
-              {results.map((node) => (
-                <li key={node.id}>
-                  <button
-                    type="button"
-                    onClick={() => handleSelectNode(node)}
-                    className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-[#122136]"
-                  >
-                    <span
-                      className="h-2 w-2 flex-shrink-0 rounded-full"
-                      style={{ backgroundColor: DOMAIN_COLORS[node.domain] ?? '#4db8ff' }}
-                    />
-                    <div className="min-w-0">
-                      <p className="truncate text-sm text-[#dce8f9]">{node.label}</p>
-                      <p className="text-[10px] uppercase tracking-[0.1em] text-[#5a7090]">
-                        {node.entityType} | {node.domain}
-                      </p>
-                    </div>
-                  </button>
-                </li>
-              ))}
-            </ul>
           ) : (
             <div className="px-4 py-3 text-sm text-[#5a7090]">
-              No results for "{input}" - try a different concept
+              Press Enter or use Explore to search the graph. Suggestions are limited to quick concepts.
             </div>
           )}
         </div>

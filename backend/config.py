@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     free_tier_node_budget: int = 5000
     free_tier_edge_budget: int = 16000
     cross_domain_node_limit: int = 50000
+    full_ingest_mode: bool = True
+    full_ingest_node_limit: int = 250000
+    full_ingest_edge_limit: int = 10000000
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:5174", "https://nexusgraph.vercel.app"]
 
     class Config:

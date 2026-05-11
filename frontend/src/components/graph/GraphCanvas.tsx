@@ -1,5 +1,5 @@
 import CytoscapeComponent from 'react-cytoscapejs'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import type { Core, EventObject } from 'cytoscape'
 import { cytoscapeLayouts, cytoscapeStyles } from '../../lib/cytoscapeConfig'
 import { domainColors } from '../../lib/mockData'
@@ -14,6 +14,15 @@ export default function GraphCanvas() {
   const selectedEdgeId = useGraphStore((state) => state.selectedEdgeId)
   const setSelectedNodeId = useGraphStore((state) => state.setSelectedNodeId)
   const setSelectedEdgeId = useGraphStore((state) => state.setSelectedEdgeId)
+  const cyRef = useRef<Core | null>(null)
+
+  function handleZoomIn() {
+    if (cyRef.current) cyRef.current.zoom(cyRef.current.zoom() * 1.2)
+  }
+
+  function handleZoomOut() {
+    if (cyRef.current) cyRef.current.zoom(cyRef.current.zoom() * 0.8)
+  }
 
   function getNodeLabel(label: string) {
     return label.length > 28 ? `${label.slice(0, 25)}...` : label
@@ -78,7 +87,7 @@ export default function GraphCanvas() {
 
   if (!hasQuery) {
     return (
-      <div className="flex h-[420px] flex-col items-center justify-center gap-5 rounded-2xl border border-[#1f2a3b] bg-[#0a1220]">
+      <div className="flex h-[calc(100vh-73px)] w-full flex-col items-center justify-center gap-5 bg-[#0a1220]">
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[#1f2a3b] bg-[#0d1828]">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-[#4db8ff]">
@@ -108,7 +117,7 @@ export default function GraphCanvas() {
 
   if (nodes.length === 0) {
     return (
-      <div className="flex h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-[#1f2a3b] bg-[#0a1220]">
+      <div className="flex h-[calc(100vh-73px)] w-full flex-col items-center justify-center gap-3 bg-[#0a1220]">
         <p className="text-sm text-[#c6d7ec]">No nodes found</p>
         <p className="text-xs text-[#5a7090]">Try a different search term or concept</p>
       </div>
@@ -116,16 +125,30 @@ export default function GraphCanvas() {
   }
 
   return (
-    <div className="h-[420px] overflow-hidden rounded-2xl border border-[#1f2a3b] bg-[#0a1220]">
+    <div className="relative h-[calc(100vh-73px)] w-full overflow-hidden bg-[#0a1220]">
+      <div className="absolute right-6 top-6 z-10 flex flex-col gap-2 rounded-lg border border-[#1f2a3b] bg-[#0f1b2d] p-1 shadow-lg">
+        <button onClick={handleZoomIn} className="flex h-8 w-8 items-center justify-center rounded transition-colors hover:bg-[#1a2940] text-[#e6edf7]">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+        <div className="h-px w-full bg-[#1f2a3b]"></div>
+        <button onClick={handleZoomOut} className="flex h-8 w-8 items-center justify-center rounded transition-colors hover:bg-[#1a2940] text-[#e6edf7]">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+      </div>
       <CytoscapeComponent
         key={graphSignature}
         elements={elements}
         style={{ width: '100%', height: '100%' }}
         layout={layoutConfig}
         stylesheet={cytoscapeStyles}
-        minZoom={0.2}
-        maxZoom={2}
+        minZoom={0.01}
+        maxZoom={5}
+        zoomingEnabled={true}
+        userZoomingEnabled={false}
+        panningEnabled={true}
+        userPanningEnabled={true}
         cy={(cy: Core) => {
+          cyRef.current = cy
           cy.on('tap', 'node', (event: EventObject) => {
             setSelectedNodeId(event.target.data('id'))
             setSelectedEdgeId(undefined)
@@ -139,11 +162,11 @@ export default function GraphCanvas() {
             }
           })
           cy.ready(() => {
-            cy.fit(undefined, 48)
+            cy.fit(undefined, 150)
             cy.center()
           })
           cy.on('layoutstop', () => {
-            cy.fit(undefined, 48)
+            cy.fit(undefined, 150)
           })
         }}
       />

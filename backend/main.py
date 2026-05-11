@@ -66,6 +66,25 @@ async def health():
 @app.get("/api/datasets/registry")
 async def datasets_registry():
     from db.supabase_client import get_supabase
+    import os
+    from pathlib import Path
+    
     client = get_supabase()
     result = client.table("dataset_registry").select("*").order("domain").execute()
-    return {"datasets": result.data or []}
+    data = result.data or []
+    
+    base_dir = Path(__file__).parent.parent
+    kaggle_dir = base_dir / "data" / "kaggle_raw"
+    
+    if kaggle_dir.exists():
+        for csv_file in kaggle_dir.rglob("*.csv"):
+            rel_path = csv_file.relative_to(kaggle_dir)
+            domain = rel_path.parts[0] if len(rel_path.parts) > 1 else "general"
+            data.append({
+                "dataset_name": csv_file.name,
+                "domain": domain,
+                "source_url": "Kaggle Raw",
+                "update_frequency": "Static"
+            })
+            
+    return {"datasets": data}

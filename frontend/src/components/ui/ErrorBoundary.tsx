@@ -1,29 +1,23 @@
-import { Component, ReactNode } from 'react'
-
+import { Component, type ReactNode } from 'react'
 type Props = {
   children: ReactNode
   fallback?: string
 }
-
 type State = {
   hasError: boolean
   error?: Error
 }
-
 export default class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = { hasError: false }
   }
-
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error }
   }
-
   componentDidCatch(error: Error, info: unknown) {
     console.error('ErrorBoundary caught error:', error, info)
   }
-
   render() {
     if (this.state.hasError) {
       return (
@@ -32,7 +26,7 @@ export default class ErrorBoundary extends Component<Props, State> {
           <p className="mt-2 text-xs text-[#c67f7f]">
             {this.props.fallback || 'An error occurred while rendering this section.'}
           </p>
-          {process.env.NODE_ENV === 'development' && this.state.error && (
+          {import.meta.env.MODE === 'development' && this.state.error && (
             <pre className="mt-3 overflow-auto rounded bg-[#0a0808] p-2 text-[10px] text-[#ff6b6b]">
               {this.state.error.message}
             </pre>
@@ -40,7 +34,6 @@ export default class ErrorBoundary extends Component<Props, State> {
         </div>
       )
     }
-
     return this.props.children
   }
 }

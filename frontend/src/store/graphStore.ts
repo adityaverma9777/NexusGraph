@@ -26,7 +26,7 @@ type GraphStore = {
 export const useGraphStore = create<GraphStore>((set) => ({
   selectedNodeId: undefined,
   selectedEdgeId: undefined,
-  layout: 'default',
+  layout: 'radial',
   minConfidence: 0.4,
   currentDate: new Date().toISOString().slice(0, 10),
   cascadeType: '',
