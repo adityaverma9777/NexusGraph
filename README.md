@@ -1,4 +1,4 @@
-# NexusGraph: Relationship Intelligence Engine
+# NexusGraph: Create Insights from Data
 
 I wanted to make a small project that could combine multiple small, free, available datasets and generate insights. The idea was simple: I wanted to have something like Palantir that uses data to make meaningful insights across complex, interlinked systems.
 
