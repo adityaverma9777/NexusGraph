@@ -4,8 +4,11 @@ from pathlib import Path
 
 # Force the backend directory into sys.path to ensure module resolution works correctly on Render
 backend_dir = str(Path(__file__).parent.absolute())
+print(f"DEBUG: CWD is {os.getcwd()}")
+print(f"DEBUG: backend_dir is {backend_dir}")
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
+print(f"DEBUG: sys.path is {sys.path}")
 
 from contextlib import asynccontextmanager
 try:
