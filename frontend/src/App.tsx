@@ -8,13 +8,15 @@ const navItems = [
   { label: 'Datasets', to: '/datasets' },
 ]
 import ConnectionGuard from './components/ui/ConnectionGuard'
+import DeviceGuard from './components/ui/DeviceGuard'
 
 function App() {
   const layout = useGraphStore((state) => state.layout)
   const setLayout = useGraphStore((state) => state.setLayout)
   return (
-    <ConnectionGuard>
-      <div className="min-h-screen bg-transparent text-[#e6edf7]">
+    <DeviceGuard>
+      <ConnectionGuard>
+        <div className="min-h-screen bg-transparent text-[#e6edf7]">
         <header className="sticky top-0 z-50 border-b border-[#1f2a3b] bg-[#0c1422]/95 backdrop-blur-xl">
           <div className="mx-auto flex max-w-[1440px] items-center justify-between px-8 py-4">
             <div className="flex items-center gap-4">
@@ -72,7 +74,8 @@ function App() {
           </Routes>
         </main>
       </div>
-    </ConnectionGuard>
+      </ConnectionGuard>
+    </DeviceGuard>
   )
 }
 export default App
