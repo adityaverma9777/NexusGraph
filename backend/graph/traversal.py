@@ -1,4 +1,13 @@
 import json
+import sys
+import os
+from pathlib import Path
+
+# Ensure the backend root is in the path for sibling imports
+backend_root = str(Path(__file__).parent.parent.absolute())
+if backend_root not in sys.path:
+    sys.path.insert(0, backend_root)
+
 from db.supabase_client import get_supabase
 # from etl.ingesters.geography.global_backbone import load_world_bank_countries
 from graph.neo4j_client import neo4j_client
@@ -240,17 +249,18 @@ def _derive_structural_graph(nodes: list[GraphNode]) -> GraphPayload:
                     source="derived_context",
                     severity=0.0,
                 )
-            edge_id = f"{node.id}_OBSERVED_IN_{country_id}"
-            edge_map[edge_id] = GraphEdge(
-                id=edge_id,
-                source=node.id,
-                target=country_id,
-                relationship="OBSERVED_IN",
-                confidence=1.0,
-                lag_weeks=0,
-                source_dataset="derived_context",
-                evidence_type="structural",
-            )
+            if node.id != country_id:
+                edge_id = f"{node.id}_OBSERVED_IN_{country_id}"
+                edge_map[edge_id] = GraphEdge(
+                    id=edge_id,
+                    source=node.id,
+                    target=country_id,
+                    relationship="OBSERVED_IN",
+                    confidence=1.0,
+                    lag_weeks=0,
+                    source_dataset="derived_context",
+                    evidence_type="structural",
+                )
         if year:
             year_id = f"year:{year}"
             if year_id not in node_map:
@@ -559,18 +569,40 @@ async def search_graph(q: str, domain: str | None = None, limit: int = 12, min_c
 
     primary = next((node for node in matches if node.domain != "meta"), matches[0])
     primary_country = _node_country_code(primary)
+    nodes = matches
     if primary_country:
-        country_nodes = _load_country_nodes(primary_country, as_of=as_of, limit=max(400, limit * 20))
-        if country_nodes:
-            if primary.domain == "meta" or primary.entity_type in {"Country", "CountryProfile", "AdminArea", "AdminSubdivision"}:
-                return _derive_structural_graph(country_nodes)
+        try:
+            country_nodes = _load_country_nodes(primary_country, as_of=as_of, limit=max(400, limit * 20))
+            nodes.extend(country_nodes)
+        except Exception as e:
+            from loguru import logger
+            logger.warning(f"Failed to load country nodes for {primary_country}: {e}")
 
-            series_nodes = (
-                _load_series_nodes(primary.entity_type, primary_country, as_of=as_of, limit=20)
-                if primary.entity_type
-                else []
-            )
-            return _derive_structural_graph(country_nodes + series_nodes)
+    # Remove duplicates
+    seen = set()
+    unique_nodes = []
+    for n in nodes:
+        if n.id not in seen:
+            unique_nodes.append(n)
+            seen.add(n.id)
+    
+    # Always include systemic links
+    edges = _infer_systemic_edges(unique_nodes)
+    structural = _derive_structural_graph(unique_nodes)
+    
+    # Merge and deduplicate
+    final_nodes_map = {n.id: n for n in unique_nodes}
+    for n in structural.nodes:
+        final_nodes_map[n.id] = n
+    
+    final_edges_map = {e.id: e for e in edges}
+    for e in structural.edges:
+        final_edges_map[e.id] = e
+    
+    return GraphPayload(
+        nodes=list(final_nodes_map.values()),
+        edges=list(final_edges_map.values())
+    )
 
     series_nodes = (
         _load_series_nodes(primary.entity_type, primary_country, as_of=as_of, limit=8)
