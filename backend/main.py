@@ -1,11 +1,26 @@
 import sys
+import os
+from pathlib import Path
+
+# Force the backend directory into sys.path to ensure module resolution works correctly on Render
+backend_dir = str(Path(__file__).parent.absolute())
+if backend_dir not in sys.path:
+    sys.path.insert(0, backend_dir)
+
 from contextlib import asynccontextmanager
 try:
     from fastapi import FastAPI
     from fastapi.middleware.cors import CORSMiddleware
     from loguru import logger
     from config import get_settings
-    from api.routes import graph, metrics, map_routes, intelligence, search, alerts
+    from api.routes import (
+        graph as graph_router,
+        metrics as metrics_router,
+        map_routes as map_router,
+        intelligence as intelligence_router,
+        search as search_router,
+        alerts as alerts_router
+    )
     from db.supabase_client import init_supabase
     from graph.neo4j_client import neo4j_client
 except Exception as e:
@@ -61,12 +76,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(graph.router, prefix="/api/graph", tags=["graph"])
-app.include_router(metrics.router, prefix="/api/metrics", tags=["metrics"])
-app.include_router(map_routes.router, prefix="/api/map", tags=["map"])
-app.include_router(intelligence.router, prefix="/api/intelligence", tags=["intelligence"])
-app.include_router(search.router, prefix="/api/search", tags=["search"])
-app.include_router(alerts.router, prefix="/api/alerts", tags=["alerts"])
+app.include_router(graph_router.router, prefix="/api/graph", tags=["graph"])
+app.include_router(metrics_router.router, prefix="/api/metrics", tags=["metrics"])
+app.include_router(map_router.router, prefix="/api/map", tags=["map"])
+app.include_router(intelligence_router.router, prefix="/api/intelligence", tags=["intelligence"])
+app.include_router(search_router.router, prefix="/api/search", tags=["search"])
+app.include_router(alerts_router.router, prefix="/api/alerts", tags=["alerts"])
 
 @app.get("/api/health")
 async def health():
