@@ -33,7 +33,14 @@ class Settings(BaseSettings):
     @property
     def get_cors_origins(self) -> list[str]:
         if isinstance(self.cors_origins, str):
-            return [s.strip() for s in self.cors_origins.split(",") if s.strip()]
+            val = self.cors_origins.strip()
+            if val.startswith("[") and val.endswith("]"):
+                try:
+                    import json
+                    return json.loads(val)
+                except Exception:
+                    pass
+            return [s.strip() for s in val.split(",") if s.strip()]
         return self.cors_origins
 
     class Config:
