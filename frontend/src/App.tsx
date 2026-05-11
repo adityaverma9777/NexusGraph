@@ -21,7 +21,10 @@ function App() {
           <div className="mx-auto flex max-w-[1440px] items-center justify-between px-8 py-4">
             <div className="flex items-center gap-4">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.32em] text-[#ffffff]">NexusGraph</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-[10px] uppercase tracking-[0.32em] text-[#ffffff]">NexusGraph</p>
+                  <span className="rounded-md border border-[#333333] bg-[#111111] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-[#aaaaaa]">Pre-Beta</span>
+                </div>
                 <h1 className="text-xl font-semibold tracking-tight text-[#ffffff]">Create Insights from Data</h1>
               </div>
               <div className="hidden flex-1 items-center gap-4 pl-8 sm:flex">
