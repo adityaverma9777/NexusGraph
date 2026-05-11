@@ -16,7 +16,7 @@ export default function LayerSelector() {
   const setTileProvider = useMapStore((state) => state.setTileProvider)
 
   return (
-    <aside className="space-y-5 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <aside className="space-y-5 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <div>
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Map Style</p>
         <div className="mt-3 flex gap-2">
@@ -27,7 +27,7 @@ export default function LayerSelector() {
               onClick={() => setTileProvider(opt.value)}
               className={`flex-1 rounded-lg border py-2 text-xs font-medium transition-colors ${
                 tileProvider === opt.value
-                  ? 'border-[#4e79ab] bg-[#193254] text-[#ffffff]'
+                  ? 'border-[#4e79ab] bg-[#222222] text-[#ffffff]'
                   : 'border-[#1a1a1a] text-[#bbbbbb] hover:border-[#222222] hover:bg-[#14243a]'
               }`}
             >
@@ -68,7 +68,7 @@ export default function LayerSelector() {
                         />
                       </div>
                     </div>
-                    <span className={`text-sm ${isActive ? 'text-[#dce8f9]' : 'text-[#7090b0]'}`}>{layer.label}</span>
+                    <span className={`text-sm ${isActive ? 'text-[#dddddd]' : 'text-[#7090b0]'}`}>{layer.label}</span>
                   </label>
                   <div
                     className="h-3 w-3 rounded-full border border-white/10 shadow-sm"

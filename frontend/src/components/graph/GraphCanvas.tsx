@@ -137,7 +137,7 @@ export default function GraphCanvas() {
   }
 
   return (
-    <div className="relative h-[calc(100vh-73px)] w-full overflow-hidden border-b border-[#ffffff]/20 bg-[#000000]">
+    <div className="relative mx-4 mt-4 h-[calc(100vh-105px)] w-[calc(100%-32px)] overflow-hidden rounded-xl border border-[#ffffff]/20 bg-[#000000]">
       <div className="absolute right-6 top-6 z-10 flex flex-col gap-2 rounded-lg border border-[#1a1a1a] bg-[#0a0a0a] p-1 shadow-lg">
         <button onClick={handleZoomIn} className="flex h-8 w-8 items-center justify-center rounded transition-colors hover:bg-[#111111] text-[#f0f0f0]">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>

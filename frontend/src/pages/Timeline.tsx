@@ -88,7 +88,7 @@ export default function Timeline() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <section className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Time Simulation</p>
@@ -98,7 +98,7 @@ export default function Timeline() {
             <button
               type="button"
               onClick={clearScenario}
-              className="rounded-full border border-[#222222] bg-[#0a0a0a] px-3 py-1.5 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
+              className="rounded-full border border-[#222222] bg-[#0a0a0a] px-3 py-1.5 text-xs text-[#dddddd] hover:bg-[#222222]"
             >
               Clear scenario
             </button>
@@ -108,7 +108,7 @@ export default function Timeline() {
           <TimelineSlider />
         </div>
       </section>
-      <section className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <section className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Intelligence Scenarios</p>
         <h3 className="mt-1 text-lg font-semibold text-[#ffffff]">Curated cascade demonstrations</h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -125,7 +125,7 @@ export default function Timeline() {
               style={activeScenario === scenario.id ? { borderColor: scenario.color } : undefined}
             >
               <div className="mb-3 h-1 w-10 rounded-full" style={{ backgroundColor: scenario.color }} />
-              <p className="text-xs font-semibold text-[#dce8f9]">{scenario.title}</p>
+              <p className="text-xs font-semibold text-[#dddddd]">{scenario.title}</p>
               <p className="mt-1 text-[10px] uppercase tracking-[0.12em]" style={{ color: scenario.color }}>
                 {scenario.subtitle}
               </p>

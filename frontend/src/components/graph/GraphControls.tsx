@@ -91,7 +91,7 @@ export default function GraphControls() {
         <button
           type="button"
           onClick={clearAll}
-          className="rounded border border-[#222222] bg-[#0a0a0a] px-3 py-1 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
+          className="rounded border border-[#222222] bg-[#0a0a0a] px-3 py-1 text-xs text-[#dddddd] hover:bg-[#222222]"
         >
           Clear
         </button>

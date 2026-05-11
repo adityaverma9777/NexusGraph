@@ -43,7 +43,7 @@ export default function NodePanel() {
 
   if (!node) {
     return (
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Node Detail</p>
         <p className="mt-4 text-sm text-[#bbbbbb]">Select a node on the graph to inspect its details.</p>
       </div>
@@ -52,7 +52,7 @@ export default function NodePanel() {
 
   return (
     <div
-      className="rounded-2xl border bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
+      className="rounded-2xl border bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
       style={{ borderColor: nodeColor + '44' }}
     >
       <div className="flex items-start justify-between gap-3">
@@ -71,7 +71,7 @@ export default function NodePanel() {
       <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-[#dddddd]">
         <div>
           <span className="text-xs text-[#999999]">Type</span>
-          <p className="mt-0.5 text-xs font-medium text-[#dce8f9]">{node.entityType}</p>
+          <p className="mt-0.5 text-xs font-medium text-[#dddddd]">{node.entityType}</p>
         </div>
         <div>
           <span className="text-xs text-[#999999]">Severity</span>
@@ -84,15 +84,15 @@ export default function NodePanel() {
         </div>
         <div>
           <span className="text-xs text-[#999999]">Valid From</span>
-          <p className="mt-0.5 text-xs text-[#dce8f9]">{node.validFrom}</p>
+          <p className="mt-0.5 text-xs text-[#dddddd]">{node.validFrom}</p>
         </div>
         <div>
           <span className="text-xs text-[#999999]">Source</span>
-          <p className="mt-0.5 text-xs text-[#dce8f9]">{node.source}</p>
+          <p className="mt-0.5 text-xs text-[#dddddd]">{node.source}</p>
         </div>
       </div>
       {node.properties && Object.keys(node.properties).length > 0 && (
-        <div className="mt-4 space-y-1.5 rounded-lg border border-[#111111] bg-[#0a1422] p-3">
+        <div className="mt-4 space-y-1.5 rounded-lg border border-[#111111] bg-[#111111] p-3">
           <p className="text-[10px] uppercase tracking-[0.2em] text-[#999999]">Properties</p>
           {Object.entries(node.properties).map(([key, value]) => (
             <div key={key} className="flex items-center justify-between text-xs">
@@ -149,14 +149,14 @@ export default function NodePanel() {
             setSearchQuery('')
             setCascadeType(cascadeNode?.entityType ?? node.entityType)
           }}
-          className="rounded-full border border-[#222222] bg-[#0a0a0a] px-3 py-1 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
+          className="rounded-full border border-[#222222] bg-[#0a0a0a] px-3 py-1 text-xs text-[#dddddd] hover:bg-[#222222]"
         >
           Run cascade
         </button>
         <button
           type="button"
           onClick={() => navigate('/briefing')}
-          className="rounded-full border border-[#222222] bg-[#193254] px-3 py-1 text-xs font-semibold text-[#ffffff] hover:bg-[#23456f]"
+          className="rounded-full border border-[#222222] bg-[#222222] px-3 py-1 text-xs font-semibold text-[#ffffff] hover:bg-[#333333]"
         >
           {'Generate briefing ->'}
         </button>

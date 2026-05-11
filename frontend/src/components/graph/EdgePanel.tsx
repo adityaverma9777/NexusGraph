@@ -11,7 +11,7 @@ export default function EdgePanel() {
 
   if (isLoading && !edge) {
     return (
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Relationship</p>
         <p className="mt-4 text-sm text-[#bbbbbb]">Loading relationship details...</p>
       </div>
@@ -20,7 +20,7 @@ export default function EdgePanel() {
 
   if (!edge || !sourceNode || !targetNode) {
     return (
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Relationship</p>
         <p className="mt-4 text-sm text-[#bbbbbb]">Select a relationship to inspect details.</p>
       </div>
@@ -28,7 +28,7 @@ export default function EdgePanel() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Relationship</p>
       <h3 className="mt-1 text-lg font-semibold text-[#ffffff]">
         {edge.relationship}: {targetNode.label}

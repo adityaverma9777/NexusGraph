@@ -88,14 +88,14 @@ export default function ImpactChain() {
   const topDomain = Array.from(chain.domains.entries()).sort((a, b) => b[1] - a[1])[0]
 
   return (
-    <section className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <section className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Impact Chain</p>
           <h3 className="text-xl font-semibold text-[#ffffff]">Likely downstream pipeline from the selected graph item</h3>
         </div>
         <p className="text-xs text-[#bbbbbb]">
-          Root: <span className="font-semibold text-[#dce8f9]">{chain.root.label}</span>
+          Root: <span className="font-semibold text-[#dddddd]">{chain.root.label}</span>
         </p>
       </div>
 

@@ -86,7 +86,7 @@ export default function ConceptSearch() {
         />
         <button
           type="submit"
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-[#193254] px-4 py-1.5 text-xs font-semibold text-[#ffffff] transition-colors hover:bg-[#22426a]"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-[#222222] px-4 py-1.5 text-xs font-semibold text-[#ffffff] transition-colors hover:bg-[#22426a]"
         >
           {'Explore ->'}
         </button>

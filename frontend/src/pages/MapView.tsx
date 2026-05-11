@@ -54,7 +54,7 @@ export default function MapView() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-xl border border-[#1a1a1a] bg-[#0f1724]/95 p-4 text-center"
+                className="rounded-xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-4 text-center"
               >
                 <p className="text-2xl font-bold text-[#ffffff]">{stat.value}</p>
                 <p className="text-xs font-medium text-[#dddddd]">{stat.label}</p>

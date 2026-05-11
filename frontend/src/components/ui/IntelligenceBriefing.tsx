@@ -217,7 +217,7 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
 
   if (!activeEntityId) {
     return (
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 text-sm text-[#bbbbbb] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 text-sm text-[#bbbbbb] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         Select a graph node or relationship to generate a live intelligence briefing.
       </div>
     )
@@ -225,7 +225,7 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
 
   if (query.isFetching && !briefing) {
     return (
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 text-sm text-[#bbbbbb] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 text-sm text-[#bbbbbb] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         Generating live intelligence briefing...
       </div>
     )
@@ -245,12 +245,12 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
       {query.isFetching && (
         <p className="text-xs uppercase tracking-[0.2em] text-[#bbbbbb]">Refreshing intelligence...</p>
       )}
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Situation Summary</p>
         <p className="mt-3 text-sm text-[#dddddd]">{briefing.situationSummary || 'No summary returned.'}</p>
       </div>
 
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Contributing Factors</p>
         <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-[#dddddd]">
           {(briefing.contributingFactors.length ? briefing.contributingFactors : ['No contributing factors returned.']).map((factor, index) => (
@@ -259,7 +259,7 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
         </ul>
       </div>
 
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Downstream Risks</p>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           {(briefing.downstreamRisks.length ? briefing.downstreamRisks : [{ risk: 'No downstream risks returned.', domain: 'unknown', probability: 'N/A', confidenceScore: 0, impactScore: 0, timeframe: 'N/A', pathway: [] }]).map((risk, index) => {
@@ -293,7 +293,7 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
           })}
         </div>
         {activeRisk && (
-          <div className="mt-4 rounded-xl border border-[#24415f] bg-[#0a1422] p-4">
+          <div className="mt-4 rounded-xl border border-[#24415f] bg-[#111111] p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.3em] text-[#aaaaaa]">Risk Pathway</p>
@@ -318,11 +318,11 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">
-        <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
           <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Confidence</p>
           <p className="mt-2 text-sm text-[#dddddd]">{briefing.confidenceAssessment || 'No confidence assessment returned.'}</p>
         </div>
-        <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
           <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Data Gaps</p>
           <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-[#dddddd]">
             {(briefing.dataGaps.length ? briefing.dataGaps : ['No data gaps returned.']).map((gap, index) => (
@@ -332,7 +332,7 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
         </div>
       </div>
 
-      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Recommended Monitoring</p>
         <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-[#dddddd]">
           {(briefing.recommendedMonitoring.length ? briefing.recommendedMonitoring : ['No monitoring guidance returned.']).map((item, index) => (

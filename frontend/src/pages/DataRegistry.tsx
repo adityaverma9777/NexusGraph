@@ -116,7 +116,7 @@ export default function DataRegistry() {
                   onClick={() => setDomainFilter(d)}
                   className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                     domainFilter === d
-                      ? 'bg-[#193254] text-[#ffffff] border border-[#4e79ab]'
+                      ? 'bg-[#222222] text-[#ffffff] border border-[#4e79ab]'
                       : 'border border-[#1a1a1a] text-[#bbbbbb] hover:border-[#222222]'
                   }`}
                 >
@@ -126,7 +126,7 @@ export default function DataRegistry() {
             </div>
             <span className="ml-auto text-xs text-[#aaaaaa]">{filtered.length} results</span>
           </div>
-          <div className="overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95">
+          <div className="overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95">
             <table className="w-full text-left text-sm">
               <thead className="bg-[#122136] text-xs uppercase tracking-[0.2em] text-[#8aa0bf]">
                 <tr>
@@ -139,7 +139,7 @@ export default function DataRegistry() {
               <tbody className="divide-y divide-[#1a2638]">
                 {filtered.map((dataset) => (
                   <tr key={dataset.name} className="transition-colors hover:bg-[#0d1f33]">
-                    <td className="px-5 py-3.5 font-medium text-[#dce8f9]">{dataset.name}</td>
+                    <td className="px-5 py-3.5 font-medium text-[#dddddd]">{dataset.name}</td>
                     <td className="px-5 py-3.5">
                       <span className="rounded-full border border-[#1a1a1a] bg-[#000000] px-2.5 py-0.5 text-xs text-[#cccccc]">
                         {dataset.domain}

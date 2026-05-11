@@ -110,7 +110,7 @@ export default function MapPopup({
             width: '100%',
             marginTop: 4,
             padding: '6px 12px',
-            background: '#193254',
+            background: '#222222',
             border: '1px solid #222222',
             borderRadius: 6,
             color: '#ffffff',

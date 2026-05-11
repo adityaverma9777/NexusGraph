@@ -41,7 +41,7 @@ export default function TimelineSlider() {
     <div className="space-y-2">
       <div className="flex items-center gap-3">
         <button
-          className="rounded border border-[#222222] bg-[#0a0a0a] px-3 py-2 text-sm text-[#dce8f9] hover:bg-[#16253a]"
+          className="rounded border border-[#222222] bg-[#0a0a0a] px-3 py-2 text-sm text-[#dddddd] hover:bg-[#222222]"
           onClick={() => setCurrentDate(addMonths(currentDate, -1))}
         >
           Prev
@@ -53,7 +53,7 @@ export default function TimelineSlider() {
           className="flex-1 rounded-lg border border-[#222222] bg-[#0a0a0a] px-3 py-2 text-sm text-[#f0f0f0]"
         />
         <button
-          className="rounded border border-[#222222] bg-[#0a0a0a] px-3 py-2 text-sm text-[#dce8f9] hover:bg-[#16253a]"
+          className="rounded border border-[#222222] bg-[#0a0a0a] px-3 py-2 text-sm text-[#dddddd] hover:bg-[#222222]"
           onClick={() => setCurrentDate(addMonths(currentDate, 1))}
         >
           Next

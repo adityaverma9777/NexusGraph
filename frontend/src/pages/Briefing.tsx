@@ -53,7 +53,7 @@ export default function Briefing() {
           Search for any real entity from the graph, select it, then generate a structured briefing powered by Groq LLaMA 3.3 70B.
         </p>
       </div>
-      <section className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <section className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <div className="flex flex-wrap items-end gap-3">
           <form onSubmit={handleSearch} className="flex flex-1 gap-2">
             <input
@@ -66,7 +66,7 @@ export default function Briefing() {
             />
             <button
               type="submit"
-              className="rounded-xl bg-[#193254] px-5 py-2.5 text-sm font-semibold text-[#ffffff] hover:bg-[#22426a]"
+              className="rounded-xl bg-[#222222] px-5 py-2.5 text-sm font-semibold text-[#ffffff] hover:bg-[#22426a]"
             >
               Search
             </button>
@@ -79,7 +79,7 @@ export default function Briefing() {
                 onClick={() => setDomainFilter(d)}
                 className={`rounded-full px-3 py-1 text-xs font-medium capitalize transition-colors ${
                   domainFilter === d
-                    ? 'border border-[#4e79ab] bg-[#193254] text-[#ffffff]'
+                    ? 'border border-[#4e79ab] bg-[#222222] text-[#ffffff]'
                     : 'border border-[#1a1a1a] text-[#bbbbbb] hover:border-[#222222]'
                 }`}
               >
@@ -104,7 +104,7 @@ export default function Briefing() {
                       : 'border-[#1a1a1a] bg-[#0a1420] hover:border-[#222222] hover:bg-[#111e30]'
                   }`}
                 >
-                  <p className="truncate text-sm font-medium text-[#dce8f9]">{node.label}</p>
+                  <p className="truncate text-sm font-medium text-[#dddddd]">{node.label}</p>
                   <p className="mt-1 text-xs text-[#7090b0]">
                     {node.entityType} · severity {Number(node.severity).toFixed(1)}
                   </p>
@@ -127,7 +127,7 @@ export default function Briefing() {
             type="button"
             onClick={generate}
             disabled={!pendingId}
-            className="rounded-full border border-[#222222] bg-[#193254] px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.2em] text-[#ffffff] hover:bg-[#23456f] disabled:opacity-50"
+            className="rounded-full border border-[#222222] bg-[#222222] px-6 py-2.5 text-sm font-semibold uppercase tracking-[0.2em] text-[#ffffff] hover:bg-[#333333] disabled:opacity-50"
           >
             Generate Briefing
           </button>

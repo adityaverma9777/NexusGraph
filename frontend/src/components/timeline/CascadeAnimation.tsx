@@ -150,7 +150,7 @@ export default function CascadeAnimation() {
   const sequenceKey = isLive ? `live:${cascadeType}:${currentDate}` : `demo:${scenarioIdx}`
 
   return (
-    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">
@@ -161,7 +161,7 @@ export default function CascadeAnimation() {
         <button
           type="button"
           onClick={() => setIsPlaying((playing) => !playing)}
-          className="rounded-full border border-[#222222] bg-[#193254] px-3 py-1.5 text-xs font-semibold text-[#ffffff] hover:bg-[#23456f]"
+          className="rounded-full border border-[#222222] bg-[#222222] px-3 py-1.5 text-xs font-semibold text-[#ffffff] hover:bg-[#333333]"
         >
           {isPlaying ? 'Pause' : 'Play'}
         </button>
@@ -175,7 +175,7 @@ export default function CascadeAnimation() {
               onClick={() => setScenarioIdx(index)}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                 scenarioIdx === index
-                  ? 'border border-[#4e79ab] bg-[#193254] text-[#ffffff]'
+                  ? 'border border-[#4e79ab] bg-[#222222] text-[#ffffff]'
                   : 'border border-[#1a1a1a] text-[#bbbbbb] hover:border-[#406188]'
               }`}
             >
