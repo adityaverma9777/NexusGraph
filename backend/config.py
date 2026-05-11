@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     upstash_redis_token: str = ""
     groq_api_key: str = ""
     groq_model: str = "llama-3.1-8b-instant"
+    hf_token: str = ""
+    hf_model: str = "mistralai/Mistral-7B-Instruct-v0.3"
     data_gov_in_api_key: str = ""
     openaq_api_key: str = ""
     nasa_earthdata_token: str = ""

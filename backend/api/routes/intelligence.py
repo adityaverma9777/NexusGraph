@@ -106,14 +106,55 @@ def _build_metrics_context(node: dict) -> list[dict]:
         for row in rows
     ]
 
+async def _call_hf(prompt: str, settings) -> str:
+    import httpx
+    full_prompt = f"<s>[INST] {SYSTEM_PROMPT}\n\n{prompt} [/INST]"
+    url = f"https://api-inference.huggingface.co/models/{settings.hf_model}"
+    headers = {"Authorization": f"Bearer {settings.hf_token}"}
+    payload = {
+        "inputs": full_prompt,
+        "parameters": {
+            "max_new_tokens": 1024,
+            "temperature": 0.3,
+            "return_full_text": False,
+        },
+    }
+    async with httpx.AsyncClient(timeout=60) as client:
+        resp = await client.post(url, headers=headers, json=payload)
+        resp.raise_for_status()
+        data = resp.json()
+    if isinstance(data, list):
+        text = data[0].get("generated_text", "")
+    else:
+        text = data.get("generated_text", "")
+    start = text.find("{")
+    end = text.rfind("}") + 1
+    if start == -1 or end == 0:
+        raise ValueError("No JSON object found in HF response")
+    return text[start:end]
+
+async def _call_groq(prompt: str, settings) -> str:
+    from groq import AsyncGroq
+    client = AsyncGroq(api_key=settings.groq_api_key)
+    completion = await client.chat.completions.create(
+        model=settings.groq_model,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.3,
+        max_tokens=1024,
+        response_format={"type": "json_object"},
+    )
+    return completion.choices[0].message.content
+
 @router.post("/briefing")
 async def api_generate_briefing(req: BriefingRequest):
     settings = get_settings()
     entity_id = req.entity_id
-    if not settings.groq_api_key:
-        raise HTTPException(status_code=503, detail="GROQ_API_KEY is not configured")
+    if not settings.hf_token and not settings.groq_api_key:
+        raise HTTPException(status_code=503, detail="No AI provider configured (HF_TOKEN or GROQ_API_KEY required)")
     try:
-        from groq import AsyncGroq
         from graph.traversal import expand_node
         payload = await expand_node(entity_id, hops=2, min_confidence=0.3, as_of=req.as_of)
         if not payload.nodes:
@@ -130,18 +171,18 @@ async def api_generate_briefing(req: BriefingRequest):
                 related_pairs.append((peer, edge))
         metrics = _build_metrics_context(node)
         prompt = build_prompt(entity_id, node, related_pairs, metrics, context_nodes)
-        client = AsyncGroq(api_key=settings.groq_api_key)
-        completion = await client.chat.completions.create(
-            model=settings.groq_model,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": prompt},
-            ],
-            temperature=0.3,
-            max_tokens=1024,
-            response_format={"type": "json_object"},
-        )
-        content = completion.choices[0].message.content
+        content = None
+        if settings.hf_token:
+            try:
+                content = await _call_hf(prompt, settings)
+                logger.info("Briefing generated via HuggingFace")
+            except Exception as hf_exc:
+                logger.warning(f"HF briefing failed, falling back to Groq: {hf_exc}")
+        if content is None and settings.groq_api_key:
+            content = await _call_groq(prompt, settings)
+            logger.info("Briefing generated via Groq fallback")
+        if content is None:
+            raise HTTPException(status_code=502, detail="All AI providers failed or unavailable")
         return json.loads(content)
     except HTTPException:
         raise
