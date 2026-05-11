@@ -4,6 +4,11 @@ I wanted to make a small project that could combine multiple small, free, availa
 
 NexusGraph is an end-to-end intelligence platform that processes raw datasets into a knowledge graph, allowing for the exploration of systemic relationships between climate, economy, disease, and social infrastructure.
 
+## Live Deployment
+
+- **Backend (API)**: [https://nexusgraph.onrender.com/api/health](https://nexusgraph.onrender.com/api/health)
+- **Frontend (Dashboard)**: [https://nexusgraph-adityaverma9777.vercel.app](https://nexusgraph-adityaverma9777.vercel.app)
+
 ## Project Vision
 
 The goal of this project is to connect disparate data sources to reveal how changes in one domain (like climate) might correlate with or impact another (like economic stability or disease outbreaks). By treating data points as nodes in a graph rather than rows in a table, I can visualize the "nexus" of global issues.
