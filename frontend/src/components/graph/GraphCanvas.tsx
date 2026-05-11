@@ -16,12 +16,24 @@ export default function GraphCanvas() {
   const setSelectedEdgeId = useGraphStore((state) => state.setSelectedEdgeId)
   const cyRef = useRef<Core | null>(null)
 
+  function zoomToCenter(factor: number) {
+    const cy = cyRef.current
+    if (!cy) return
+    const container = cy.container()
+    if (!container) return
+    const { width, height } = container.getBoundingClientRect()
+    cy.zoom({
+      level: cy.zoom() * factor,
+      renderedPosition: { x: width / 2, y: height / 2 },
+    })
+  }
+
   function handleZoomIn() {
-    if (cyRef.current) cyRef.current.zoom(cyRef.current.zoom() * 1.2)
+    zoomToCenter(1.2)
   }
 
   function handleZoomOut() {
-    if (cyRef.current) cyRef.current.zoom(cyRef.current.zoom() * 0.8)
+    zoomToCenter(0.8)
   }
 
   function getNodeLabel(label: string) {
@@ -144,7 +156,8 @@ export default function GraphCanvas() {
         minZoom={0.01}
         maxZoom={5}
         zoomingEnabled={true}
-        userZoomingEnabled={false}
+        userZoomingEnabled={true}
+        wheelSensitivity={0.2}
         panningEnabled={true}
         userPanningEnabled={true}
         cy={(cy: Core) => {
@@ -162,11 +175,15 @@ export default function GraphCanvas() {
             }
           })
           cy.ready(() => {
-            cy.fit(undefined, 150)
+            cy.fit(undefined, 80)
             cy.center()
           })
           cy.on('layoutstop', () => {
-            cy.fit(undefined, 150)
+            cy.fit(undefined, 80)
+            cy.center()
+          })
+          cy.on('scrollzoom', () => {
+            cy.center()
           })
         }}
       />
