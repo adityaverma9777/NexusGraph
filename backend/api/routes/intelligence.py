@@ -108,7 +108,7 @@ def _build_metrics_context(node: dict) -> list[dict]:
 
 async def _call_hf(prompt: str, settings) -> str:
     import httpx
-    url = f"https://api-inference.huggingface.co/models/{settings.hf_model}/v1/chat/completions"
+    url = "https://router.huggingface.co/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {settings.hf_token}",
         "Content-Type": "application/json"

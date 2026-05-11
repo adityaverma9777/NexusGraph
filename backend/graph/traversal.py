@@ -519,7 +519,7 @@ async def search_graph(q: str, domain: str | None = None, limit: int = 12, min_c
             if settings.hf_token:
                 try:
                     import httpx
-                    url = f"https://api-inference.huggingface.co/models/{settings.hf_model}/v1/chat/completions"
+                    url = "https://router.huggingface.co/v1/chat/completions"
                     headers = {
                         "Authorization": f"Bearer {settings.hf_token}",
                         "Content-Type": "application/json"
