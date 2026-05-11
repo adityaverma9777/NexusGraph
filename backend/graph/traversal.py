@@ -1,6 +1,6 @@
 import json
 from db.supabase_client import get_supabase
-from etl.ingesters.geography.global_backbone import load_world_bank_countries
+# from etl.ingesters.geography.global_backbone import load_world_bank_countries
 from graph.neo4j_client import neo4j_client
 from models.graph import GraphNode, GraphEdge, GraphPayload
 
@@ -99,6 +99,7 @@ async def _search_country_nodes(q: str, limit: int) -> list[GraphNode]:
     if not query:
         return []
 
+    from etl.ingesters.geography.global_backbone import load_world_bank_countries
     countries = await load_world_bank_countries()
     matches: list[GraphNode] = []
     for country in countries:
