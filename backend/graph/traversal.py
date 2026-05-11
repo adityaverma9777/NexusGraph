@@ -107,48 +107,33 @@ async def _search_country_nodes(q: str, limit: int) -> list[GraphNode]:
     query = q.strip().lower()
     if not query:
         return []
-
-    from etl.ingesters.geography.global_backbone import load_world_bank_countries
-    countries = await load_world_bank_countries()
+    client = get_supabase()
+    try:
+        rows = (
+            client.table("metrics")
+            .select("domain,entity_type,entity_id,lat,lon,valid_from,valid_to,source_dataset,metric_value,properties,country_code")
+            .in_("entity_type", ["Country", "CountryProfile", "AdminArea"])
+            .limit(200)
+            .execute()
+        ).data or []
+    except Exception:
+        rows = []
     matches: list[GraphNode] = []
-    for country in countries:
-        code = str(country.get("code") or "").upper()
-        name = str(country.get("name") or code)
-        region = str(country.get("region") or "")
-        income_level = str(country.get("income_level") or "")
-        capital_city = str(country.get("capital_city") or "")
-        haystack = f"{code} {name} {region} {income_level} {capital_city}".lower()
-        if query not in haystack and query not in code.lower():
+    seen: set[str] = set()
+    for row in rows:
+        cc = str(row.get("country_code") or "").lower()
+        props = row.get("properties") or {}
+        name = str(props.get("country_name") or props.get("name") or cc)
+        haystack = f"{cc} {name}".lower()
+        if query not in haystack:
             continue
-        matches.append(
-            GraphNode(
-                id=f"country:{code}",
-                domain="meta",
-                entity_type="CountryProfile",
-                label=name,
-                properties={
-                    "country_code": code,
-                    "country_name": name,
-                    "region": region,
-                    "income_level": income_level,
-                    "capital_city": capital_city,
-                },
-                lat=country.get("latitude"),
-                lon=country.get("longitude"),
-                source="derived_context",
-                severity=0.0,
-            )
-        )
-
-    def score(node: GraphNode) -> tuple[int, int, str]:
-        label = node.label.lower()
-        code = str(node.properties.get("country_code") or "").lower()
-        exact = 2 if query == code or query == label else 0
-        prefix = 1 if label.startswith(query) or code.startswith(query) else 0
-        return (exact, prefix, label)
-
-    matches.sort(key=score, reverse=True)
-    return matches[:limit]
+        node = _supabase_row_to_node(row)
+        if node and node.id not in seen:
+            matches.append(node)
+            seen.add(node.id)
+        if len(matches) >= limit:
+            break
+    return matches
 
 def _search_metrics_rows(q: str, domain: str | None, limit: int) -> list[GraphNode]:
     q_lower = q.lower()

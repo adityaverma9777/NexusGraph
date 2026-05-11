@@ -16,6 +16,7 @@ const ConnectionGuard: React.FC<ConnectionGuardProps> = ({ children }) => {
       try {
         const response = await fetch(`${baseUrl}/api/health`);
         if (response.ok) {
+          window.clearInterval(intervalId);
           setIsWarmedUp(true);
         } else {
           setErrorCount(prev => prev + 1);
@@ -26,9 +27,7 @@ const ConnectionGuard: React.FC<ConnectionGuardProps> = ({ children }) => {
     };
 
     checkHealth();
-
     intervalId = window.setInterval(checkHealth, 2000);
-
     return () => window.clearInterval(intervalId);
   }, [baseUrl]);
 
