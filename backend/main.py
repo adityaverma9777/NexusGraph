@@ -3,11 +3,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 from config import get_settings
-from api.routes import graph, metrics, map_routes, intelligence, search, alerts
-from db.supabase_client import init_supabase
-from graph.neo4j_client import neo4j_client
+try:
+    from api.routes import graph, metrics, map_routes, intelligence, search, alerts
+    from db.supabase_client import init_supabase
+    from graph.neo4j_client import neo4j_client
+except Exception as e:
+    import sys
+    print(f"CRITICAL: Import failure: {e}")
+    sys.exit(1)
 
-settings = get_settings()
+try:
+    settings = get_settings()
+except Exception as e:
+    import sys
+    print(f"CRITICAL: Failed to load settings: {e}")
+    sys.exit(1)
 
 LOCAL_CORS_ORIGINS = {
     "http://localhost:5173",
