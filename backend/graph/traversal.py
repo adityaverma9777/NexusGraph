@@ -563,51 +563,18 @@ async def search_graph(q: str, domain: str | None = None, limit: int = 12, min_c
             from loguru import logger
             logger.warning(f"Failed to load country nodes for {primary_country}: {e}")
 
-    # Remove duplicates
     seen = set()
     unique_nodes = []
     for n in nodes:
         if n.id not in seen:
             unique_nodes.append(n)
             seen.add(n.id)
-    
-    # Always include systemic links
-    edges = _infer_systemic_edges(unique_nodes)
     structural = _derive_structural_graph(unique_nodes)
-    
-    # Merge and deduplicate
     final_nodes_map = {n.id: n for n in unique_nodes}
     for n in structural.nodes:
         final_nodes_map[n.id] = n
-    
-    final_edges_map = {e.id: e for e in edges}
-    for e in structural.edges:
-        final_edges_map[e.id] = e
-    
+    final_edges_map = {e.id: e for e in structural.edges}
     return GraphPayload(
         nodes=list(final_nodes_map.values()),
         edges=list(final_edges_map.values())
     )
-
-    series_nodes = (
-        _load_series_nodes(primary.entity_type, primary_country, as_of=as_of, limit=8)
-        if primary_country and primary.entity_type
-        else []
-    )
-    if series_nodes:
-        return _derive_structural_graph(series_nodes)
-
-    if not neo4j_client.is_connected:
-        return _derive_structural_graph(matches)
-
-    node_map: dict[str, GraphNode] = {}
-    edge_map: dict[str, GraphEdge] = {}
-    for match in matches[:3]:
-        payload = await expand_node(match.id, hops=1, min_confidence=min_confidence, as_of=as_of)
-        for node in payload.nodes:
-            node_map[node.id] = node
-        for edge in payload.edges:
-            edge_map[edge.id] = edge
-    if edge_map:
-        return GraphPayload(nodes=list(node_map.values()), edges=list(edge_map.values()))
-    return _derive_structural_graph(matches)
