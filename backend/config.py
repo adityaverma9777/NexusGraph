@@ -30,6 +30,12 @@ class Settings(BaseSettings):
     full_ingest_edge_limit: int = 10000000
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:5174", "https://nexusgraph.vercel.app"]
 
+    @property
+    def get_cors_origins(self) -> list[str]:
+        if isinstance(self.cors_origins, str):
+            return [s.strip() for s in self.cors_origins.split(",") if s.strip()]
+        return self.cors_origins
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

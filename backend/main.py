@@ -1,22 +1,21 @@
+import sys
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from loguru import logger
-from config import get_settings
 try:
+    from fastapi import FastAPI
+    from fastapi.middleware.cors import CORSMiddleware
+    from loguru import logger
+    from config import get_settings
     from api.routes import graph, metrics, map_routes, intelligence, search, alerts
     from db.supabase_client import init_supabase
     from graph.neo4j_client import neo4j_client
 except Exception as e:
-    import sys
-    print(f"CRITICAL: Import failure: {e}")
+    print(f"CRITICAL: Import failure at top level: {e}")
     sys.exit(1)
 
 try:
     settings = get_settings()
 except Exception as e:
-    import sys
-    print(f"CRITICAL: Failed to load settings: {e}")
+    print(f"CRITICAL: Settings loading failed: {e}")
     sys.exit(1)
 
 LOCAL_CORS_ORIGINS = {
@@ -52,7 +51,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-allowed_origins = sorted({*(settings.cors_origins or []), *LOCAL_CORS_ORIGINS})
+allowed_origins = sorted({*(settings.get_cors_origins or []), *LOCAL_CORS_ORIGINS})
 
 app.add_middleware(
     CORSMiddleware,
