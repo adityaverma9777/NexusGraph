@@ -68,21 +68,21 @@ export default function TimeSeriesChart() {
   const series = query.data ?? []
 
   return (
-    <div className="rounded-xl border border-[#1f2a3b] bg-[#0d1828] p-4">
-      <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#7f93b1]">{title}</p>
-      {query.isFetching && <p className="mb-2 text-xs text-[#91a5c2]">Refreshing time series...</p>}
+    <div className="rounded-xl border border-[#1a1a1a] bg-[#0a0a0a] p-4">
+      <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#aaaaaa]">{title}</p>
+      {query.isFetching && <p className="mb-2 text-xs text-[#bbbbbb]">Refreshing time series...</p>}
       {series.length > 0 ? (
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={series}>
             <CartesianGrid strokeDasharray="3 3" stroke="#27364d" />
             <XAxis dataKey="month" stroke="#8ea3c1" />
             <YAxis stroke="#8ea3c1" />
-            <Tooltip contentStyle={{ backgroundColor: '#122136', border: '1px solid #2d3d54', color: '#e6edf7' }} />
-            <Line type="monotone" dataKey="primary" stroke="#4db8ff" dot={false} />
+            <Tooltip contentStyle={{ backgroundColor: '#122136', border: '1px solid #2d3d54', color: '#f0f0f0' }} />
+            <Line type="monotone" dataKey="primary" stroke="#ffffff" dot={false} />
           </LineChart>
         </ResponsiveContainer>
       ) : (
-        <div className="flex h-[200px] items-center justify-center text-sm text-[#7f93b1]">
+        <div className="flex h-[200px] items-center justify-center text-sm text-[#aaaaaa]">
           No live time-series data available for the active graph selection
         </div>
       )}

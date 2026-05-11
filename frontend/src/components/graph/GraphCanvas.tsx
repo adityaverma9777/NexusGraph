@@ -99,22 +99,22 @@ export default function GraphCanvas() {
 
   if (!hasQuery) {
     return (
-      <div className="flex h-[calc(100vh-73px)] w-full flex-col items-center justify-center gap-5 bg-[#0a1220]">
+      <div className="flex h-[calc(100vh-73px)] w-full flex-col items-center justify-center gap-5 bg-[#000000]">
         <div className="text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[#1f2a3b] bg-[#0d1828]">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-[#4db8ff]">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-[#1a1a1a] bg-[#0a0a0a]">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-[#ffffff]">
               <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" />
               <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </div>
-          <p className="text-sm font-medium text-[#c6d7ec]">Start exploring</p>
-          <p className="mt-1 max-w-xs text-xs text-[#5a7090]">
+          <p className="text-sm font-medium text-[#dddddd]">Start exploring</p>
+          <p className="mt-1 max-w-xs text-xs text-[#999999]">
             Search for a concept above — dengue, rainfall, conflict, deforestation — and the graph will expand from there.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-2 px-8">
           {['Dengue', 'Rainfall', 'Displacement', 'Deforestation'].map((hint) => (
-            <span key={hint} className="rounded-full border border-[#1a2a3d] bg-[#0d1828] px-3 py-1 text-xs text-[#5a7090]">
+            <span key={hint} className="rounded-full border border-[#111111] bg-[#0a0a0a] px-3 py-1 text-xs text-[#999999]">
               {hint}
             </span>
           ))}
@@ -129,21 +129,21 @@ export default function GraphCanvas() {
 
   if (nodes.length === 0) {
     return (
-      <div className="flex h-[calc(100vh-73px)] w-full flex-col items-center justify-center gap-3 bg-[#0a1220]">
-        <p className="text-sm text-[#c6d7ec]">No nodes found</p>
-        <p className="text-xs text-[#5a7090]">Try a different search term or concept</p>
+      <div className="flex h-[calc(100vh-73px)] w-full flex-col items-center justify-center gap-3 bg-[#000000]">
+        <p className="text-sm text-[#dddddd]">No nodes found</p>
+        <p className="text-xs text-[#999999]">Try a different search term or concept</p>
       </div>
     )
   }
 
   return (
-    <div className="relative h-[calc(100vh-73px)] w-full overflow-hidden bg-[#0a1220]">
-      <div className="absolute right-6 top-6 z-10 flex flex-col gap-2 rounded-lg border border-[#1f2a3b] bg-[#0f1b2d] p-1 shadow-lg">
-        <button onClick={handleZoomIn} className="flex h-8 w-8 items-center justify-center rounded transition-colors hover:bg-[#1a2940] text-[#e6edf7]">
+    <div className="relative h-[calc(100vh-73px)] w-full overflow-hidden bg-[#000000]">
+      <div className="absolute right-6 top-6 z-10 flex flex-col gap-2 rounded-lg border border-[#1a1a1a] bg-[#0a0a0a] p-1 shadow-lg">
+        <button onClick={handleZoomIn} className="flex h-8 w-8 items-center justify-center rounded transition-colors hover:bg-[#111111] text-[#f0f0f0]">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </button>
-        <div className="h-px w-full bg-[#1f2a3b]"></div>
-        <button onClick={handleZoomOut} className="flex h-8 w-8 items-center justify-center rounded transition-colors hover:bg-[#1a2940] text-[#e6edf7]">
+        <div className="h-px w-full bg-[#1a1a1a]"></div>
+        <button onClick={handleZoomOut} className="flex h-8 w-8 items-center justify-center rounded transition-colors hover:bg-[#111111] text-[#f0f0f0]">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </button>
       </div>

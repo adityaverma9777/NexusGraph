@@ -11,9 +11,9 @@ export default function MapView() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Geospatial Intelligence</p>
-        <h2 className="text-2xl font-semibold text-[#f3f7ff]">Multi-layer intelligence map</h2>
-        <p className="mt-1 text-sm text-[#91a5c2]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Geospatial Intelligence</p>
+        <h2 className="text-2xl font-semibold text-[#ffffff]">Multi-layer intelligence map</h2>
+        <p className="mt-1 text-sm text-[#bbbbbb]">
           Enable overlays on the right to see where climate, disease, conflict and ecological signals converge.
         </p>
       </div>
@@ -31,17 +31,17 @@ export default function MapView() {
                 return (
                   <div
                     key={id}
-                    className="flex items-center gap-2 rounded-full border border-[#1f2a3b] bg-[#0a1220] px-3 py-1.5 text-xs"
+                    className="flex items-center gap-2 rounded-full border border-[#1a1a1a] bg-[#000000] px-3 py-1.5 text-xs"
                   >
                     <span
                       className="h-2 w-2 rounded-full"
                       style={{ backgroundColor: layer.color }}
                     />
-                    <span className="text-[#c6d7ec]">{layer.label}</span>
+                    <span className="text-[#dddddd]">{layer.label}</span>
                   </div>
                 )
               })}
-              <span className="rounded-full border border-[#1f2a3b] bg-[#0a1220] px-3 py-1.5 text-xs text-[#7090b0]">
+              <span className="rounded-full border border-[#1a1a1a] bg-[#000000] px-3 py-1.5 text-xs text-[#7090b0]">
                 {activeLayers.length} active overlay{activeLayers.length !== 1 ? 's' : ''}
               </span>
             </div>
@@ -54,11 +54,11 @@ export default function MapView() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-xl border border-[#1f2a3b] bg-[#0f1724]/95 p-4 text-center"
+                className="rounded-xl border border-[#1a1a1a] bg-[#0f1724]/95 p-4 text-center"
               >
-                <p className="text-2xl font-bold text-[#eaf2ff]">{stat.value}</p>
-                <p className="text-xs font-medium text-[#c6d7ec]">{stat.label}</p>
-                <p className="text-[10px] text-[#5a7090]">{stat.sub}</p>
+                <p className="text-2xl font-bold text-[#ffffff]">{stat.value}</p>
+                <p className="text-xs font-medium text-[#dddddd]">{stat.label}</p>
+                <p className="text-[10px] text-[#999999]">{stat.sub}</p>
               </div>
             ))}
           </div>

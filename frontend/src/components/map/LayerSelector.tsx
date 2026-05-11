@@ -16,9 +16,9 @@ export default function LayerSelector() {
   const setTileProvider = useMapStore((state) => state.setTileProvider)
 
   return (
-    <aside className="space-y-5 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <aside className="space-y-5 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <div>
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Map Style</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Map Style</p>
         <div className="mt-3 flex gap-2">
           {TILE_OPTIONS.map((opt) => (
             <button
@@ -27,8 +27,8 @@ export default function LayerSelector() {
               onClick={() => setTileProvider(opt.value)}
               className={`flex-1 rounded-lg border py-2 text-xs font-medium transition-colors ${
                 tileProvider === opt.value
-                  ? 'border-[#4e79ab] bg-[#193254] text-[#eaf2ff]'
-                  : 'border-[#1f2a3b] text-[#91a5c2] hover:border-[#2f4564] hover:bg-[#14243a]'
+                  ? 'border-[#4e79ab] bg-[#193254] text-[#ffffff]'
+                  : 'border-[#1a1a1a] text-[#bbbbbb] hover:border-[#222222] hover:bg-[#14243a]'
               }`}
             >
               {opt.label}
@@ -37,8 +37,8 @@ export default function LayerSelector() {
         </div>
       </div>
       <div>
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Active Overlays</p>
-        {isFetching && <p className="mt-2 text-xs text-[#91a5c2]">Refreshing layer catalog...</p>}
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Active Overlays</p>
+        {isFetching && <p className="mt-2 text-xs text-[#bbbbbb]">Refreshing layer catalog...</p>}
         <ul className="mt-3 space-y-4">
           {layerEntries.map((layer) => {
             const isActive = activeLayers.includes(layer.id)
@@ -56,7 +56,7 @@ export default function LayerSelector() {
                       />
                       <div
                         className={`h-4 w-7 rounded-full border transition-colors ${
-                          isActive ? 'border-current' : 'border-[#2b3a52] bg-[#0f1b2d]'
+                          isActive ? 'border-current' : 'border-[#222222] bg-[#0a0a0a]'
                         }`}
                         style={isActive ? { backgroundColor: layer.color + '33', borderColor: layer.color } : undefined}
                       >
@@ -77,7 +77,7 @@ export default function LayerSelector() {
                 </div>
                 {isActive && (
                   <div className="flex items-center gap-2 pl-9">
-                    <span className="text-[10px] text-[#7f93b1]">Opacity</span>
+                    <span className="text-[10px] text-[#aaaaaa]">Opacity</span>
                     <input
                       type="range"
                       min="0.1"
@@ -87,7 +87,7 @@ export default function LayerSelector() {
                       onChange={(e) => setLayerOpacity(layer.id, Number(e.target.value))}
                       className="flex-1"
                     />
-                    <span className="min-w-[28px] text-right text-[10px] text-[#c6d7ec]">
+                    <span className="min-w-[28px] text-right text-[10px] text-[#dddddd]">
                       {Math.round(opacity * 100)}%
                     </span>
                   </div>
@@ -97,8 +97,8 @@ export default function LayerSelector() {
           })}
         </ul>
       </div>
-      <div className="rounded-xl border border-[#1f2a3b] bg-[#0a1220] p-3 text-xs text-[#7f93b1]">
-        <p className="font-semibold text-[#9ab0cd]">Tip</p>
+      <div className="rounded-xl border border-[#1a1a1a] bg-[#000000] p-3 text-xs text-[#aaaaaa]">
+        <p className="font-semibold text-[#cccccc]">Tip</p>
         <p className="mt-1">Enable up to 4 layers to see spatial overlap zones — where multiple crises converge.</p>
       </div>
     </aside>

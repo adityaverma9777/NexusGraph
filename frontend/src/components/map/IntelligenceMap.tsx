@@ -94,14 +94,14 @@ export default function IntelligenceMap({ children }: { children?: ReactNode }) 
   }))
 
   return (
-    <div className="relative h-[520px] overflow-hidden rounded-2xl border border-[#1f2a3b] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <div className="relative h-[520px] overflow-hidden rounded-2xl border border-[#1a1a1a] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       {clickedPoint && spatialLoading && (
-        <div className="pointer-events-none absolute left-1/2 top-3 z-[500] -translate-x-1/2 rounded-full border border-[#1f2a3b] bg-[#0d1828]/90 px-4 py-1.5 text-xs text-[#4db8ff]">
+        <div className="pointer-events-none absolute left-1/2 top-3 z-[500] -translate-x-1/2 rounded-full border border-[#1a1a1a] bg-[#0a0a0a]/90 px-4 py-1.5 text-xs text-[#ffffff]">
           Querying 50km radius...
         </div>
       )}
       {clickedPoint && !spatialLoading && spatialData && (
-        <div className="pointer-events-none absolute left-1/2 top-3 z-[500] -translate-x-1/2 rounded-full border border-[#1f2a3b] bg-[#0d1828]/90 px-4 py-1.5 text-xs text-[#52b788]">
+        <div className="pointer-events-none absolute left-1/2 top-3 z-[500] -translate-x-1/2 rounded-full border border-[#1a1a1a] bg-[#0a0a0a]/90 px-4 py-1.5 text-xs text-[#52b788]">
           {(spatialData as { count?: number }).count ?? 0} entities within 50km
         </div>
       )}

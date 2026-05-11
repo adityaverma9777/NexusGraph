@@ -217,7 +217,7 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
 
   if (!activeEntityId) {
     return (
-      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 text-sm text-[#91a5c2] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 text-sm text-[#bbbbbb] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         Select a graph node or relationship to generate a live intelligence briefing.
       </div>
     )
@@ -225,7 +225,7 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
 
   if (query.isFetching && !briefing) {
     return (
-      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 text-sm text-[#91a5c2] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 text-sm text-[#bbbbbb] shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         Generating live intelligence briefing...
       </div>
     )
@@ -243,24 +243,24 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
     <div className="space-y-6">
       <AlertBanner title={briefing.headline} detail={briefing.classification} />
       {query.isFetching && (
-        <p className="text-xs uppercase tracking-[0.2em] text-[#91a5c2]">Refreshing intelligence...</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-[#bbbbbb]">Refreshing intelligence...</p>
       )}
-      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Situation Summary</p>
-        <p className="mt-3 text-sm text-[#c6d7ec]">{briefing.situationSummary || 'No summary returned.'}</p>
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Situation Summary</p>
+        <p className="mt-3 text-sm text-[#dddddd]">{briefing.situationSummary || 'No summary returned.'}</p>
       </div>
 
-      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Contributing Factors</p>
-        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-[#c6d7ec]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Contributing Factors</p>
+        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-[#dddddd]">
           {(briefing.contributingFactors.length ? briefing.contributingFactors : ['No contributing factors returned.']).map((factor, index) => (
             <li key={index}>{factor}</li>
           ))}
         </ul>
       </div>
 
-      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Downstream Risks</p>
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Downstream Risks</p>
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           {(briefing.downstreamRisks.length ? briefing.downstreamRisks : [{ risk: 'No downstream risks returned.', domain: 'unknown', probability: 'N/A', confidenceScore: 0, impactScore: 0, timeframe: 'N/A', pathway: [] }]).map((risk, index) => {
             const canResolve = nodes && nodes.length > 0
@@ -270,21 +270,21 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
               type="button"
               onClick={(event) => handleRiskClick(event, risk, index)}
               disabled={!canResolve}
-              className={`rounded-lg border p-3 text-left transition-colors ${activeRiskIndex === index ? 'border-[#4db8ff] bg-[#14253b]' : 'border-[#2b3a52] bg-[#101b2c] hover:bg-[#122136]'} ${!canResolve ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+              className={`rounded-lg border p-3 text-left transition-colors ${activeRiskIndex === index ? 'border-[#ffffff] bg-[#14253b]' : 'border-[#222222] bg-[#101b2c] hover:bg-[#122136]'} ${!canResolve ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="font-semibold text-[#e6edf7]">{risk.risk}</p>
+                  <p className="font-semibold text-[#f0f0f0]">{risk.risk}</p>
                   <p className="mt-1 text-xs uppercase tracking-[0.2em] text-[#8ea3c1]">{risk.domain}</p>
                 </div>
-                <span className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] ${canResolve ? 'border-[#2b3a52] text-[#c6d7ec]' : 'border-[#3a2b2b] text-[#7f6565]'}`}>
+                <span className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] ${canResolve ? 'border-[#222222] text-[#dddddd]' : 'border-[#3a2b2b] text-[#7f6565]'}`}>
                   {canResolve ? 'Open in graph' : 'No graph data'}
                 </span>
               </div>
-              <p className="mt-2 text-xs text-[#9ab0cd]">
+              <p className="mt-2 text-xs text-[#cccccc]">
                 {risk.probability} probability | {risk.timeframe}
               </p>
-              <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-[#c6d7ec]">
+              <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-[#dddddd]">
                 <span className="rounded-md border border-[#23344a] bg-[#0c1726] px-2 py-1">Confidence {risk.confidenceScore}%</span>
                 <span className="rounded-md border border-[#23344a] bg-[#0c1726] px-2 py-1">Impact {risk.impactScore}%</span>
               </div>
@@ -296,15 +296,15 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
           <div className="mt-4 rounded-xl border border-[#24415f] bg-[#0a1422] p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.3em] text-[#7f93b1]">Risk Pathway</p>
-                <h4 className="mt-1 text-sm font-semibold text-[#f3f7ff]">{activeRisk.risk}</h4>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-[#aaaaaa]">Risk Pathway</p>
+                <h4 className="mt-1 text-sm font-semibold text-[#ffffff]">{activeRisk.risk}</h4>
               </div>
-              <p className="text-xs text-[#91a5c2]">Confidence {activeRisk.confidenceScore}% | Impact {activeRisk.impactScore}%</p>
+              <p className="text-xs text-[#bbbbbb]">Confidence {activeRisk.confidenceScore}% | Impact {activeRisk.impactScore}%</p>
             </div>
             <div className="mt-4 space-y-2">
               {(activeRisk.pathway && activeRisk.pathway.length ? activeRisk.pathway : ['Pathway details not available. Try ingesting more data.']).map((step, index) => (
-                <div key={index} className="flex items-start gap-3 text-sm text-[#c6d7ec]">
-                  <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border border-[#33506f] bg-[#102033] text-[10px] text-[#7f93b1]">
+                <div key={index} className="flex items-start gap-3 text-sm text-[#dddddd]">
+                  <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border border-[#33506f] bg-[#102033] text-[10px] text-[#aaaaaa]">
                     {index + 1}
                   </div>
                   <div className="min-w-0">
@@ -318,13 +318,13 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">
-        <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Confidence</p>
-          <p className="mt-2 text-sm text-[#c6d7ec]">{briefing.confidenceAssessment || 'No confidence assessment returned.'}</p>
+        <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Confidence</p>
+          <p className="mt-2 text-sm text-[#dddddd]">{briefing.confidenceAssessment || 'No confidence assessment returned.'}</p>
         </div>
-        <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Data Gaps</p>
-          <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-[#c6d7ec]">
+        <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Data Gaps</p>
+          <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-[#dddddd]">
             {(briefing.dataGaps.length ? briefing.dataGaps : ['No data gaps returned.']).map((gap, index) => (
               <li key={index}>{gap}</li>
             ))}
@@ -332,9 +332,9 @@ export default function IntelligenceBriefing({ entityId, contextNodeIds = [] }: 
         </div>
       </div>
 
-      <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Recommended Monitoring</p>
-        <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-[#c6d7ec]">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Recommended Monitoring</p>
+        <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-[#dddddd]">
           {(briefing.recommendedMonitoring.length ? briefing.recommendedMonitoring : ['No monitoring guidance returned.']).map((item, index) => (
             <li key={index}>{item}</li>
           ))}

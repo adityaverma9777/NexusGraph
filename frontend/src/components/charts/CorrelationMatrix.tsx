@@ -2,7 +2,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useGraph } from '../../hooks/useGraph'
 
 const RELATIONSHIP_COLORS: Record<string, string> = {
-  DRIVES: '#4db8ff',
+  DRIVES: '#ffffff',
   AMPLIFIES: '#f4a261',
   TRIGGERS: '#ef233c',
   STRESSES: '#c77dff',
@@ -25,13 +25,13 @@ export default function CorrelationMatrix() {
     .slice(0, 8)
 
   return (
-    <div className="rounded-xl border border-[#1f2a3b] bg-[#0d1828] p-4">
-      <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#7f93b1]">
+    <div className="rounded-xl border border-[#1a1a1a] bg-[#0a0a0a] p-4">
+      <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#aaaaaa]">
         Edge Confidence | {edges.length} active relationships
       </p>
       <ResponsiveContainer width="100%" height={160}>
         <BarChart data={data} layout="vertical" margin={{ left: 0, right: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1a2a3d" horizontal={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#111111" horizontal={false} />
           <XAxis type="number" domain={[0, 1]} stroke="#8ea3c1" tick={{ fontSize: 10 }} />
           <YAxis
             type="category"
@@ -41,7 +41,7 @@ export default function CorrelationMatrix() {
             width={80}
           />
           <Tooltip
-            contentStyle={{ backgroundColor: '#0d1828', border: '1px solid #2d3d54', color: '#e6edf7', fontSize: 12 }}
+            contentStyle={{ backgroundColor: '#0a0a0a', border: '1px solid #2d3d54', color: '#f0f0f0', fontSize: 12 }}
             formatter={(value) => {
               const numeric = typeof value === 'number' ? value : Number(value ?? 0)
               return [`${(numeric * 100).toFixed(0)}%`, 'Confidence']

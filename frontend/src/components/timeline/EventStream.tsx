@@ -40,14 +40,14 @@ export default function EventStream() {
   })
 
   return (
-    <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Event Stream</p>
-          <h3 className="mt-1 text-lg font-semibold text-[#f3f7ff]">Active intelligence signals</h3>
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Event Stream</p>
+          <h3 className="mt-1 text-lg font-semibold text-[#ffffff]">Active intelligence signals</h3>
         </div>
         {isFetching && (
-          <span className="h-2 w-2 animate-pulse rounded-full bg-[#4db8ff]" title="Refreshing" />
+          <span className="h-2 w-2 animate-pulse rounded-full bg-[#ffffff]" title="Refreshing" />
         )}
       </div>
       <ul className="mt-4 space-y-3">
@@ -67,9 +67,9 @@ export default function EventStream() {
               </li>
             ))
           : !isFetching && !isError && (
-              <li className="rounded-xl border border-[#1f2a3b] bg-[#0a1220] px-4 py-5 text-center">
-                <p className="text-sm text-[#c6d7ec]">No active alerts</p>
-                <p className="mt-1 text-xs text-[#5a7090]">
+              <li className="rounded-xl border border-[#1a1a1a] bg-[#000000] px-4 py-5 text-center">
+                <p className="text-sm text-[#dddddd]">No active alerts</p>
+                <p className="mt-1 text-xs text-[#999999]">
                   Run the backend ETL and alert_runner.py to populate real signals.
                 </p>
               </li>

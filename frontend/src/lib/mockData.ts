@@ -190,7 +190,7 @@ export const domainColors: Record<string, string> = {
   water: '#8ecae6',
   energy: '#ffb703',
   meta: '#6c7a92',
-  unknown: '#91a5c2',
+  unknown: '#bbbbbb',
 }
 
 export const timelineSeries = [

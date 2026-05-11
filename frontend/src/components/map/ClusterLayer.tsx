@@ -27,7 +27,7 @@ function getCellSize(zoom: number) {
 function buildClusterIcon(count: number, color: string) {
   return L.divIcon({
     className: '',
-    html: `<div style="width:40px;height:40px;border-radius:9999px;background:${color};border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;color:#f3f7ff;font-weight:700;font-size:12px;box-shadow:0 10px 24px rgba(0,0,0,0.35);">${count}</div>`,
+    html: `<div style="width:40px;height:40px;border-radius:9999px;background:${color};border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;color:#ffffff;font-weight:700;font-size:12px;box-shadow:0 10px 24px rgba(0,0,0,0.35);">${count}</div>`,
     iconSize: [40, 40],
     iconAnchor: [20, 20],
     popupAnchor: [0, -18],
@@ -140,7 +140,7 @@ export default function ClusterLayer() {
           >
             <Popup>
               <div className="min-w-[220px] space-y-2 text-sm">
-                <p className="font-semibold text-[#eaf2ff]">
+                <p className="font-semibold text-[#ffffff]">
                   {cluster.items.length} overlay node{cluster.items.length !== 1 ? 's' : ''}
                 </p>
                 <p className="text-xs uppercase tracking-[0.2em] text-[#8aa0bf]">

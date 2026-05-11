@@ -20,13 +20,13 @@ export default function RiskGauge() {
   const dashOffset = circumference * (1 - riskLevel / 10)
 
   return (
-    <div className="rounded-xl border border-[#1f2a3b] bg-[#0d1828] p-6 text-center">
+    <div className="rounded-xl border border-[#1a1a1a] bg-[#0a0a0a] p-6 text-center">
       <p className="text-xs uppercase tracking-[0.3em] text-[#8ea3c1]">
         {selectedNode ? selectedNode.label : 'System Risk Level'}
       </p>
       <div className="relative mx-auto mt-2 h-32 w-32">
         <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90">
-          <circle cx="50" cy="50" r="45" fill="none" stroke="#1a2a3d" strokeWidth="8" />
+          <circle cx="50" cy="50" r="45" fill="none" stroke="#111111" strokeWidth="8" />
           <circle
             cx="50"
             cy="50"
@@ -49,7 +49,7 @@ export default function RiskGauge() {
       </div>
       <p className="mt-2 text-sm font-semibold" style={{ color: riskColor }}>{riskLabel} Risk</p>
       {!selectedNode && realNodes.length > 0 && (
-        <p className="mt-1 text-[10px] text-[#5a7090]">avg. across {realNodes.length} nodes</p>
+        <p className="mt-1 text-[10px] text-[#999999]">avg. across {realNodes.length} nodes</p>
       )}
     </div>
   )

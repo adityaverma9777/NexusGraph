@@ -66,13 +66,13 @@ function normalizeDatasets(payload: unknown): DatasetRow[] | null {
 
 const UPDATE_COLORS: Record<string, string> = {
   Realtime: '#52b788',
-  Daily: '#4db8ff',
+  Daily: '#ffffff',
   Weekly: '#a8dadc',
   Monthly: '#f4a261',
   Annual: '#c77dff',
   Biannual: '#f4a261',
   Decadal: '#ef233c',
-  Variable: '#91a5c2',
+  Variable: '#bbbbbb',
   '16-day': '#a8dadc',
 }
 
@@ -97,8 +97,8 @@ export default function DataRegistry() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Dataset Registry</p>
-        <h2 className="text-2xl font-semibold text-[#f3f7ff]">All ingested sources ({allDatasets.length})</h2>
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Dataset Registry</p>
+        <h2 className="text-2xl font-semibold text-[#ffffff]">All ingested sources ({allDatasets.length})</h2>
       </div>
       <div className="flex flex-wrap items-center gap-3">
             <input
@@ -106,7 +106,7 @@ export default function DataRegistry() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search datasets..."
-              className="w-56 rounded-lg border border-[#2b3a52] bg-[#0f1b2d] px-3 py-2 text-sm text-[#e6edf7] placeholder:text-[#6f86a7] focus:outline-none focus:border-[#4e79ab]"
+              className="w-56 rounded-lg border border-[#222222] bg-[#0a0a0a] px-3 py-2 text-sm text-[#f0f0f0] placeholder:text-[#6f86a7] focus:outline-none focus:border-[#4e79ab]"
             />
             <div className="flex flex-wrap gap-2">
               {domains.map((d) => (
@@ -116,17 +116,17 @@ export default function DataRegistry() {
                   onClick={() => setDomainFilter(d)}
                   className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                     domainFilter === d
-                      ? 'bg-[#193254] text-[#eaf2ff] border border-[#4e79ab]'
-                      : 'border border-[#1f2a3b] text-[#91a5c2] hover:border-[#2f4564]'
+                      ? 'bg-[#193254] text-[#ffffff] border border-[#4e79ab]'
+                      : 'border border-[#1a1a1a] text-[#bbbbbb] hover:border-[#222222]'
                   }`}
                 >
                   {d}
                 </button>
               ))}
             </div>
-            <span className="ml-auto text-xs text-[#7f93b1]">{filtered.length} results</span>
+            <span className="ml-auto text-xs text-[#aaaaaa]">{filtered.length} results</span>
           </div>
-          <div className="overflow-hidden rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95">
+          <div className="overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95">
             <table className="w-full text-left text-sm">
               <thead className="bg-[#122136] text-xs uppercase tracking-[0.2em] text-[#8aa0bf]">
                 <tr>
@@ -141,18 +141,18 @@ export default function DataRegistry() {
                   <tr key={dataset.name} className="transition-colors hover:bg-[#0d1f33]">
                     <td className="px-5 py-3.5 font-medium text-[#dce8f9]">{dataset.name}</td>
                     <td className="px-5 py-3.5">
-                      <span className="rounded-full border border-[#1f2a3b] bg-[#0a1220] px-2.5 py-0.5 text-xs text-[#9ab0cd]">
+                      <span className="rounded-full border border-[#1a1a1a] bg-[#000000] px-2.5 py-0.5 text-xs text-[#cccccc]">
                         {dataset.domain}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 text-[#9ab0cd]">{dataset.source}</td>
+                    <td className="px-5 py-3.5 text-[#cccccc]">{dataset.source}</td>
                     <td className="px-5 py-3.5">
                       <span
                         className="rounded-full px-2.5 py-0.5 text-xs font-medium"
                         style={{
-                          color: UPDATE_COLORS[dataset.update] ?? '#91a5c2',
-                          backgroundColor: (UPDATE_COLORS[dataset.update] ?? '#91a5c2') + '1a',
-                          border: `1px solid ${UPDATE_COLORS[dataset.update] ?? '#91a5c2'}33`,
+                          color: UPDATE_COLORS[dataset.update] ?? '#bbbbbb',
+                          backgroundColor: (UPDATE_COLORS[dataset.update] ?? '#bbbbbb') + '1a',
+                          border: `1px solid ${UPDATE_COLORS[dataset.update] ?? '#bbbbbb'}33`,
                         }}
                       >
                         {dataset.update}

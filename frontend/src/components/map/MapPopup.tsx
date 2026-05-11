@@ -24,7 +24,7 @@ export default function MapPopup({
   isGraphNode,
   onOpenInGraph,
 }: MapPopupProps) {
-  const color = domain ? domainColors[domain as Domain] : '#4db8ff'
+  const color = domain ? domainColors[domain as Domain] : '#ffffff'
   const severityLabel =
     severity !== undefined
       ? severity > 7
@@ -47,7 +47,7 @@ export default function MapPopup({
       style={{
         fontFamily: 'Inter, sans-serif',
         minWidth: 190,
-        background: '#0d1828',
+        background: '#0a0a0a',
         border: '1px solid #2a3b53',
         borderRadius: 10,
         padding: 12,
@@ -57,7 +57,7 @@ export default function MapPopup({
         {domain && (
           <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: color, flexShrink: 0 }} />
         )}
-        <span style={{ fontWeight: 700, fontSize: 13, color: '#eaf2ff', lineHeight: 1.3 }}>{title}</span>
+        <span style={{ fontWeight: 700, fontSize: 13, color: '#ffffff', lineHeight: 1.3 }}>{title}</span>
       </div>
       {entityType && (
         <p style={{ fontSize: 11, color, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 4 }}>
@@ -67,7 +67,7 @@ export default function MapPopup({
       {severity !== undefined && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
           <span style={{ fontSize: 11, color: '#7090b0' }}>Severity</span>
-          <span style={{ fontSize: 12, fontWeight: 700, color: severityColor ?? '#eaf2ff' }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: severityColor ?? '#ffffff' }}>
             {severity.toFixed(1)} - {severityLabel}
           </span>
         </div>
@@ -75,7 +75,7 @@ export default function MapPopup({
       {relationshipCount !== undefined && (
         <div style={{ marginBottom: 6 }}>
           <span style={{ fontSize: 11, color: '#7090b0' }}>Relationships</span>
-          <div style={{ marginTop: 2, fontSize: 12, fontWeight: 700, color: '#eaf2ff' }}>
+          <div style={{ marginTop: 2, fontSize: 12, fontWeight: 700, color: '#ffffff' }}>
             {relationshipCount} connected edge{relationshipCount === 1 ? '' : 's'}
           </div>
           {relationships && relationships.length > 0 && (
@@ -86,10 +86,10 @@ export default function MapPopup({
                   style={{
                     border: '1px solid #2a3b53',
                     borderRadius: 999,
-                    color: '#c6d7ec',
+                    color: '#dddddd',
                     fontSize: 10,
                     padding: '2px 8px',
-                    background: '#0a1220',
+                    background: '#000000',
                   }}
                 >
                   {item.relationship ?? 'RELATES_TO'} · {item.peer_label ?? item.peer_id ?? 'peer'}
@@ -111,9 +111,9 @@ export default function MapPopup({
             marginTop: 4,
             padding: '6px 12px',
             background: '#193254',
-            border: '1px solid #2f4564',
+            border: '1px solid #222222',
             borderRadius: 6,
-            color: '#eaf2ff',
+            color: '#ffffff',
             fontSize: 11,
             fontWeight: 600,
             cursor: 'pointer',

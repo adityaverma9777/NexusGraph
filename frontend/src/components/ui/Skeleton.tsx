@@ -5,7 +5,7 @@ type SkeletonProps = {
 export function Skeleton({ className = '' }: SkeletonProps) {
   return (
     <div
-      className={`animate-pulse rounded bg-[#1a2a3d] ${className}`}
+      className={`animate-pulse rounded bg-[#111111] ${className}`}
       aria-hidden="true"
     />
   )
@@ -13,7 +13,7 @@ export function Skeleton({ className = '' }: SkeletonProps) {
 
 export function GraphSkeleton() {
   return (
-    <div className="h-[420px] overflow-hidden rounded-2xl border border-[#1f2a3b] bg-[#0a1220] p-6">
+    <div className="h-[420px] overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#000000] p-6">
       <div className="flex h-full flex-col items-center justify-center gap-6">
         <div className="relative flex items-center justify-center">
           <Skeleton className="h-16 w-16 rounded-full" />
@@ -38,7 +38,7 @@ export function GraphSkeleton() {
 
 export function CardSkeleton({ lines = 3 }: { lines?: number }) {
   return (
-    <div className="space-y-3 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6">
+    <div className="space-y-3 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6">
       <Skeleton className="h-3 w-24" />
       <Skeleton className="h-5 w-48" />
       <div className="space-y-2 pt-2">
@@ -52,7 +52,7 @@ export function CardSkeleton({ lines = 3 }: { lines?: number }) {
 
 export function TableSkeleton({ rows = 6 }: { rows?: number }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95">
+    <div className="overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95">
       <div className="bg-[#122136] px-5 py-3">
         <Skeleton className="h-3 w-64" />
       </div>

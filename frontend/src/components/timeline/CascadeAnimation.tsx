@@ -40,7 +40,7 @@ const BUILT_IN_SCENARIOS = [
 ]
 
 const REL_COLORS: Record<string, string> = {
-  DRIVES: '#4db8ff',
+  DRIVES: '#ffffff',
   AMPLIFIES: '#f4a261',
   TRIGGERS: '#ef233c',
   STRESSES: '#c77dff',
@@ -74,7 +74,7 @@ function CascadeSequence({ steps, isPlaying }: { steps: Step[]; isPlaying: boole
   return (
     <div className="mt-5 space-y-2">
       {steps.map((step, idx) => {
-        const color = REL_COLORS[step.rel] ?? '#4db8ff'
+        const color = REL_COLORS[step.rel] ?? '#ffffff'
         const isActive = idx === activeStep
         const isPast = idx < activeStep
         return (
@@ -82,7 +82,7 @@ function CascadeSequence({ steps, isPlaying }: { steps: Step[]; isPlaying: boole
             <div className="flex flex-col items-center pt-1">
               <div
                 className={`flex h-5 w-5 items-center justify-center rounded-full border-2 text-[10px] font-bold transition-all ${
-                  isActive ? 'scale-110 border-current text-white' : isPast ? 'border-current opacity-60' : 'border-[#2a3b53] text-[#5a7090]'
+                  isActive ? 'scale-110 border-current text-white' : isPast ? 'border-current opacity-60' : 'border-[#2a3b53] text-[#999999]'
                 }`}
                 style={isActive || isPast ? { borderColor: color, color } : undefined}
               >
@@ -97,7 +97,7 @@ function CascadeSequence({ steps, isPlaying }: { steps: Step[]; isPlaying: boole
             </div>
             <div
               className={`mb-2 flex-1 rounded-lg border px-3 py-2 text-sm transition-all ${
-                isActive ? 'border-current bg-[#0d1e33]' : isPast ? 'border-[#1f2a3b] bg-[#0d1420] opacity-70' : 'border-[#1a2538] bg-transparent opacity-40'
+                isActive ? 'border-current bg-[#0d1e33]' : isPast ? 'border-[#1a1a1a] bg-[#0d1420] opacity-70' : 'border-[#1a2538] bg-transparent opacity-40'
               }`}
               style={isActive ? { borderColor: color } : undefined}
             >
@@ -106,7 +106,7 @@ function CascadeSequence({ steps, isPlaying }: { steps: Step[]; isPlaying: boole
                   {step.rel}
                 </span>
               )}
-              <span className={isActive ? 'text-[#eaf2ff]' : isPast ? 'text-[#9ab0cd]' : 'text-[#4a6080]'}>
+              <span className={isActive ? 'text-[#ffffff]' : isPast ? 'text-[#cccccc]' : 'text-[#4a6080]'}>
                 {step.text}
               </span>
             </div>
@@ -150,18 +150,18 @@ export default function CascadeAnimation() {
   const sequenceKey = isLive ? `live:${cascadeType}:${currentDate}` : `demo:${scenarioIdx}`
 
   return (
-    <div className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">
             Cascade {isLive ? <span className="text-[#52b788]">- Live</span> : '- Demo'}
           </p>
-          <h3 className="mt-1 text-lg font-semibold text-[#f3f7ff]">Systemic ripple playback</h3>
+          <h3 className="mt-1 text-lg font-semibold text-[#ffffff]">Systemic ripple playback</h3>
         </div>
         <button
           type="button"
           onClick={() => setIsPlaying((playing) => !playing)}
-          className="rounded-full border border-[#2f4564] bg-[#193254] px-3 py-1.5 text-xs font-semibold text-[#eaf2ff] hover:bg-[#23456f]"
+          className="rounded-full border border-[#222222] bg-[#193254] px-3 py-1.5 text-xs font-semibold text-[#ffffff] hover:bg-[#23456f]"
         >
           {isPlaying ? 'Pause' : 'Play'}
         </button>
@@ -175,8 +175,8 @@ export default function CascadeAnimation() {
               onClick={() => setScenarioIdx(index)}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                 scenarioIdx === index
-                  ? 'border border-[#4e79ab] bg-[#193254] text-[#eaf2ff]'
-                  : 'border border-[#1f2a3b] text-[#91a5c2] hover:border-[#406188]'
+                  ? 'border border-[#4e79ab] bg-[#193254] text-[#ffffff]'
+                  : 'border border-[#1a1a1a] text-[#bbbbbb] hover:border-[#406188]'
               }`}
             >
               {item.label}

@@ -75,18 +75,18 @@ export default function Home() {
           topAlerts.map((alert) => (
             <div
               key={alert.id}
-              className="flex items-center gap-2 rounded-full border border-[#1f2a3b] bg-[#0a1220] px-4 py-2 text-xs"
+              className="flex items-center gap-2 rounded-full border border-[#1a1a1a] bg-[#000000] px-4 py-2 text-xs"
             >
               <span
                 className="h-2 w-2 flex-shrink-0 rounded-full"
-                style={{ backgroundColor: severityDot[alert.severity] ?? '#91a5c2' }}
+                style={{ backgroundColor: severityDot[alert.severity] ?? '#bbbbbb' }}
               />
-              <span className="text-[#c6d7ec]">{alert.title}</span>
-              <span className="text-[#5a7090]">{alert.date}</span>
+              <span className="text-[#dddddd]">{alert.title}</span>
+              <span className="text-[#999999]">{alert.date}</span>
             </div>
           ))
         ) : (
-          <div className="rounded-full border border-[#1f2a3b] bg-[#0a1220] px-4 py-2 text-xs text-[#5a7090]">
+          <div className="rounded-full border border-[#1a1a1a] bg-[#000000] px-4 py-2 text-xs text-[#999999]">
             No active alerts
           </div>
         )}
@@ -97,14 +97,14 @@ export default function Home() {
       </section>
       {analysisEntityId && (
         <ErrorBoundary fallback="Intelligence briefing temporarily unavailable. Try selecting a different node.">
-          <section className="space-y-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <section className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Graph Analysis</p>
-                <h2 className="text-2xl font-semibold text-[#f3f7ff]">Selected node or relationship impact chain</h2>
+                <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Graph Analysis</p>
+                <h2 className="text-2xl font-semibold text-[#ffffff]">Selected node or relationship impact chain</h2>
               </div>
               {selectedEdge && (
-                <p className="text-xs text-[#91a5c2]">
+                <p className="text-xs text-[#bbbbbb]">
                   {nodes.find((node) => node.id === selectedEdge.source)?.label ?? selectedEdge.source} →{' '}
                   {nodes.find((node) => node.id === selectedEdge.target)?.label ?? selectedEdge.target}
                 </p>
@@ -116,13 +116,13 @@ export default function Home() {
         </ErrorBoundary>
       )}
       <section className="grid gap-6 lg:grid-cols-[1.25fr_1fr]">
-        <div className="space-y-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Temporal Analytics</p>
+        <div className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Temporal Analytics</p>
           <TimeSeriesChart />
           <CorrelationMatrix />
         </div>
-        <div className="space-y-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Domain Risk Profile</p>
+        <div className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Domain Risk Profile</p>
           <DomainRadar />
         </div>
       </section>

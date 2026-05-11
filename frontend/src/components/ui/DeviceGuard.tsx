@@ -15,16 +15,16 @@ export default function DeviceGuard({ children }: { children: React.ReactNode })
 
   if (isMobile) {
     return (
-      <div className="flex h-[100svh] w-full flex-col items-center justify-center bg-[#070b12] p-8 text-center text-[#e6edf7]">
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-[#1f2a3b] bg-[#0c1422]">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4db8ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <div className="flex h-[100svh] w-full flex-col items-center justify-center bg-[#000000] p-8 text-center text-[#f0f0f0]">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-[#1a1a1a] bg-[#0a0a0a]">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
             <line x1="8" y1="21" x2="16" y2="21"></line>
             <line x1="12" y1="17" x2="12" y2="21"></line>
           </svg>
         </div>
-        <h1 className="mb-3 text-2xl font-semibold tracking-tight text-[#f3f7ff]">Desktop Required</h1>
-        <p className="max-w-md text-sm leading-relaxed text-[#91a5c2]">
+        <h1 className="mb-3 text-2xl font-semibold tracking-tight text-[#ffffff]">Desktop Required</h1>
+        <p className="max-w-md text-sm leading-relaxed text-[#bbbbbb]">
           NexusGraph is an intelligence platform optimized exclusively for PC and Laptop displays. 
           Please access this site from a larger screen to explore the multi-domain knowledge graph.
         </p>

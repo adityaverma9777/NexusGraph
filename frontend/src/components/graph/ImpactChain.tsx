@@ -88,30 +88,30 @@ export default function ImpactChain() {
   const topDomain = Array.from(chain.domains.entries()).sort((a, b) => b[1] - a[1])[0]
 
   return (
-    <section className="space-y-4 rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+    <section className="space-y-4 rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Impact Chain</p>
-          <h3 className="text-xl font-semibold text-[#f3f7ff]">Likely downstream pipeline from the selected graph item</h3>
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Impact Chain</p>
+          <h3 className="text-xl font-semibold text-[#ffffff]">Likely downstream pipeline from the selected graph item</h3>
         </div>
-        <p className="text-xs text-[#91a5c2]">
+        <p className="text-xs text-[#bbbbbb]">
           Root: <span className="font-semibold text-[#dce8f9]">{chain.root.label}</span>
         </p>
       </div>
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {chain.steps.map((step, index) => (
-          <div key={`${step.node.id}-${index}`} className="rounded-xl border border-[#1f2a3b] bg-[#0a1420] p-4">
+          <div key={`${step.node.id}-${index}`} className="rounded-xl border border-[#1a1a1a] bg-[#0a1420] p-4">
             <div className="flex items-center justify-between gap-2">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[#7f93b1]">Stage {step.depth + 1}</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[#aaaaaa]">Stage {step.depth + 1}</p>
               {step.via && (
-                <span className="rounded-full border border-[#2b3a52] bg-[#101b2c] px-2 py-0.5 text-[10px] text-[#c6d7ec]">
+                <span className="rounded-full border border-[#222222] bg-[#101b2c] px-2 py-0.5 text-[10px] text-[#dddddd]">
                   {step.via.relationship}
                 </span>
               )}
             </div>
-            <h4 className="mt-2 text-sm font-semibold text-[#eaf2ff]">{step.node.label}</h4>
-            <p className="mt-1 text-xs text-[#91a5c2]">{step.node.entityType} · {step.node.domain}</p>
+            <h4 className="mt-2 text-sm font-semibold text-[#ffffff]">{step.node.label}</h4>
+            <p className="mt-1 text-xs text-[#bbbbbb]">{step.node.entityType} · {step.node.domain}</p>
             <p className="mt-2 text-xs text-[#7090b0]">Severity {step.node.severity.toFixed(1)} / 10</p>
             {step.via && (
               <p className="mt-2 text-xs text-[#8ea3c1]">
@@ -123,14 +123,14 @@ export default function ImpactChain() {
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">
-        <div className="rounded-xl border border-[#1f2a3b] bg-[#0a1220] p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Dominant Downstream Domain</p>
-          <p className="mt-2 text-lg font-semibold text-[#f3f7ff]">{topDomain?.[0] ?? 'Unknown'}</p>
-          <p className="mt-1 text-xs text-[#91a5c2]">{topDomain ? `${topDomain[1]} connected nodes in this analysis window` : 'No downstream nodes found.'}</p>
+        <div className="rounded-xl border border-[#1a1a1a] bg-[#000000] p-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Dominant Downstream Domain</p>
+          <p className="mt-2 text-lg font-semibold text-[#ffffff]">{topDomain?.[0] ?? 'Unknown'}</p>
+          <p className="mt-1 text-xs text-[#bbbbbb]">{topDomain ? `${topDomain[1]} connected nodes in this analysis window` : 'No downstream nodes found.'}</p>
         </div>
-        <div className="rounded-xl border border-[#1f2a3b] bg-[#0a1220] p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Cascade Summary</p>
-          <p className="mt-2 text-sm text-[#c6d7ec]">
+        <div className="rounded-xl border border-[#1a1a1a] bg-[#000000] p-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Cascade Summary</p>
+          <p className="mt-2 text-sm text-[#dddddd]">
             This chain is built from the highest-confidence outgoing links around your selection, so it approximates the most likely ripple path without requiring extra clicks.
           </p>
         </div>

@@ -49,13 +49,13 @@ export default function GraphControls() {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 text-xs text-[#91a5c2]">
+    <div className="flex flex-wrap items-center gap-3 text-xs text-[#bbbbbb]">
       <label className="flex items-center gap-2">
         Layout
         <select
           value={layout}
           onChange={(e) => setLayout(e.target.value as 'default' | 'hierarchical' | 'radial')}
-          className="rounded-full border border-[#2b3a52] bg-[#0f1b2d] px-3 py-1 text-xs text-[#e6edf7]"
+          className="rounded-full border border-[#222222] bg-[#0a0a0a] px-3 py-1 text-xs text-[#f0f0f0]"
         >
           <option value="default">Force</option>
           <option value="hierarchical">Hierarchy</option>
@@ -76,7 +76,7 @@ export default function GraphControls() {
       </label>
       <div className="flex items-center gap-2">
         <input
-          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-2 py-1 text-xs text-[#e6edf7] placeholder:text-[#6f86a7]"
+          className="rounded border border-[#222222] bg-[#0a0a0a] px-2 py-1 text-xs text-[#f0f0f0] placeholder:text-[#6f86a7]"
           placeholder="Cascade type (e.g. RainfallAnomaly)"
           value={cascadeInput}
           onChange={(e) => setCascadeInput(e.target.value)}
@@ -91,20 +91,20 @@ export default function GraphControls() {
         <button
           type="button"
           onClick={clearAll}
-          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-3 py-1 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
+          className="rounded border border-[#222222] bg-[#0a0a0a] px-3 py-1 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
         >
           Clear
         </button>
       </div>
       <div className="flex items-center gap-2">
         <input
-          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-2 py-1 text-xs text-[#e6edf7] placeholder:text-[#6f86a7]"
+          className="rounded border border-[#222222] bg-[#0a0a0a] px-2 py-1 text-xs text-[#f0f0f0] placeholder:text-[#6f86a7]"
           placeholder="Path from id"
           value={pathFrom}
           onChange={(e) => setPathFrom(e.target.value)}
         />
         <input
-          className="rounded border border-[#2b3a52] bg-[#0f1b2d] px-2 py-1 text-xs text-[#e6edf7] placeholder:text-[#6f86a7]"
+          className="rounded border border-[#222222] bg-[#0a0a0a] px-2 py-1 text-xs text-[#f0f0f0] placeholder:text-[#6f86a7]"
           placeholder="Path to id"
           value={pathTo}
           onChange={(e) => setPathTo(e.target.value)}

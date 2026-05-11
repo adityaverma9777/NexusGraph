@@ -88,17 +88,17 @@ export default function Timeline() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+      <section className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Time Simulation</p>
-            <h2 className="text-2xl font-semibold text-[#f3f7ff]">Replay system evolution</h2>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Time Simulation</p>
+            <h2 className="text-2xl font-semibold text-[#ffffff]">Replay system evolution</h2>
           </div>
           {activeScenario && (
             <button
               type="button"
               onClick={clearScenario}
-              className="rounded-full border border-[#2b3a52] bg-[#0f1b2d] px-3 py-1.5 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
+              className="rounded-full border border-[#222222] bg-[#0a0a0a] px-3 py-1.5 text-xs text-[#c5d4ea] hover:bg-[#16253a]"
             >
               Clear scenario
             </button>
@@ -108,9 +108,9 @@ export default function Timeline() {
           <TimelineSlider />
         </div>
       </section>
-      <section className="rounded-2xl border border-[#1f2a3b] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-        <p className="text-xs uppercase tracking-[0.3em] text-[#7f93b1]">Intelligence Scenarios</p>
-        <h3 className="mt-1 text-lg font-semibold text-[#f3f7ff]">Curated cascade demonstrations</h3>
+      <section className="rounded-2xl border border-[#1a1a1a] bg-[#0f1724]/95 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+        <p className="text-xs uppercase tracking-[0.3em] text-[#aaaaaa]">Intelligence Scenarios</p>
+        <h3 className="mt-1 text-lg font-semibold text-[#ffffff]">Curated cascade demonstrations</h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {SCENARIOS.map((scenario) => (
             <button
@@ -120,7 +120,7 @@ export default function Timeline() {
               className={`rounded-xl border p-4 text-left transition-all hover:scale-[1.02] ${
                 activeScenario === scenario.id
                   ? 'border-current bg-[#0d1e33] shadow-[0_0_20px_rgba(0,0,0,0.4)]'
-                  : 'border-[#1f2a3b] bg-[#0a1220] hover:border-[#2f4564] hover:bg-[#0d1828]'
+                  : 'border-[#1a1a1a] bg-[#000000] hover:border-[#222222] hover:bg-[#0a0a0a]'
               }`}
               style={activeScenario === scenario.id ? { borderColor: scenario.color } : undefined}
             >
@@ -130,7 +130,7 @@ export default function Timeline() {
                 {scenario.subtitle}
               </p>
               <p className="mt-2 text-[11px] leading-relaxed text-[#7090b0]">{scenario.description}</p>
-              <p className="mt-3 text-[10px] text-[#5a7090]">From {scenario.startDate}</p>
+              <p className="mt-3 text-[10px] text-[#999999]">From {scenario.startDate}</p>
             </button>
           ))}
         </div>
